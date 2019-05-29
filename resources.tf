@@ -94,7 +94,7 @@ resource "aws_internet_gateway" "default" {
 }
 
 //routing table for pubic subnet
-resource "aws_route_table" "eu-west-1a-public" {
+resource "aws_route_table" "route-public" {
 	vpc_id = "${aws_vpc.environment-example-two.id}"
 
 	route {
@@ -109,7 +109,7 @@ resource "aws_route_table" "eu-west-1a-public" {
 //route table association
 resource "aws_route_table_association" "eu-west-1a-public" {
 	subnet_id = "${aws_subnet.subnet1.id}"
-	route_table_id = "${aws_route_table.eu-west-1a-public.id}"
+	route_table_id = "${aws_route_table.route-public.id}"
 }
 /*
 resource "aws_eip" "nat" {
@@ -147,16 +147,6 @@ resource "aws_autoscaling_attachment" "alb_autoscale" {
 	autoscaling_group_name = "${aws_autoscaling_group.autoscale_group.id}"
 }
 
-resource "aws_lb_listener" "alb_listener" {
-	load_balancer_arn = "${aws_lb.alb.arn}"
-	port              = 80
-	protocol          = "HTTP"
-
-	default_action {
-		target_group_arn = "${aws_lb_target_group.alb_target_group.arn}"
-		type             = "forward"
-	}
-}
 resource "aws_lb_target_group" "alb_target_group" {
 	name     = "alb-target-group"
 	port     = "80"
@@ -179,6 +169,17 @@ resource "aws_lb_target_group" "alb_target_group" {
 		port                = 80
 	}
 }
+resource "aws_lb_listener" "alb_listener" {
+	load_balancer_arn = "${aws_lb.alb.arn}"
+	port              = 80
+	protocol          = "HTTP"
+
+	default_action {
+		target_group_arn = "${aws_lb_target_group.alb_target_group.arn}"
+		type             = "forward"
+	}
+}
+
 
 resource "aws_lb" "alb" {
 	name            = "alb"
