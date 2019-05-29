@@ -4,6 +4,8 @@ resource "aws_vpc" "environment-example-two" {
 	enable_dns_support = true
 	tags{Name = "terraform-aws-vpc-two"}
 }
+
+//us-west-2
 resource "aws_subnet" "subnet1" {
 cidr_block = "${cidrsubnet(aws_vpc.environment-example-two.cidr_block,3,1)}"
 	vpc_id = "${aws_vpc.environment-example-two.id}"
@@ -18,7 +20,8 @@ resource "aws_subnet" "subnet2" {
 	availability_zone = "us-east-1b"
 }
 
-
+//change to private and publid SGs
+//private would have IP of VPC
 resource "aws_security_group" "subnetsecurity" {
 	vpc_id = "${aws_vpc.environment-example-two.id}"
 	ingress {
@@ -27,7 +30,7 @@ resource "aws_security_group" "subnetsecurity" {
 		protocol = "tcp"
 		to_port = 80
 	}
-	ingress {
+	/*ingress {
 		cidr_blocks = ["0.0.0.0/0"]
 		from_port = 22
 		protocol = "tcp"
@@ -39,7 +42,7 @@ resource "aws_security_group" "subnetsecurity" {
 		protocol = "icmp"
 		to_port = -1
 	}
-
+*/
 	egress {
 		from_port = 0
 		to_port = 0
@@ -47,7 +50,7 @@ resource "aws_security_group" "subnetsecurity" {
 		cidr_blocks = ["0.0.0.0/0"]
 	}
 }
-
+/*
 data "aws_ami" "ubuntu" {
 	most_recent = true
 	filter {
@@ -62,13 +65,10 @@ data "aws_ami" "ubuntu" {
 	owners = ["099720109477"]
 }
 
-//resource "aws_key_pair" "my" {
-//	key_name   = "my"
-//	public_key = "${file("C:/Users/akfre/Downloads/SSH/MyKP.pub")}" }
-
+*/
 
 //instances
-variable "ami_key_pair_name" {}
+
 /*
 resource "aws_instance" "my-instance" {
 	ami = "ami-04169656fea786776"
@@ -83,10 +83,13 @@ tags = {
 Name = "Terraform"
 }
 
-}*/
+}
 variable "instance_count" {
 	default = "1"
 }
+*/
+
+variable "ami_key_pair_name" {}
 
 //internet gateway
 resource "aws_internet_gateway" "default" {
@@ -125,20 +128,23 @@ resource "aws_launch_configuration" "autoscale_launch" {
 	instance_type        = "t2.micro"
 	key_name              = "${var.ami_key_pair_name}"
 	security_groups      = ["${aws_security_group.subnetsecurity.id}"]
-	user_data = "${file("C:/Users/akfre/OneDrive/Documents/install_apache_server.sh")}"
+	user_data = "${file("C:/Users/Default.Default-PC/Downloads/install_apache_server.sh")}"
+
 
 }
-
+//AWS instance metadata to user data
 resource "aws_autoscaling_group" "autoscale_group" {
 	launch_configuration = "${aws_launch_configuration.autoscale_launch.id}"
 	vpc_zone_identifier = ["${aws_subnet.subnet1.id}","${aws_subnet.subnet2.id}"]
-//	load_balancers = ["${aws_elb.elb.name}"]
-	min_size = 3
-	max_size = 3
+	min_size = 4
+	max_size = 4
+	desired_capacity = 4
+
 	tag {
 		key = "Name"
-		value = "auto_scale"
+		value = "Craig's Autoscale"
 		propagate_at_launch = true
+
 	}
 }
 

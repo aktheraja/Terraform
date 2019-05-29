@@ -1,0 +1,55 @@
+digraph {
+	compound = "true"
+	newrank = "true"
+	subgraph "root" {
+		"[root] aws_autoscaling_attachment.alb_autoscale" [label = "aws_autoscaling_attachment.alb_autoscale", shape = "box"]
+		"[root] aws_autoscaling_group.autoscale_group" [label = "aws_autoscaling_group.autoscale_group", shape = "box"]
+		"[root] aws_internet_gateway.default" [label = "aws_internet_gateway.default", shape = "box"]
+		"[root] aws_launch_configuration.autoscale_launch" [label = "aws_launch_configuration.autoscale_launch", shape = "box"]
+		"[root] aws_lb.alb" [label = "aws_lb.alb", shape = "box"]
+		"[root] aws_lb_listener.alb_listener" [label = "aws_lb_listener.alb_listener", shape = "box"]
+		"[root] aws_lb_target_group.alb_target_group" [label = "aws_lb_target_group.alb_target_group", shape = "box"]
+		"[root] aws_route_table.eu-west-1a-public" [label = "aws_route_table.eu-west-1a-public", shape = "box"]
+		"[root] aws_route_table_association.eu-west-1a-public" [label = "aws_route_table_association.eu-west-1a-public", shape = "box"]
+		"[root] aws_security_group.subnetsecurity" [label = "aws_security_group.subnetsecurity", shape = "box"]
+		"[root] aws_subnet.subnet1" [label = "aws_subnet.subnet1", shape = "box"]
+		"[root] aws_subnet.subnet2" [label = "aws_subnet.subnet2", shape = "box"]
+		"[root] aws_vpc.environment-example-two" [label = "aws_vpc.environment-example-two", shape = "box"]
+		"[root] data.aws_ami.ubuntu" [label = "data.aws_ami.ubuntu", shape = "box"]
+		"[root] provider.aws" [label = "provider.aws", shape = "diamond"]
+		"[root] aws_autoscaling_attachment.alb_autoscale" -> "[root] aws_autoscaling_group.autoscale_group"
+		"[root] aws_autoscaling_attachment.alb_autoscale" -> "[root] aws_lb_target_group.alb_target_group"
+		"[root] aws_autoscaling_group.autoscale_group" -> "[root] aws_launch_configuration.autoscale_launch"
+		"[root] aws_autoscaling_group.autoscale_group" -> "[root] aws_subnet.subnet1"
+		"[root] aws_autoscaling_group.autoscale_group" -> "[root] aws_subnet.subnet2"
+		"[root] aws_internet_gateway.default" -> "[root] aws_vpc.environment-example-two"
+		"[root] aws_launch_configuration.autoscale_launch" -> "[root] aws_security_group.subnetsecurity"
+		"[root] aws_launch_configuration.autoscale_launch" -> "[root] var.ami_key_pair_name"
+		"[root] aws_lb.alb" -> "[root] aws_security_group.subnetsecurity"
+		"[root] aws_lb.alb" -> "[root] aws_subnet.subnet1"
+		"[root] aws_lb.alb" -> "[root] aws_subnet.subnet2"
+		"[root] aws_lb_listener.alb_listener" -> "[root] aws_lb.alb"
+		"[root] aws_lb_listener.alb_listener" -> "[root] aws_lb_target_group.alb_target_group"
+		"[root] aws_lb_target_group.alb_target_group" -> "[root] aws_vpc.environment-example-two"
+		"[root] aws_route_table.eu-west-1a-public" -> "[root] aws_internet_gateway.default"
+		"[root] aws_route_table_association.eu-west-1a-public" -> "[root] aws_route_table.eu-west-1a-public"
+		"[root] aws_route_table_association.eu-west-1a-public" -> "[root] aws_subnet.subnet1"
+		"[root] aws_security_group.subnetsecurity" -> "[root] aws_vpc.environment-example-two"
+		"[root] aws_subnet.subnet1" -> "[root] aws_internet_gateway.default"
+		"[root] aws_subnet.subnet2" -> "[root] aws_vpc.environment-example-two"
+		"[root] aws_vpc.environment-example-two" -> "[root] provider.aws"
+		"[root] data.aws_ami.ubuntu" -> "[root] provider.aws"
+		"[root] meta.count-boundary (count boundary fixup)" -> "[root] aws_autoscaling_attachment.alb_autoscale"
+		"[root] meta.count-boundary (count boundary fixup)" -> "[root] aws_lb_listener.alb_listener"
+		"[root] meta.count-boundary (count boundary fixup)" -> "[root] aws_route_table_association.eu-west-1a-public"
+		"[root] meta.count-boundary (count boundary fixup)" -> "[root] data.aws_ami.ubuntu"
+		"[root] meta.count-boundary (count boundary fixup)" -> "[root] var.instance_count"
+		"[root] provider.aws (close)" -> "[root] aws_autoscaling_attachment.alb_autoscale"
+		"[root] provider.aws (close)" -> "[root] aws_lb_listener.alb_listener"
+		"[root] provider.aws (close)" -> "[root] aws_route_table_association.eu-west-1a-public"
+		"[root] provider.aws (close)" -> "[root] data.aws_ami.ubuntu"
+		"[root] root" -> "[root] meta.count-boundary (count boundary fixup)"
+		"[root] root" -> "[root] provider.aws (close)"
+	}
+}
+
