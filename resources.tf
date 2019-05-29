@@ -1,41 +1,70 @@
-resource "aws_vpc" "environment-example-two" {
+resource "aws_vpc" "vpc_environment" {
 	cidr_block= "10.0.0.0/16"
 	enable_dns_hostnames = true
 	enable_dns_support = true
-	tags{Name = "terraform-aws-vpc-two"}
+	tags{Name = "terraform-aws-vpc"}
 }
 resource "aws_subnet" "public_subnet1" {
-cidr_block = "${cidrsubnet(aws_vpc.environment-example-two.cidr_block,3,1)}"
-	vpc_id = "${aws_vpc.environment-example-two.id}"
-	availability_zone = "us-west-1a"
+cidr_block = "${cidrsubnet(aws_vpc.vpc_environment.cidr_block,3,1)}"
+	vpc_id = "${aws_vpc.vpc_environment.id}"
+	availability_zone = "us-west-2"
 	map_public_ip_on_launch = true
 	depends_on = ["aws_internet_gateway.default"]
 
 }
 resource "aws_subnet" "private_subnet1" {
-	cidr_block = "${cidrsubnet(aws_vpc.environment-example-two.cidr_block,2,2)}"
-	vpc_id = "${aws_vpc.environment-example-two.id}"
-	availability_zone = "us-west-1b"
+	cidr_block = "${cidrsubnet(aws_vpc.vpc_environment.cidr_block,2,2)}"
+	vpc_id = "${aws_vpc.vpc_environment.id}"
+	availability_zone = "us-west-2"
 }
 
 resource "aws_subnet" "public_subnet2" {
-	cidr_block = "${cidrsubnet(aws_vpc.environment-example-two.cidr_block,3,1)}"
-	vpc_id = "${aws_vpc.environment-example-two.id}"
-	availability_zone = "us-west-2a"
+	cidr_block = "${cidrsubnet(aws_vpc.vpc_environment.cidr_block,3,1)}"
+	vpc_id = "${aws_vpc.vpc_environment.id}"
+	availability_zone = "us-east-1a"
 	map_public_ip_on_launch = true
 	depends_on = ["aws_internet_gateway.default"]
 
 }
 resource "aws_subnet" "private_subnet2" {
-	cidr_block = "${cidrsubnet(aws_vpc.environment-example-two.cidr_block,2,2)}"
-	vpc_id = "${aws_vpc.environment-example-two.id}"
-	availability_zone = "us-west-2b"
+	cidr_block = "${cidrsubnet(aws_vpc.vpc_environment.cidr_block,2,2)}"
+	vpc_id = "${aws_vpc.vpc_environment.id}"
+	availability_zone = "us-east-1a"
 }
 
 
 
-resource "aws_security_group" "subnetsecurity" {
-	vpc_id = "${aws_vpc.environment-example-two.id}"
+resource "aws_security_group" "private_subnetsecurity" {
+	vpc_id = "${aws_vpc.vpc_environment.id}"
+	ingress {
+		cidr_blocks = ["0.0.0.0/0"]
+		from_port = 80
+		protocol = "tcp"
+		to_port = 80
+	}
+	ingress {
+		cidr_blocks = ["0.0.0.0/0"]
+		from_port = 22
+		protocol = "tcp"
+		to_port = 22
+	}
+	ingress {
+		cidr_blocks = ["0.0.0.0/0"]
+		from_port = -1
+		protocol = "icmp"
+		to_port = -1
+	}
+
+	egress {
+		from_port = 0
+		to_port = 0
+		protocol = "-1"
+		cidr_blocks = ["0.0.0.0/0"]
+	}
+}
+
+resource "aws_security_group" "public_subnetsecurity" {
+	vpc_id = "${aws_vpc.vpc_environment.id}"
 	ingress {
 		cidr_blocks = ["0.0.0.0/0"]
 		from_port = 80
@@ -65,18 +94,16 @@ resource "aws_security_group" "subnetsecurity" {
 
 variable "ami_key_pair_name" {}
 
-variable "instance_count" {
-	default = "1"
-}
+
 
 //internet gateway
 resource "aws_internet_gateway" "default" {
-	vpc_id = "${aws_vpc.environment-example-two.id}"
+	vpc_id = "${aws_vpc.vpc_environment.id}"
 }
 
 //routing table for pubic subnet
 resource "aws_route_table" "route-public" {
-	vpc_id = "${aws_vpc.environment-example-two.id}"
+	vpc_id = "${aws_vpc.vpc_environment.id}"
 
 	route {
 		cidr_block = "0.0.0.0/0"
@@ -101,7 +128,7 @@ resource "aws_launch_configuration" "autoscale_launch" {
 	instance_type        = "t2.nano"
 	key_name              = "${var.ami_key_pair_name}"
 	security_groups      = ["${aws_security_group.subnetsecurity.id}"]
-	user_data = "${file("C:/Users/akfre/OneDrive/Documents/install_apache_server.sh")}"
+	user_data = "${file("C:/Users/Default.Default-PC/Downloads/install_apache_server.sh")}"
 }
 
 resource "aws_autoscaling_group" "autoscale_group_1" {
@@ -121,7 +148,7 @@ resource "aws_lb_target_group" "alb_target_group_1" {
 	name     = "alb-target-group"
 	port     = "80"
 	protocol = "HTTP"
-	vpc_id   = "${aws_vpc.environment-example-two.id}"
+	vpc_id   = "${aws_vpc.vpc_environment.id}"
 	tags {
 		name = "alb_target_group"
 	}
@@ -194,7 +221,7 @@ resource "aws_lb_target_group" "alb_target_group_2" {
 	name     = "alb-target-group"
 	port     = "80"
 	protocol = "HTTP"
-	vpc_id   = "${aws_vpc.environment-example-two.id}"
+	vpc_id   = "${aws_vpc.vpc_environment.id}"
 	tags {
 		name = "alb_target_group"
 	}
