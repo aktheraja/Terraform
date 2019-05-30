@@ -264,3 +264,15 @@ resource "aws_lb_listener" "alb_listener_2" {
 		type             = "forward"
 	}
 }
+resource "aws_nat_gateway" "nat_gate" {
+	allocation_id = ""
+	subnet_id = ""
+}
+resource "aws_eip" "nat" {
+	vpc =  true
+
+	instance = "${aws_launch_configuration.autoscale_launch.image_id}"
+	depends_on = ["aws_internet_gateway.default"]
+
+
+}
