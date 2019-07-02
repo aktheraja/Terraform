@@ -11,6 +11,8 @@
   <component name="ChangeListManager">
     <list default="true" id="d35564dd-6692-4680-b824-3f65300fd1e3" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/connection.tf" beforeDir="false" afterPath="$PROJECT_DIR$/connection.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/graph.svg" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/resources.tf" beforeDir="false" afterPath="$PROJECT_DIR$/resources.tf" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -30,15 +32,28 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/resources.tf">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="134" column="42" lean-forward="true" selection-start-line="134" selection-start-column="42" selection-end-line="134" selection-end-column="42" />
+            <state relative-caret-position="114">
+              <caret line="226" column="25" lean-forward="true" selection-start-line="226" selection-start-column="25" selection-end-line="226" selection-end-column="25" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/Downloads/Blue-green deployment/blue_green2.tf">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1870">
+              <caret line="110" column="32" selection-start-line="110" selection-start-column="32" selection-end-line="110" selection-end-column="32" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/connection.tf">
-          <provider selected="true" editor-type-id="text-editor" />
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="17">
+              <caret line="1" column="21" selection-start-line="1" selection-start-column="21" selection-end-line="1" selection-end-column="21" />
+            </state>
+          </provider>
         </entry>
       </file>
     </leaf>
@@ -46,6 +61,15 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>rout</find>
+      <find>elb</find>
+      <find>arn</find>
+      <find>east</find>
+      <find>target_group</find>
+      <find>aws_launch_configuration</find>
+      <find>nat</find>
+      <find>auto</find>
+      <find>security</find>
+      <find>alb</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -54,13 +78,13 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
+        <option value="$PROJECT_DIR$/connection.tf" />
         <option value="$PROJECT_DIR$/resources.tf" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="683" />
-    <option name="width" value="683" />
+    <option name="width" value="1369" />
     <option name="height" value="728" />
   </component>
   <component name="ProjectView">
@@ -68,7 +92,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -81,6 +104,7 @@
         </subPane>
       </pane>
       <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -125,17 +149,23 @@
       <option name="project" value="LOCAL" />
       <updated>1559241123423</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Added Routing table corrections">
+      <created>1559248653215</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1559248653225</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
     <option name="totallyTimeSpent" value="812000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="683" y="0" width="683" height="728" extended-state="0" />
-    <editor active="true" />
+    <frame x="0" y="0" width="1369" height="728" extended-state="0" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14412956" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.022918258" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info id="Image Layers" order="3" />
@@ -151,8 +181,8 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Database Changes" order="7" />
       <window_info anchor="bottom" id="Version Control" order="8" weight="0.3285968" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="9" sideWeight="0.49919742" visible="true" weight="0.32718122" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5008026" side_tool="true" weight="0.32718122" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="9" sideWeight="0.4983871" visible="true" weight="0.37919462" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5016129" side_tool="true" weight="0.30660376" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -198,21 +228,53 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Adding NAT gateway and associated EIP" />
-    <option name="LAST_COMMIT_MESSAGE" value="Adding NAT gateway and associated EIP" />
+    <MESSAGE value="Added Routing table corrections" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added Routing table corrections" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
+    <entry file="file://$PROJECT_DIR$/graph.svg" />
+    <entry file="file://$PROJECT_DIR$/LICENSE">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/terraform.tfstate">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1921">
+          <caret line="199" column="21" lean-forward="true" selection-start-line="199" selection-start-column="21" selection-end-line="199" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/versions.tf">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$USER_HOME$/Downloads/Blue-green deployment/connection.tf">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/resources.tf">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="134" column="42" lean-forward="true" selection-start-line="134" selection-start-column="42" selection-end-line="134" selection-end-column="42" />
+        <state relative-caret-position="114">
+          <caret line="226" column="25" lean-forward="true" selection-start-line="226" selection-start-column="25" selection-end-line="226" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Downloads/Blue-green deployment/blue_green2.tf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1870">
+          <caret line="110" column="32" selection-start-line="110" selection-start-column="32" selection-end-line="110" selection-end-column="32" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/connection.tf">
-      <provider selected="true" editor-type-id="text-editor" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="21" selection-start-line="1" selection-start-column="21" selection-end-line="1" selection-end-column="21" />
+        </state>
+      </provider>
     </entry>
   </component>
 </project>
