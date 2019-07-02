@@ -74,18 +74,7 @@ resource "aws_security_group" "security" {
     protocol    = "tcp"
     to_port     = 443
   }
-//  ingress {
-//    cidr_blocks = ["::/0"]
-//    from_port   = 80
-//    protocol    = "tcp"
-//    to_port     = 80
-//  }te
-//  ingress {
-//    cidr_blocks = ["::/0"]
-//    from_port   = 443
-//    protocol    = "tcp"
-//    to_port     = 443
-//  }
+
   ingress {
     cidr_blocks = ["0.0.0.0/0"]
     from_port   = -1
@@ -141,7 +130,6 @@ resource "aws_route_table" "route-private1" {
 //routing table for private subnet 2
 resource "aws_route_table" "route-private2" {
   vpc_id = aws_vpc.vpc_environment.id
-//  depends_on = [aws_subnet.private_subnet2]
 
   route {
     cidr_block = "0.0.0.0/0"
@@ -168,14 +156,14 @@ resource "aws_route_table_association" "subnet2_table_assoc" {
 }
 
 resource "aws_launch_configuration" "autoscale_launch" {
-  name            = "CF2TF-LC3"
+  name_prefix          = "autoscale_launcher-"
   image_id        = "ami-07669fc90e6e6cc47"
   instance_type   = "t2.nano"
 //  key_name        = var.ami_key_pair_name
   security_groups = [aws_security_group.security.id]
   enable_monitoring = true
   user_data = file(
-    "/Users/yujiacui/Desktop/install_apache_server2.sh"
+    "C:/Users/Default.Default-PC/Downloads/install_apache_server2.sh"
   )
   lifecycle {create_before_destroy = true}
 }
@@ -184,12 +172,12 @@ resource "aws_autoscaling_group" "autoscale_group_1" {
   name="asg-${aws_launch_configuration.autoscale_launch.name}"
   launch_configuration = aws_launch_configuration.autoscale_launch.id
   vpc_zone_identifier  = [aws_subnet.private_subnet2.id, aws_subnet.private_subnet1.id]
-//  enabled_metrics = []
-  //	load_balancers = ["${aws_elb.elb.name}"]
+
   min_size = 2
   max_size = 5
   desired_capacity = 3
   wait_for_elb_capacity = 3
+
   tag {
     key                 = "Name"
     value               = "auto_scale"
@@ -197,6 +185,7 @@ resource "aws_autoscaling_group" "autoscale_group_1" {
   }
   health_check_grace_period = 300
   health_check_type = "ELB"
+  //load_balancers = [aws_alb.alb.name]
   lifecycle {create_before_destroy = true}
   enabled_metrics = [
     "GroupMinSize",
@@ -268,11 +257,14 @@ resource "aws_autoscaling_attachment" "alb_autoscale" {
 }
 
 resource "aws_alb" "alb" {
-  name            = "alb2"
-  subnets         = [aws_subnet.public_subnet1.id, aws_subnet.public_subnet2.id]
-  security_groups = [aws_security_group.security.id]
-  internal        = false
-  idle_timeout    = 60
+  name = "alb2"
+  subnets = [
+    aws_subnet.public_subnet1.id,
+    aws_subnet.public_subnet2.id]
+  security_groups = [
+    aws_security_group.security.id]
+  internal = false
+  idle_timeout = 60
   tags = {
     Name = "alb2"
   }
