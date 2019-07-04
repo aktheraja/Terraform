@@ -156,33 +156,34 @@ resource "aws_route_table_association" "subnet2_table_assoc" {
 }
 
 resource "aws_launch_configuration" "autoscale_launch_config" {
-  name_prefix          = "autoscale_launcher-Craig-"
+  name_prefix          = "autoscale_launcher-Akin"
   image_id        = "ami-07669fc90e6e6cc47"
   instance_type   = "t2.nano"
 //  key_name        = var.ami_key_pair_name
   security_groups = [aws_security_group.security.id]
   enable_monitoring = true
   user_data = file(
-    "C:/Users/Default.Default-PC/Downloads/install_apache_server.sh"
+    "C:/Users/akfre/OneDrive/Documents/install_apache_server.sh"
   )
   lifecycle {create_before_destroy = true}
 }
-
+/*
 resource "aws_autoscaling_group" "autoscale_group_1" {
   name="asg-${aws_launch_configuration.autoscale_launch_config.name}"
   launch_configuration = aws_launch_configuration.autoscale_launch_config.id
   vpc_zone_identifier  = [aws_subnet.private_subnet2.id, aws_subnet.private_subnet1.id]
 
   initial_lifecycle_hook {
-    lifecycle_transition = "autoscaling:EC2_INSTANCE_LAUNCHING"
-    heartbeat_timeout = 7200
-
+    lifecycle_transition = "autoscaling:EC2_INSTANCE_TERMINATING"
+    heartbeat_timeout = 100
+//	default_result = "CONTINUE"
     name = "delay"
   }
   min_size = 2
   max_size = 5
   desired_capacity = 3
   wait_for_elb_capacity = 3
+  min_elb_capacity = 3
 
   tag {
     key                 = "Name"
@@ -209,29 +210,73 @@ resource "aws_autoscaling_policy" "web_policy_up" {
   name = "web_policy_up"
   scaling_adjustment = 1
   adjustment_type = "ChangeInCapacity"
-  cooldown = 300
+  //cooldown = 300
+
   autoscaling_group_name = "${aws_autoscaling_group.autoscale_group_1.name}"
 //  autoscaling_group_name = "${aws_autoscaling_group.web.name}"
 }
+*/
+resource "aws_cloudformation_stack" "autoscaling_group" {
+  name = "asg"
 
-resource "aws_cloudwatch_metric_alarm" "web_cpu_alarm_up" {
-  alarm_name = "web_cpu_alarm_up"
-  comparison_operator = "GreaterThanOrEqualToThreshold"
-  evaluation_periods = "2"
-  metric_name = "CPUUtilization"
-  namespace = "AWS/EC2"
-  period = "120"
-  statistic = "Average"
-  threshold = "60"
+  template_body = <<EOF
+Description: ""
+Resources:
+  ASG:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      VPCZoneIdentifier: ["${aws_subnet.private_subnet2.id}","${aws_subnet.private_subnet1.id}"]
+      AvailabilityZones: ["us-west-2c","us-west-2b"]
+      LaunchConfigurationName: "${aws_launch_configuration.autoscale_launch_config.name}"
+      MinSize: 2
+      MaxSize: 5
+      DesiredCapacity: 3
+      HealthCheckType: EC2
 
-  dimensions = {
-    AutoScalingGroupName = "${aws_autoscaling_group.autoscale_group_1.name}"
-//    "${aws_autoscaling_group.web.name}"
-  }
-
-  alarm_description = "This metric monitor EC2 instance CPU utilization"
-  alarm_actions = ["${aws_autoscaling_policy.web_policy_up.arn}"]
+    CreationPolicy:
+      AutoScalingCreationPolicy:
+        MinSuccessfulInstancesPercent: 80
+      ResourceSignal:
+        Count: 3
+        Timeout: PT10M
+    UpdatePolicy:
+    # Ignore differences in group size properties caused by scheduled actions
+      AutoScalingScheduledAction:
+        IgnoreUnmodifiedGroupSizeProperties: true
+      AutoScalingRollingUpdate:
+        MaxBatchSize: 5
+        MinInstancesInService: 2
+        MinSuccessfulInstancesPercent: 80
+        PauseTime: PT10M
+        SuspendProcesses:
+          - HealthCheck
+          - ReplaceUnhealthy
+          - AZRebalance
+          - AlarmNotification
+          - ScheduledActions
+        WaitOnResourceSignals: true
+    DeletionPolicy: Retain
+  EOF
 }
+
+//resource "aws_cloudwatch_metric_alarm" "web_cpu_alarm_up" {
+//  alarm_name = "web_cpu_alarm_up"
+//  comparison_operator = "GreaterThanOrEqualToThreshold"
+//  evaluation_periods = "2"
+//  metric_name = "CPUUtilization"
+//  namespace = "AWS/EC2"
+//  period = "120"
+//  statistic = "Average"
+//  threshold = "60"
+//
+//  dimensions = {
+//    AutoScalingGroupName = "${aws_autoscaling_group.autoscale_group_1.name}"
+////    "${aws_autoscaling_group.web.name}"
+//  }
+
+//  alarm_description = "This metric monitor EC2 instance CPU utilization"
+//  alarm_actions = ["${aws_autoscaling_policy.web_policy_up.arn}"]
+//}
 
 resource "aws_alb_target_group" "alb_target_group_1" {
   name     = "alb-target-group2"
@@ -248,10 +293,10 @@ resource "aws_alb_target_group" "alb_target_group_1" {
     enabled         = true
   }
   //slow_start = 120
-  deregistration_delay = 120
+//  deregistration_delay = 120
   health_check {
     healthy_threshold   = 3
-    unhealthy_threshold = 3
+    unhealthy_threshold = 2
     timeout             = 2
     interval            = 5
     path                = "/"
@@ -262,11 +307,11 @@ resource "aws_alb_target_group" "alb_target_group_1" {
 
 resource "aws_autoscaling_attachment" "alb_autoscale" {
   alb_target_group_arn   = aws_alb_target_group.alb_target_group_1.arn
-  autoscaling_group_name = aws_autoscaling_group.autoscale_group_1.id
+  autoscaling_group_name = aws_cloudformation_stack.autoscaling_group.id
 }
 
 resource "aws_alb" "alb" {
-  name = "alb-Craig"
+  name = "alb-Akin"
   subnets = [
     aws_subnet.public_subnet1.id,
     aws_subnet.public_subnet2.id]
@@ -301,6 +346,7 @@ resource "aws_nat_gateway" "nat_2gate" {
 }
 
 resource "aws_nat_gateway" "nat_1gate" {
+
   allocation_id = aws_eip.nat_eip.id
   subnet_id     = aws_subnet.public_subnet1.id
   lifecycle {
