@@ -174,7 +174,7 @@ resource "aws_autoscaling_group" "autoscale_group_1" {
   vpc_zone_identifier  = [aws_subnet.private_subnet2.id, aws_subnet.private_subnet1.id]
 
   initial_lifecycle_hook {
-    lifecycle_transition = "autoscaling:EC2_INSTANCE_LAUNCHING"
+    lifecycle_transition = "autoscaling:EC2_INSTANCE_TERMINATING"
     heartbeat_timeout = 7200
 
     name = "delay"
