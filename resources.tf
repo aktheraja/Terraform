@@ -155,24 +155,30 @@ resource "aws_route_table_association" "subnet2_table_assoc" {
   route_table_id = aws_route_table.route-private2.id
 }
 
-resource "aws_launch_configuration" "autoscale_launch" {
-  name_prefix          = "autoscale_launcher-"
+resource "aws_launch_configuration" "autoscale_launch_config" {
+  name_prefix          = "autoscale_launcher-Craig-"
   image_id        = "ami-07669fc90e6e6cc47"
   instance_type   = "t2.nano"
 //  key_name        = var.ami_key_pair_name
   security_groups = [aws_security_group.security.id]
   enable_monitoring = true
   user_data = file(
-    "C:/Users/Default.Default-PC/Downloads/install_apache_server2.sh"
+    "C:/Users/Default.Default-PC/Downloads/install_apache_server.sh"
   )
   lifecycle {create_before_destroy = true}
 }
 
 resource "aws_autoscaling_group" "autoscale_group_1" {
-  name="asg-${aws_launch_configuration.autoscale_launch.name}"
-  launch_configuration = aws_launch_configuration.autoscale_launch.id
+  name="asg-${aws_launch_configuration.autoscale_launch_config.name}"
+  launch_configuration = aws_launch_configuration.autoscale_launch_config.id
   vpc_zone_identifier  = [aws_subnet.private_subnet2.id, aws_subnet.private_subnet1.id]
 
+  initial_lifecycle_hook {
+    lifecycle_transition = "autoscaling:EC2_INSTANCE_LAUNCHING"
+    heartbeat_timeout = 7200
+
+    name = "delay"
+  }
   min_size = 2
   max_size = 5
   desired_capacity = 3
@@ -183,7 +189,7 @@ resource "aws_autoscaling_group" "autoscale_group_1" {
     value               = "auto_scale"
     propagate_at_launch = true
   }
-  health_check_grace_period = 300
+  health_check_grace_period = 200
   health_check_type = "ELB"
   //load_balancers = [aws_alb.alb.name]
   lifecycle {create_before_destroy = true}
@@ -197,6 +203,7 @@ resource "aws_autoscaling_group" "autoscale_group_1" {
   metrics_granularity="1Minute"
 
 }
+
 
 resource "aws_autoscaling_policy" "web_policy_up" {
   name = "web_policy_up"
@@ -240,11 +247,13 @@ resource "aws_alb_target_group" "alb_target_group_1" {
     cookie_duration = 1800
     enabled         = true
   }
+  //slow_start = 120
+  deregistration_delay = 120
   health_check {
     healthy_threshold   = 3
-    unhealthy_threshold = 10
-    timeout             = 5
-    interval            = 10
+    unhealthy_threshold = 3
+    timeout             = 2
+    interval            = 5
     path                = "/"
     port                = 80
   }
@@ -257,7 +266,7 @@ resource "aws_autoscaling_attachment" "alb_autoscale" {
 }
 
 resource "aws_alb" "alb" {
-  name = "alb2"
+  name = "alb-Craig"
   subnets = [
     aws_subnet.public_subnet1.id,
     aws_subnet.public_subnet2.id]
@@ -312,7 +321,7 @@ resource "aws_eip" "nat_eip" {
   lifecycle {
     create_before_destroy = true
   }
-}/*
+}
 resource "aws_route_table" "routtable1" {
 
   vpc_id = aws_vpc.vpc_environment.id
@@ -340,7 +349,7 @@ resource "aws_route_table" "routtable2" {
   lifecycle {
     create_before_destroy = true
   }
-}*/
+}
 /*
 resource "aws_cloudwatch_log_metric_filter" "viewer_view_doc_bytes_read" {
   name           = "viewer_view_document_count"
@@ -355,6 +364,9 @@ resource "aws_cloudwatch_log_metric_filter" "viewer_view_doc_bytes_read" {
 resource "aws_cloudwatch_log_group" "log1" {
   name = "Log1"
 }*/
+
+
+/*
 resource "aws_cloudformation_stack" "network" {
   name = "networking-stack"
 
@@ -385,3 +397,7 @@ resource "aws_cloudformation_stack" "network" {
 }
 STACK
 }
+
+
+
+*/
