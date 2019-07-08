@@ -163,7 +163,7 @@ resource "aws_launch_configuration" "autoscale_launch_config" {
   security_groups = [aws_security_group.security.id]
   enable_monitoring = true
   user_data = file(
-    "C:/Users/akfre/OneDrive/Documents/install_apache_server.sh"
+    "C:/Users/Default.Default-PC/Downloads/install_apache_server.sh"
   )
   lifecycle {create_before_destroy = true}
 }
@@ -309,6 +309,8 @@ resource "aws_autoscaling_attachment" "alb_autoscale" {
   alb_target_group_arn   = aws_alb_target_group.alb_target_group_1.arn
   autoscaling_group_name = aws_cloudformation_stack.autoscaling_group.id
 }
+
+
 
 resource "aws_alb" "alb" {
   name = "alb-Akin"
