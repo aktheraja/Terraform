@@ -168,7 +168,7 @@ resource "aws_route_table_association" "subnet2_table_assoc" {
 }
 
 resource "aws_launch_configuration" "autoscale_launch" {
-  name            = "CF2TF-LC3"
+  name            = "CF2TF-LC6"
   image_id        = "ami-07669fc90e6e6cc47"
   instance_type   = "t2.nano"
 //  key_name        = var.ami_key_pair_name
@@ -195,7 +195,7 @@ resource "aws_autoscaling_group" "autoscale_group_1" {
     value               = "auto_scale"
     propagate_at_launch = true
   }
-  health_check_grace_period = 300
+  health_check_grace_period = 1
   health_check_type = "ELB"
   lifecycle {create_before_destroy = true}
   enabled_metrics = [
@@ -218,6 +218,22 @@ resource "aws_autoscaling_policy" "web_policy_up" {
 //  autoscaling_group_name = "${aws_autoscaling_group.web.name}"
 }
 
+resource "aws_autoscaling_lifecycle_hook" "foobar" {
+  name                   = "foobar"
+  autoscaling_group_name = "${aws_autoscaling_group.autoscale_group_1.name}"
+  default_result         = "ABANDON"
+  heartbeat_timeout      = 0
+  lifecycle_transition   = "autoscaling:EC2_INSTANCE_LAUNCHING"
+
+  notification_metadata = <<EOF
+{
+  "foo": "bar"
+}
+EOF
+
+//  notification_target_arn = "arn:aws:sqs:us-east-1:444455556666:queue1*"
+//  role_arn                = "arn:aws:iam::123456789012:role/S3Access"
+}
 resource "aws_cloudwatch_metric_alarm" "web_cpu_alarm_up" {
   alarm_name = "web_cpu_alarm_up"
   comparison_operator = "GreaterThanOrEqualToThreshold"
@@ -316,80 +332,8 @@ resource "aws_eip" "nat_eip2" {
 }
 resource "aws_eip" "nat_eip" {
 
-  vpc      = true
+  vpc = true
   lifecycle {
     create_before_destroy = true
   }
-}/*
-resource "aws_route_table" "routtable1" {
-
-  vpc_id = aws_vpc.vpc_environment.id
-
-  route {
-    cidr_block = "0.0.0.0/0"
-    nat_gateway_id = aws_nat_gateway.nat_1gate.id
-  }
-
-
-  lifecycle {
-    create_before_destroy = true
-  }
-}
-resource "aws_route_table" "routtable2" {
-
-  vpc_id = aws_vpc.vpc_environment.id
-
-  route {
-    cidr_block = "0.0.0.0/0"
-    nat_gateway_id = aws_nat_gateway.nat_2gate.id
-  }
-
-
-  lifecycle {
-    create_before_destroy = true
-  }
-}*/
-/*
-resource "aws_cloudwatch_log_metric_filter" "viewer_view_doc_bytes_read" {
-  name           = "viewer_view_document_count"
-  pattern        = ""
-  log_group_name = aws_cloudwatch_log_group.log1.name
-  metric_transformation {
-    name         = "viewer_view_doc_bytes_read"
-    namespace    = "LogMetrics"
-    value        = 1
-  }
-}
-resource "aws_cloudwatch_log_group" "log1" {
-  name = "Log1"
-}*/
-resource "aws_cloudformation_stack" "network" {
-  name = "networking-stack"
-
-  parameters = {
-    VPCCidr = "10.0.0.0/16"
-  }
-
-  template_body = <<STACK
-{
-  "Parameters" : {
-    "VPCCidr" : {
-      "Type" : "String",
-      "Default" : "10.0.0.0/16",
-      "Description" : "Enter the CIDR block for the VPC. Default is 10.0.0.0/16."
-    }
-  },
-  "Resources" : {
-    "myVpc": {
-      "Type" : "AWS::EC2::VPC",
-      "Properties" : {
-        "CidrBlock" : { "Ref" : "VPCCidr" },
-        "Tags" : [
-          {"Key": "Name", "Value": "Primary_CF_VPC"}
-        ]
-      }
-    }
-  }
-}
-STACK
 }
