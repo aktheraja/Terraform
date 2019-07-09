@@ -7,6 +7,13 @@ variable "aws_secret_access_key" {
   description = "AWS secret access key"
 }
 
+variable "az_count" {
+  default = data.aws_availability_zones.available.count
+  description = "number of Availability zones"
+}
+
+
+
 variable "ecs_cluster" {
   description = "ECS cluster name"
 }
@@ -22,12 +29,13 @@ variable "region" {
   }
 }
 
-variable "availability_zone" {
-  description = "availability zone used for the demo, based on region"
-  default = {
-    us-west-2 = "us-west-2a"
-  }
-}
+//variable "availability_zone" {
+//  description = "availability zone used for the demo, based on region"
+//  default = [
+//    {us-west-2c = "us-west-2c"},
+//    {us-west-2b = "us-west-2b"}
+//  ]
+//}
 
 ########################### Test VPC Config ################################
 

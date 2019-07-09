@@ -21,28 +21,29 @@ resource "aws_internet_gateway" "test_ig" {
   }
 }
 
-# Public subnet 1
-resource "aws_subnet" "test_public_sn_01" {
+# Public subnets
+resource "aws_subnet" "public_sn" {
   vpc_id = aws_vpc.test_vpc.id
-  cidr_block              = cidrsubnet(aws_vpc.test_vpc.cidr_block, 4, 1)
-//  cidr_block = "cidrsubnet(aws_vpc.test_vpc.cidr_block,4,1)"
-//  cidr_block = var.test_public_01_cidr
-  availability_zone = data.aws_availability_zones.available.names[0]
+  count =var.az_count
+  cidr_block  = cidrsubnet(aws_vpc.test_vpc.cidr_block, count*2, count.index)
+  availability_zone = data.aws_availability_zones.available.names[count.index]
+  map_public_ip_on_launch = true
   tags = {
-    Name = "test_public_sn_01"
+    Name = "Public_Subnet ${count.index}"
   }
 }
 
-# Public subnet 2
-resource "aws_subnet" "test_public_sn_02" {
+# Private subnets
+resource "aws_subnet" "private_sn" {
   vpc_id = aws_vpc.test_vpc.id
-  cidr_block              = cidrsubnet(aws_vpc.test_vpc.cidr_block, 4, 2)
-//  cidr_block = var.test_public_02_cidr
-  availability_zone = data.aws_availability_zones.available.names[1]
+  count =var.az_count
+  cidr_block  = cidrsubnet(aws_vpc.test_vpc.cidr_block, count*2, count.index)
+  availability_zone = data.aws_availability_zones.available.names[count.index]
   tags = {
-    Name = "test_public_sn_02"
+    Name = "Private_Subnet ${count.index}"
   }
 }
+
 
 # Routing table for public subnet 1
 resource "aws_route_table" "test_public_sn_rt_01" {
