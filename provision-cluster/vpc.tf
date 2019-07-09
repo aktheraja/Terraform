@@ -45,44 +45,66 @@ resource "aws_subnet" "private_sn" {
 }
 
 
-# Routing table for public subnet 1
-resource "aws_route_table" "test_public_sn_rt_01" {
+# Routing table for VPC
+resource "aws_route_table" "public_rt" {
   vpc_id = aws_vpc.test_vpc.id
   route {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.test_ig.id
   }
   tags = {
-    Name = "test_public_sn_rt_01"
+    Name = "VPC Route Table"
   }
 }
 
-# Associate the routing table to public subnet 1
-resource "aws_route_table_association" "test_public_sn_rt_01_assn" {
-  subnet_id = aws_subnet.test_public_sn_01.id
-  route_table_id = aws_route_table.test_public_sn_rt_01.id
+# Set the routing table as main for VPC
+resource "aws_main_route_table_association" "main_table_assoc" {
+  vpc_id         = aws_vpc.test_vpc.id
+  route_table_id = aws_route_table.public_rt.id
 }
 
-# Routing table for public subnet 2
-resource "aws_route_table" "test_public_sn_rt_02" {
+# Routing tables for private subnets
+resource "aws_route_table" "private_rt" {
+  count = var.az_count
   vpc_id = aws_vpc.test_vpc.id
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.test_ig.id
+    gateway_id = aws_nat_gateway.nat_gate.id
   }
+
   tags = {
-    Name = "test_public_sn_rt_02"
+    Name = "Private Subnet ${count.index} Routing Table"
   }
 }
 
-# Associate the routing table to public subnet 2
+# Associate routing tables to private subnets
 resource "aws_route_table_association" "test_public_sn_rt_assn_02" {
-  subnet_id = aws_subnet.test_public_sn_02.id
-  route_table_id = aws_route_table.test_public_sn_rt_02.id
+  count = var.az_count
+  subnet_id = aws_subnet.private_sn.id
+  route_table_id = aws_route_table.private_rt.id
+}
+
+# NAT gateways
+resource "aws_nat_gateway" "nat_gate" {
+  count=var.az_count
+  allocation_id = aws_eip.nat_eip.id
+  subnet_id     = aws_subnet.public_sn.id
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+# NAT EIPs
+resource "aws_eip" "nat_eip" {
+  count =var.az_count
+  vpc = true
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 # ECS Instance Security group
-resource "aws_security_group" "test_public_sg" {
+resource "aws_security_group" "public_sg" {
   name = "test_public_sg"
   description = "Test public access security group"
   vpc_id = aws_vpc.test_vpc.id
@@ -131,5 +153,36 @@ resource "aws_security_group" "test_public_sg" {
 
   tags ={
     Name = "test_public_sg"
+  }
+}
+
+resource "aws_security_group" "alb_security" {
+  vpc_id = aws_vpc.test_vpc.id
+
+  ingress {
+    cidr_blocks = ["0.0.0.0/0"]
+    from_port   = 80
+    protocol    = "tcp"
+    to_port     = 80
+  }
+  ingress {
+    cidr_blocks = ["0.0.0.0/0"]
+    from_port   = 443
+    protocol    = "tcp"
+    to_port     = 443
+  }
+
+  ingress {
+    cidr_blocks = ["0.0.0.0/0"]
+    from_port   = -1
+    protocol    = "icmp"
+    to_port     = -1
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 }

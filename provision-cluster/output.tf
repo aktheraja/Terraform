@@ -7,15 +7,15 @@ output "test_vpc_id" {
 }
 
 output "test_public_sn_01_id" {
-  value = aws_subnet.test_public_sn_01.id
+  value = aws_subnet.public_sn.id
 }
 
 output "test_public_sn_02_id" {
-  value = aws_subnet.test_public_sn_02.id
+  value = aws_subnet.private_sn.id
 }
 
 output "test_public_sg_id" {
-  value = aws_security_group.test_public_sg.id
+  value = aws_security_group.public_sg.id
 }
 
 output "ecs-service-role-arn" {

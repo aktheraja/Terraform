@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4b6f48d6-8763-4452-812f-ad7cc2a2f1e8" name="Default Changelist" comment="ASG initial_lifecycle_hook's heartbeat_timeout value shortened to 3000 seconds and added default_action of CONTINUE">
+    <list default="true" id="4b6f48d6-8763-4452-812f-ad7cc2a2f1e8" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/provision-cluster/application-load-balancer.tf" beforeDir="false" afterPath="$PROJECT_DIR$/provision-cluster/application-load-balancer.tf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/provision-cluster/autoscaling-group.tf" beforeDir="false" afterPath="$PROJECT_DIR$/provision-cluster/autoscaling-group.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/provision-cluster/cluster.tf" beforeDir="false" afterPath="$PROJECT_DIR$/provision-cluster/cluster.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/provision-cluster/ecs-instance-role.tf" beforeDir="false" afterPath="$PROJECT_DIR$/provision-cluster/ecs-instance-role.tf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/provision-cluster/launch-configuration.tf" beforeDir="false" afterPath="$PROJECT_DIR$/provision-cluster/launch-configuration.tf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/provision-cluster/variables.tf" beforeDir="false" afterPath="$PROJECT_DIR$/provision-cluster/variables.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/provision-cluster/output.tf" beforeDir="false" afterPath="$PROJECT_DIR$/provision-cluster/output.tf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/provision-cluster/vpc.tf" beforeDir="false" afterPath="$PROJECT_DIR$/provision-cluster/vpc.tf" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -24,56 +25,70 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources.tf">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-355">
-              <caret line="255" column="17" selection-start-line="255" selection-start-column="14" selection-end-line="255" selection-end-column="17" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/provision-cluster/vpc.tf">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="249">
-              <caret line="50" column="9" lean-forward="true" selection-start-line="50" selection-start-column="9" selection-end-line="50" selection-end-column="9" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/provision-cluster/application-load-balancer.tf">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="442">
-              <caret line="44" lean-forward="true" selection-start-line="44" selection-end-line="44" />
+            <state relative-caret-position="-510">
+              <caret line="5" selection-start-line="5" selection-end-line="5" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/provision-cluster/autoscaling-group.tf">
+        <entry file="file://$PROJECT_DIR$/provision-cluster/cluster.tf">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="10" selection-start-line="10" selection-end-line="10" />
+            <state relative-caret-position="17">
+              <caret line="1" column="17" selection-start-line="1" selection-start-column="17" selection-end-line="1" selection-end-column="17" />
             </state>
           </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/provision-cluster/ecs-instance-role.tf">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="459">
+              <caret line="27" column="26" selection-start-line="27" selection-start-column="26" selection-end-line="27" selection-end-column="26" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/provision-cluster/ecs-service-role.tf">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/provision-cluster/launch-configuration.tf">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="9" column="34" lean-forward="true" selection-start-line="9" selection-start-column="34" selection-end-line="9" selection-end-column="34" />
+            <state relative-caret-position="374">
+              <caret line="22" selection-start-line="22" selection-end-line="22" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/provision-cluster/variables.tf">
+        <entry file="file://$PROJECT_DIR$/provision-cluster/application-load-balancer.tf">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-68">
-              <caret line="10" column="55" selection-start-line="10" selection-start-column="55" selection-end-line="10" selection-end-column="55" />
+            <state relative-caret-position="85">
+              <caret line="5" selection-start-line="5" selection-end-line="5" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/provision-cluster/output.tf">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="476">
+              <caret line="28" column="33" selection-start-line="28" selection-start-column="33" selection-end-line="28" selection-end-column="33" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/provision-cluster/provider.tf">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="34">
+              <caret line="2" column="16" selection-start-line="2" selection-start-column="16" selection-end-line="2" selection-end-column="16" />
             </state>
           </provider>
         </entry>
@@ -84,6 +99,10 @@
     <findStrings>
       <find>ami_key_pair_name</find>
       <find>aws_instance</find>
+      <find>route</find>
+      <find>nat</find>
+      <find>alb</find>
+      <find>auto</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -99,10 +118,14 @@
       <list>
         <option value="$USER_HOME$/Desktop/July_Terraform/main.tf" />
         <option value="$PROJECT_DIR$/resources.tf" />
-        <option value="$PROJECT_DIR$/provision-cluster/autoscaling-group.tf" />
-        <option value="$PROJECT_DIR$/provision-cluster/launch-configuration.tf" />
         <option value="$PROJECT_DIR$/provision-cluster/variables.tf" />
         <option value="$PROJECT_DIR$/provision-cluster/vpc.tf" />
+        <option value="$PROJECT_DIR$/provision-cluster/autoscaling-group.tf" />
+        <option value="$PROJECT_DIR$/provision-cluster/cluster.tf" />
+        <option value="$PROJECT_DIR$/provision-cluster/ecs-instance-role.tf" />
+        <option value="$PROJECT_DIR$/provision-cluster/launch-configuration.tf" />
+        <option value="$PROJECT_DIR$/provision-cluster/output.tf" />
+        <option value="$PROJECT_DIR$/provision-cluster/provider.tf" />
         <option value="$PROJECT_DIR$/provision-cluster/application-load-balancer.tf" />
       </list>
     </option>
@@ -113,12 +136,12 @@
     <option name="width" value="781" />
     <option name="height" value="728" />
   </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -135,6 +158,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
       <pane id="Scope" />
     </panes>
   </component>
@@ -142,6 +166,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="TF_FMT" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -180,14 +205,20 @@
       <option name="project" value="LOCAL" />
       <updated>1562104108637</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="modified setup of subnets">
+      <created>1562699826762</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1562699826762</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49814126" visible="true" weight="0.33585477" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49814126" visible="true" weight="0.34114978" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -195,7 +226,7 @@
       <window_info id="Capture Tool" order="5" />
       <window_info id="Favorites" order="6" sideWeight="0.5018587" side_tool="true" weight="0.2532027" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32843137" />
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
@@ -242,8 +273,12 @@
     </layout-to-restore>
   </component>
   <component name="VcsManagerConfiguration">
+    <ignored-roots>
+      <path value="$PROJECT_DIR$/provision-ecs-cluster-terraform" />
+    </ignored-roots>
     <MESSAGE value="Nikky: Working version" />
-    <option name="LAST_COMMIT_MESSAGE" value="Nikky: Working version" />
+    <MESSAGE value="modified setup of subnets" />
+    <option name="LAST_COMMIT_MESSAGE" value="modified setup of subnets" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$USER_HOME$/Desktop/July_Terraform/main.tf" />
@@ -253,17 +288,6 @@
     <entry file="file://$PROJECT_DIR$/connection.tf">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/provision-cluster/ecs-service-role.tf">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/provision-cluster/ecs-instance-role.tf">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-67" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/provision-cluster/cluster.tf">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/provision-cluster/variables.tf">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-68">
@@ -271,38 +295,69 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/provision-cluster/vpc.tf">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="249">
-          <caret line="50" column="9" lean-forward="true" selection-start-line="50" selection-start-column="9" selection-end-line="50" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources.tf">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-355">
-          <caret line="255" column="17" selection-start-line="255" selection-start-column="14" selection-end-line="255" selection-end-column="17" />
+        <state relative-caret-position="450">
+          <caret line="206" column="3" lean-forward="true" selection-start-line="192" selection-start-column="2" selection-end-line="206" selection-end-column="3" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/provision-cluster/autoscaling-group.tf">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
-          <caret line="10" selection-start-line="10" selection-end-line="10" />
+          <caret line="10" column="41" selection-start-line="10" selection-start-column="41" selection-end-line="10" selection-end-column="41" />
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/provision-cluster/cluster.tf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="17" selection-start-line="1" selection-start-column="17" selection-end-line="1" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/provision-cluster/ecs-instance-role.tf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="459">
+          <caret line="27" column="26" selection-start-line="27" selection-start-column="26" selection-end-line="27" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/provision-cluster/ecs-service-role.tf">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/provision-cluster/launch-configuration.tf">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="34" lean-forward="true" selection-start-line="9" selection-start-column="34" selection-end-line="9" selection-end-column="34" />
+        <state relative-caret-position="374">
+          <caret line="22" selection-start-line="22" selection-end-line="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/provision-cluster/output.tf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="476">
+          <caret line="28" column="33" selection-start-line="28" selection-start-column="33" selection-end-line="28" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/provision-cluster/provider.tf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="16" selection-start-line="2" selection-start-column="16" selection-end-line="2" selection-end-column="16" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/provision-cluster/application-load-balancer.tf">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="442">
-          <caret line="44" lean-forward="true" selection-start-line="44" selection-end-line="44" />
+        <state relative-caret-position="85">
+          <caret line="5" selection-start-line="5" selection-end-line="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/provision-cluster/vpc.tf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-510">
+          <caret line="5" selection-start-line="5" selection-end-line="5" />
         </state>
       </provider>
     </entry>
