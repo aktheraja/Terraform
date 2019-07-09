@@ -1,0 +1,128 @@
+resources:
+
+  # pect is an acronym for provision-ecs-cluster-terraform
+  - name: pect_repo
+    type: gitRepo
+    # Replace dr_github with your own GitHub or SCM integration
+    # http://docs.shippable.com/platform/integration/github
+    integration: dr_github
+    pointer:
+      # Replace devops-recipes/provision-ecs-cluster-terraform with your SCM
+      # repository
+      sourceName: "devops-recipes/provision-ecs-cluster-terraform"
+      branch: master
+
+  # AWS integration needed by Terraform
+  - name: pect_aws_keys
+    type: integration
+    # Replace dr_aws_keys with your own AWS Keys integration
+    # http://docs.shippable.com/platform/integration/aws-keys/
+    integration: dr_aws_keys
+    pointer:
+      # Replace us-east-1 with the region where you want to provision the VPC
+      region: us-east-1
+
+  # State resource to store Terraform State
+  - name: pect_net_tf_state
+    type: state
+
+  # VPC Creation Config
+  - name: pect_net_conf
+    type: params
+    version:
+      params:
+        # Configure these params based on your AWS Network configuration
+        ECS_CLUSTER: "sample-cluster"
+        ECS_KEY_PAIR_NAME: "ambarish-useast1"
+        REGION: "us-east-1"
+        TEST_VPC: "test_vpc"
+        TEST_NETWORK_CIDR: "210.0.0.0/16"
+        TEST_PUBLIC_01_CIDR: "210.0.0.0/24"
+        TEST_PUBLIC_02_CIDR: "210.0.10.0/24"
+        MAX_INSTANCE_SIZE: 3
+        MIN_INSTANCE_SIZE: 1
+        DESIRED_CAPACITY: 2
+
+  # Resource that stores the configuration of the resources created by Terraform
+  # that can be viewed in Shippable
+  - name: test_vpc_conf
+    type: params
+    version:
+      params:
+        SEED: "initial_version"
+
+
+jobs:
+  # Provision Network - AWS IAM role and VPC with TERRAFORM
+  - name: pect_provision_network
+    type: runSh
+    steps:
+      - IN: pect_net_tf_state
+      - IN: pect_net_conf
+      - IN: pect_aws_keys
+        switch: off
+      - IN: pect_repo
+        switch: off
+      - TASK:
+        - script: |
+            pushd $(shipctl get_resource_state "pect_repo")/provision-cluster
+              shipctl copy_file_from_resource_state pect_net_tf_state terraform.tfstate .
+              shipctl replace terraform.tfvars
+              cat terraform.tfvars
+              terraform plan
+              terraform apply || true
+              terraform apply || true
+            popd
+        - script: |
+            pushd $(shipctl get_resource_state "pect_repo")/provision-cluster
+              shipctl post_resource_state test_vpc_conf versionName "$JOB_NAME.$BUILD_NUMBER"
+              shipctl put_resource_state test_vpc_conf REGION $REGION
+              shipctl put_resource_state test_vpc_conf TEST_VPC_ID $(terraform output test_vpc_id)
+              shipctl put_resource_state test_vpc_conf TEST_PUBLIC_SG_ID $(terraform output test_public_sg_id)
+              shipctl put_resource_state test_vpc_conf TEST_PUBLIC_SN_01_ID $(terraform output test_public_sn_01_id)
+              shipctl put_resource_state test_vpc_conf TEST_PUBLIC_SN_02_ID $(terraform output test_public_sn_02_id)
+            popd
+      - OUT: test_vpc_conf
+      - OUT: pect_net_tf_state
+    on_success:
+      - script: echo "SUCCESS"
+    on_failure:
+      - script: echo "FAILURE"
+    always:
+      - script: |
+          pushd $(shipctl get_resource_state "pect_repo")/provision-cluster
+            shipctl copy_file_to_resource_state terraform.tfstate pect_net_tf_state
+          popd
+
+  # Deprovision Network - deprovision AWS IAM role and vpc with TERRAFORM
+  - name: pect_deprovision_network
+    type: runSh
+    steps:
+      - IN: pect_provision_network
+        switch: off
+      - IN: pect_net_tf_state
+        switch: off
+      - IN: pect_net_conf
+        switch: off
+      - IN: pect_aws_keys
+        switch: off
+      - IN: pect_repo
+        switch: off
+      - TASK:
+        - script: |
+            pushd $(shipctl get_resource_state "pect_repo")/provision-cluster
+              shipctl copy_file_from_resource_state pect_net_tf_state terraform.tfstate .
+              shipctl replace terraform.tfvars
+              terraform destroy -force
+            popd
+      - OUT: test_vpc_conf
+      - OUT: pect_net_tf_state
+    on_success:
+      - script: echo "SUCCESS"
+    on_failure:
+      - script: echo "FAILURE"
+    always:
+      - script: |
+          pushd $(shipctl get_resource_state "pect_repo")/provision-cluster
+            shipctl copy_file_to_resource_state terraform.tfstate pect_net_tf_state
+          popd
