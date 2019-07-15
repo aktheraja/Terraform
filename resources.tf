@@ -256,6 +256,7 @@ Resources:
           - ScheduledActions
         WaitOnResourceSignals: true
     DeletionPolicy: Retain
+    TargetGroupARNs:${aws_alb_target_group.alb_target_group_1.arn}
   EOF
 }
 
@@ -304,12 +305,12 @@ resource "aws_alb_target_group" "alb_target_group_1" {
   }
 
 }
-
+/*
 resource "aws_autoscaling_attachment" "alb_autoscale" {
   alb_target_group_arn   = aws_alb_target_group.alb_target_group_1.arn
   autoscaling_group_name = aws_cloudformation_stack.autoscaling_group.id
 }
-
+*/
 
 
 resource "aws_alb" "alb" {
