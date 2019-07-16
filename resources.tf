@@ -1,4 +1,7 @@
 resource "aws_vpc" "vpc_environment" {
+  tags = {
+    name="VPC-Craig"
+  }
   cidr_block           = "10.0.0.0/16"
   enable_dns_hostnames = true
   enable_dns_support   = true
@@ -9,12 +12,18 @@ resource "aws_subnet" "public_subnet1" {
   vpc_id                  = aws_vpc.vpc_environment.id
   availability_zone       = "us-west-2c"
   map_public_ip_on_launch = true
+  tags = {
+    name="PubSub1"
+  }
 }
 
 resource "aws_subnet" "private_subnet1" {
   cidr_block        = cidrsubnet(aws_vpc.vpc_environment.cidr_block, 4, 2)
   vpc_id            = aws_vpc.vpc_environment.id
   availability_zone = "us-west-2c"
+  tags = {
+    name="PriSub1"
+  }
 }
 
 resource "aws_subnet" "public_subnet2" {
@@ -22,12 +31,18 @@ resource "aws_subnet" "public_subnet2" {
   vpc_id                  = aws_vpc.vpc_environment.id
   availability_zone       = "us-west-2b"
   map_public_ip_on_launch = true
+  tags = {
+    name="PubSub2"
+  }
 }
 
 resource "aws_subnet" "private_subnet2" {
   cidr_block        = cidrsubnet(aws_vpc.vpc_environment.cidr_block, 4, 4)
   vpc_id            = aws_vpc.vpc_environment.id
   availability_zone = "us-west-2b"
+  tags = {
+    name="PriSub2"
+  }
 }
 
 resource "aws_security_group" "private_subnesecurity" {
@@ -109,7 +124,7 @@ resource "aws_route_table" "route-public" {
   }
 
   tags = {
-    Name = "vpc Routing Table"
+    Name = "Craig's VPC Routing Table"
   }
 }
 
@@ -123,7 +138,7 @@ resource "aws_route_table" "route-private1" {
   }
 
   tags = {
-    Name = "Private Subnet 1 Routing Table"
+    Name = "Craig's Private Subnet 1 Routing Table"
   }
 }
 
@@ -137,7 +152,7 @@ resource "aws_route_table" "route-private2" {
   }
 
   tags = {
-    Name = "Private Subnet 2 Routing Table"
+    Name = "Craig's Private Subnet 2 Routing Table"
   }
 }
 
@@ -156,16 +171,17 @@ resource "aws_route_table_association" "subnet2_table_assoc" {
 }
 
 resource "aws_launch_configuration" "autoscale_launch_config" {
-  name_prefix          = "autoscale_launcher-Akin"
+  name_prefix          = "autoscale_launcher-craig"
   image_id        = "ami-07669fc90e6e6cc47"
-  instance_type   = "t2.nano"
+  instance_type   = "t2.micro"
 //  key_name        = var.ami_key_pair_name
   security_groups = [aws_security_group.security.id]
   enable_monitoring = true
   user_data = file(
-    "C:/Users/Default.Default-PC/Downloads/install_apache_server.sh"
+    "C:/Users/Default.Default-PC/Downloads/Codedeploywithtest.sh"
   )
   lifecycle {create_before_destroy = true}
+
 }
 /*
 resource "aws_autoscaling_group" "autoscale_group_1" {
@@ -217,14 +233,16 @@ resource "aws_autoscaling_policy" "web_policy_up" {
 }
 */
 resource "aws_cloudformation_stack" "autoscaling_group" {
-  name = "asg"
-
+  name = "asg-Craig-3"
+  depends_on = [aws_alb_target_group.alb_target_group_1]
   template_body = <<EOF
 Description: ""
 Resources:
   ASG:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
+      TargetGroupARNs:
+      - "${aws_alb_target_group.alb_target_group_1.arn}"
       VPCZoneIdentifier: ["${aws_subnet.private_subnet2.id}","${aws_subnet.private_subnet1.id}"]
       AvailabilityZones: ["us-west-2c","us-west-2b"]
       LaunchConfigurationName: "${aws_launch_configuration.autoscale_launch_config.name}"
@@ -235,10 +253,10 @@ Resources:
 
     CreationPolicy:
       AutoScalingCreationPolicy:
-        MinSuccessfulInstancesPercent: 80
+        MinSuccessfulInstancesPercent: 20
       ResourceSignal:
-        Count: 3
-        Timeout: PT10M
+        Count: 1
+        Timeout: PT5M
     UpdatePolicy:
     # Ignore differences in group size properties caused by scheduled actions
       AutoScalingScheduledAction:
@@ -256,7 +274,7 @@ Resources:
           - ScheduledActions
         WaitOnResourceSignals: true
     DeletionPolicy: Retain
-    TargetGroupARNs:${aws_alb_target_group.alb_target_group_1.arn}
+
   EOF
 }
 
@@ -280,7 +298,7 @@ Resources:
 //}
 
 resource "aws_alb_target_group" "alb_target_group_1" {
-  name     = "alb-target-group2"
+  name     = "alb-target-group-craig"
   port     = "80"
   protocol = "HTTP"
   vpc_id   = aws_vpc.vpc_environment.id
@@ -314,7 +332,7 @@ resource "aws_autoscaling_attachment" "alb_autoscale" {
 
 
 resource "aws_alb" "alb" {
-  name = "alb-Akin"
+  name = "alb-Craig"
   subnets = [
     aws_subnet.public_subnet1.id,
     aws_subnet.public_subnet2.id]
@@ -323,7 +341,7 @@ resource "aws_alb" "alb" {
   internal = false
   idle_timeout = 60
   tags = {
-    Name = "alb2"
+    Name = "alb-Craig"
   }
 }
 
@@ -346,6 +364,9 @@ resource "aws_nat_gateway" "nat_2gate" {
   lifecycle {
     create_before_destroy = true
   }
+  tags={
+    name="Craig's NATgate 1"
+  }
 }
 
 resource "aws_nat_gateway" "nat_1gate" {
@@ -354,6 +375,10 @@ resource "aws_nat_gateway" "nat_1gate" {
   subnet_id     = aws_subnet.public_subnet1.id
   lifecycle {
     create_before_destroy = true
+  }
+
+  tags={
+    name="Craig's NATgate 2"
   }
 }
 
@@ -384,6 +409,9 @@ resource "aws_route_table" "routtable1" {
   lifecycle {
     create_before_destroy = true
   }
+  tags={
+    name="Craig's private RT1"
+  }
 }
 resource "aws_route_table" "routtable2" {
 
@@ -397,6 +425,9 @@ resource "aws_route_table" "routtable2" {
 
   lifecycle {
     create_before_destroy = true
+  }
+  tags={
+    name="Craig's private RT2"
   }
 }
 /*
