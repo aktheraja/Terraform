@@ -154,10 +154,13 @@ resource "aws_route_table_association" "subnet2_table_assoc" {
   subnet_id      = aws_subnet.private_subnet2.id
   route_table_id = aws_route_table.route-private2.id
 }
+variable "ami" {
 
+  default = "ami-07669fc90e6e6cc47"
+}
 resource "aws_launch_configuration" "autoscale_launch_config" {
   name_prefix          = "autoscale_launcher-Craig-"
-  image_id        = "ami-07669fc90e6e6cc47"
+  image_id        = var.ami
   instance_type   = "t2.nano"
 //  key_name        = var.ami_key_pair_name
   security_groups = [aws_security_group.security.id]
@@ -168,27 +171,53 @@ resource "aws_launch_configuration" "autoscale_launch_config" {
   lifecycle {create_before_destroy = true}
 }
 
+variable "min_asg" {
+  default = 2
+}
+
+variable "des_asg" {
+  default = 3
+}
+
+variable "max_asg" {
+  default = 5
+}
+
+
+variable "min_asg2" {
+  default = 0
+}
+
+variable "des_asg2" {
+  default = 0
+}
+
+variable "max_asg2" {
+  default = 0
+}
+
 resource "aws_autoscaling_group" "autoscale_group_1" {
   name="asg-${aws_launch_configuration.autoscale_launch_config.name}"
   launch_configuration = aws_launch_configuration.autoscale_launch_config.id
   vpc_zone_identifier  = [aws_subnet.private_subnet2.id, aws_subnet.private_subnet1.id]
+  /*
+    initial_lifecycle_hook {
+      lifecycle_transition = "autoscaling:EC2_INSTANCE_TERMINATING"
+      heartbeat_timeout = 7200
 
-  initial_lifecycle_hook {
-    lifecycle_transition = "autoscaling:EC2_INSTANCE_TERMINATING"
-    heartbeat_timeout = 7200
-
-    name = "delay"
-  }
-  min_size = 2
-  max_size = 5
-  desired_capacity = 3
+      name = "delay"
+    }*/
+  min_size = var.min_asg
+  max_size = var.max_asg
+  desired_capacity = var.des_asg
   wait_for_elb_capacity = 3
 
   tag {
     key                 = "Name"
-    value               = "auto_scale"
+    value               = "auto_scale-Craig"
     propagate_at_launch = true
   }
+  depends_on = [aws_alb.alb]
   health_check_grace_period = 200
   health_check_type = "ELB"
   //load_balancers = [aws_alb.alb.name]
@@ -201,7 +230,9 @@ resource "aws_autoscaling_group" "autoscale_group_1" {
     "GroupTotalInstances"
   ]
   metrics_granularity="1Minute"
-
+/*provisioner "local-exec" {
+  command = "check_health.sh ${aws_alb.alb.dns_name}"
+}*/
 }
 
 
@@ -212,6 +243,7 @@ resource "aws_autoscaling_policy" "web_policy_up" {
   cooldown = 300
   autoscaling_group_name = "${aws_autoscaling_group.autoscale_group_1.name}"
 //  autoscaling_group_name = "${aws_autoscaling_group.web.name}"
+  lifecycle {create_before_destroy = true}
 }
 
 resource "aws_cloudwatch_metric_alarm" "web_cpu_alarm_up" {
@@ -223,7 +255,7 @@ resource "aws_cloudwatch_metric_alarm" "web_cpu_alarm_up" {
   period = "120"
   statistic = "Average"
   threshold = "60"
-
+  lifecycle {create_before_destroy = true}
   dimensions = {
     AutoScalingGroupName = "${aws_autoscaling_group.autoscale_group_1.name}"
 //    "${aws_autoscaling_group.web.name}"
@@ -234,7 +266,7 @@ resource "aws_cloudwatch_metric_alarm" "web_cpu_alarm_up" {
 }
 
 resource "aws_alb_target_group" "alb_target_group_1" {
-  name     = "alb-target-group2"
+  name_prefix    = "targp-"
   port     = "80"
   protocol = "HTTP"
   vpc_id   = aws_vpc.vpc_environment.id
@@ -257,16 +289,18 @@ resource "aws_alb_target_group" "alb_target_group_1" {
     path                = "/"
     port                = 80
   }
-
+  lifecycle {create_before_destroy = true}
 }
 
 resource "aws_autoscaling_attachment" "alb_autoscale" {
   alb_target_group_arn   = aws_alb_target_group.alb_target_group_1.arn
   autoscaling_group_name = aws_autoscaling_group.autoscale_group_1.id
+  lifecycle {create_before_destroy = true}
+
 }
 
 resource "aws_alb" "alb" {
-  name = "alb-Craig"
+  name_prefix = "lbCrg-"
   subnets = [
     aws_subnet.public_subnet1.id,
     aws_subnet.public_subnet2.id]
@@ -277,6 +311,7 @@ resource "aws_alb" "alb" {
   tags = {
     Name = "alb2"
   }
+  lifecycle {create_before_destroy = true}
 }
 
 resource "aws_alb_listener" "alb_listener" {
@@ -287,6 +322,7 @@ resource "aws_alb_listener" "alb_listener" {
     target_group_arn = aws_alb_target_group.alb_target_group_1.arn
     type             = "forward"
   }
+  lifecycle {create_before_destroy = true}
 }
 
 
