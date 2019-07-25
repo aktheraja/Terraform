@@ -171,6 +171,7 @@ resource "aws_launch_configuration" "autoscale_launch_config" {
   lifecycle {create_before_destroy = true}
 }
 
+
 variable "min_asg" {
   default = 2
 }
@@ -217,25 +218,40 @@ resource "aws_autoscaling_group" "autoscale_group_1" {
     value               = "auto_scale-Craig"
     propagate_at_launch = true
   }
-  depends_on = [aws_alb.alb]
+
   health_check_grace_period = 200
   health_check_type = "ELB"
   //load_balancers = [aws_alb.alb.name]
   lifecycle {create_before_destroy = true}
   enabled_metrics = [
-    "GroupMinSize",
-    "GroupMaxSize",
-    "GroupDesiredCapacity",
+
     "GroupInServiceInstances",
     "GroupTotalInstances"
+
   ]
+  //depends_on = [data.aws_autoscaling_group.autoscale_group_1]
   metrics_granularity="1Minute"
-/*provisioner "local-exec" {
-  command = "check_health.sh ${aws_alb.alb.dns_name}"
-}*/
+provisioner "local-exec" {
+  command = "check_health.sh ${aws_alb.alb.dns_name} asg-autoscale_launcher-Craig-20190724010048552300000001 aws_alb_target_group.alb_target_group_1.arn"
+}
 }
 
+data "aws_autoscaling_group" "autoscale_group_1" {
+  name = aws_autoscaling_group.autoscale_group_1.name
+}
+output "autoscalingname" {
+  value = [data.aws_autoscaling_group.autoscale_group_1.name, aws_alb_target_group.alb_target_group_1.arn, aws_autoscaling_group.autoscale_group_1.id]
 
+}
+//data "terraform_remote_state" "vpc" {
+//  backend = "local"
+//}
+
+  locals {
+  ASGname=aws_autoscaling_group.autoscale_group_1.name
+}
+
+/*
 resource "aws_autoscaling_policy" "web_policy_up" {
   name = "web_policy_up"
   scaling_adjustment = 1
@@ -245,7 +261,6 @@ resource "aws_autoscaling_policy" "web_policy_up" {
 //  autoscaling_group_name = "${aws_autoscaling_group.web.name}"
   lifecycle {create_before_destroy = true}
 }
-
 resource "aws_cloudwatch_metric_alarm" "web_cpu_alarm_up" {
   alarm_name = "web_cpu_alarm_up"
   comparison_operator = "GreaterThanOrEqualToThreshold"
@@ -262,14 +277,15 @@ resource "aws_cloudwatch_metric_alarm" "web_cpu_alarm_up" {
   }
 
   alarm_description = "This metric monitor EC2 instance CPU utilization"
-  alarm_actions = ["${aws_autoscaling_policy.web_policy_up.arn}"]
+ // alarm_actions = ["${aws_autoscaling_policy.web_policy_up.arn}"]
 }
-
+*/
 resource "aws_alb_target_group" "alb_target_group_1" {
   name_prefix    = "targp-"
   port     = "80"
   protocol = "HTTP"
   vpc_id   = aws_vpc.vpc_environment.id
+
 
   tags = {
     name = "alb_target_group2"
@@ -279,23 +295,27 @@ resource "aws_alb_target_group" "alb_target_group_1" {
     cookie_duration = 1800
     enabled         = true
   }
-  //slow_start = 120
-  deregistration_delay = 120
+  slow_start = 0
+  deregistration_delay = 30
   health_check {
     healthy_threshold   = 3
     unhealthy_threshold = 3
     timeout             = 2
-    interval            = 5
+    interval            = 15
     path                = "/"
     port                = 80
   }
   lifecycle {create_before_destroy = true}
+
 }
 
 resource "aws_autoscaling_attachment" "alb_autoscale" {
   alb_target_group_arn   = aws_alb_target_group.alb_target_group_1.arn
   autoscaling_group_name = aws_autoscaling_group.autoscale_group_1.id
   lifecycle {create_before_destroy = true}
+  provisioner "local-exec" {
+    command = "attchmnt_checkhealth.sh asg-autoscale_launcher-Craig-20190725064518336300000001 ${aws_alb_target_group.alb_target_group_1.arn}"
+  }
 
 }
 
@@ -307,7 +327,8 @@ resource "aws_alb" "alb" {
   security_groups = [
     aws_security_group.security.id]
   internal = false
-  idle_timeout = 60
+
+  idle_timeout = 2
   tags = {
     Name = "alb2"
   }
