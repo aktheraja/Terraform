@@ -20,6 +20,7 @@ do
     #aws autoscaling detach-load-balancer-target-groups --auto-scaling-group-name $2 --target-group-arns $3
     #sleep 10
     #"$(date -u)finished detaching from old ASG"
+    echo $2 > 'Users/Name/Desktop/TheAccount.txt'
     exit 0
   else
     if [ $fail_count -eq 101 ]; then

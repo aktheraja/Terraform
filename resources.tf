@@ -232,12 +232,14 @@ resource "aws_autoscaling_group" "autoscale_group_1" {
   //depends_on = [data.aws_autoscaling_group.autoscale_group_1]
   metrics_granularity="1Minute"
 provisioner "local-exec" {
-  command = "check_health.sh ${aws_alb.alb.dns_name} asg-autoscale_launcher-Craig-20190724010048552300000001 aws_alb_target_group.alb_target_group_1.arn"
+  command = "sleep 30"
+  //"check_health.sh ${aws_alb.alb.dns_name} ${self.name}"
 }
 }
 
 data "aws_autoscaling_group" "autoscale_group_1" {
   name = aws_autoscaling_group.autoscale_group_1.name
+
 }
 output "autoscalingname" {
   value = [data.aws_autoscaling_group.autoscale_group_1.name, aws_alb_target_group.alb_target_group_1.arn, aws_autoscaling_group.autoscale_group_1.id]
@@ -247,9 +249,7 @@ output "autoscalingname" {
 //  backend = "local"
 //}
 
-  locals {
-  ASGname=aws_autoscaling_group.autoscale_group_1.name
-}
+
 
 /*
 resource "aws_autoscaling_policy" "web_policy_up" {
@@ -296,7 +296,7 @@ resource "aws_alb_target_group" "alb_target_group_1" {
     enabled         = true
   }
   slow_start = 0
-  deregistration_delay = 30
+  deregistration_delay = 10
   health_check {
     healthy_threshold   = 3
     unhealthy_threshold = 3
@@ -313,10 +313,7 @@ resource "aws_autoscaling_attachment" "alb_autoscale" {
   alb_target_group_arn   = aws_alb_target_group.alb_target_group_1.arn
   autoscaling_group_name = aws_autoscaling_group.autoscale_group_1.id
   lifecycle {create_before_destroy = true}
-  provisioner "local-exec" {
-    command = "attchmnt_checkhealth.sh asg-autoscale_launcher-Craig-20190725064518336300000001 ${aws_alb_target_group.alb_target_group_1.arn}"
-  }
-
+  depends_on = [null_resource.destroy_provisioning]
 }
 
 resource "aws_alb" "alb" {
@@ -345,8 +342,32 @@ resource "aws_alb_listener" "alb_listener" {
   }
   lifecycle {create_before_destroy = true}
 }
+resource "null_resource" "destroy_provisioning" {
 
 
+  provisioner "local-exec" {
+    when    = "destroy"
+    command = "sleep 45"
+
+  }
+}
+resource "null_resource" "my_instance_provisioning" {
+  triggers = {
+    cluster_instance_ids = join(",", [aws_autoscaling_attachment.alb_autoscale.id, "0"])
+  }
+depends_on = [aws_autoscaling_attachment.alb_autoscale, aws_autoscaling_group.autoscale_group_1]
+  provisioner "local-exec" {
+    when    = "destroy"
+    command = "sleep 45"
+
+  }
+  provisioner "local-exec" {
+
+    command = "sleep 25"
+    //"attchmnt_checkhealth.sh asg-autoscale_launcher-Craig-20190725173719119600000001 ${aws_alb_target_group.alb_target_group_1.arn}"
+  }
+  lifecycle {create_before_destroy = true}
+}
 
 
 resource "aws_nat_gateway" "nat_2gate" {
