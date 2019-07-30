@@ -313,7 +313,7 @@ resource "aws_autoscaling_attachment" "alb_autoscale" {
   alb_target_group_arn   = aws_alb_target_group.alb_target_group_1.arn
   autoscaling_group_name = aws_autoscaling_group.autoscale_group_1.id
   lifecycle {create_before_destroy = true}
-  depends_on = [null_resource.destroy_provisioning]
+
 }
 
 resource "aws_alb" "alb" {
@@ -342,33 +342,29 @@ resource "aws_alb_listener" "alb_listener" {
   }
   lifecycle {create_before_destroy = true}
 }
-resource "null_resource" "destroy_provisioning" {
-
-
-  provisioner "local-exec" {
-    when    = "destroy"
-    command = "sleep 45"
-
-  }
-}
-resource "null_resource" "my_instance_provisioning" {
-  triggers = {
-    cluster_instance_ids = join(",", [aws_autoscaling_attachment.alb_autoscale.id, "0"])
-  }
-depends_on = [aws_autoscaling_attachment.alb_autoscale, aws_autoscaling_group.autoscale_group_1]
-  provisioner "local-exec" {
-    when    = "destroy"
-    command = "sleep 45"
-
-  }
-  provisioner "local-exec" {
-
-    command = "sleep 25"
-    //"attchmnt_checkhealth.sh asg-autoscale_launcher-Craig-20190725173719119600000001 ${aws_alb_target_group.alb_target_group_1.arn}"
-  }
-  lifecycle {create_before_destroy = true}
-}
-
+//resource "null_resource" "destroy_provisioning" {
+//
+//
+//  provisioner "local-exec" {
+//    when    = "destroy"
+//    command = "sleep 45"
+//  }
+//  lifecycle {create_before_destroy = true}
+//}
+//resource "null_resource" "my_instance_provisioning" {
+//  triggers = {
+//    cluster_instance_ids = join(",", [aws_autoscaling_attachment.alb_autoscale.id, "0"])
+//  }
+//depends_on = [aws_autoscaling_attachment.alb_autoscale, aws_autoscaling_group.autoscale_group_1]
+//
+//  provisioner "local-exec" {
+//
+//    command = "sleep 25"
+//    //"attchmnt_checkhealth.sh asg-autoscale_launcher-Craig-20190725173719119600000001 ${aws_alb_target_group.alb_target_group_1.arn}"
+//  }
+//  lifecycle {create_before_destroy = true}
+//}
+//
 
 resource "aws_nat_gateway" "nat_2gate" {
   allocation_id = aws_eip.nat_eip2.id
