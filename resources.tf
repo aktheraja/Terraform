@@ -166,7 +166,7 @@ resource "aws_launch_configuration" "autoscale_launch_config" {
   security_groups = [aws_security_group.security.id]
   enable_monitoring = true
   user_data = file(
-    "C:/Users/Default.Default-PC/Downloads/install_apache_server.sh"
+    "C:/Users/Default.Default-PC/Downloads/install_apache_server2.sh"
   )
   lifecycle {create_before_destroy = true}
 }
@@ -201,13 +201,7 @@ resource "aws_autoscaling_group" "autoscale_group_1" {
   name="asg-${aws_launch_configuration.autoscale_launch_config.name}"
   launch_configuration = aws_launch_configuration.autoscale_launch_config.id
   vpc_zone_identifier  = [aws_subnet.private_subnet2.id, aws_subnet.private_subnet1.id]
-  /*
-    initial_lifecycle_hook {
-      lifecycle_transition = "autoscaling:EC2_INSTANCE_TERMINATING"
-      heartbeat_timeout = 7200
 
-      name = "delay"
-    }*/
   min_size = var.min_asg
   max_size = var.max_asg
   desired_capacity = var.des_asg
@@ -232,24 +226,21 @@ resource "aws_autoscaling_group" "autoscale_group_1" {
   //depends_on = [data.aws_autoscaling_group.autoscale_group_1]
   metrics_granularity="1Minute"
 provisioner "local-exec" {
-  command = "check_health.sh ${aws_alb.alb.dns_name} asg-autoscale_launcher-Craig-20190724010048552300000001 aws_alb_target_group.alb_target_group_1.arn"
+  command = "check_health.sh ${aws_alb.alb.dns_name} ${self.name}"
 }
 }
+
 
 data "aws_autoscaling_group" "autoscale_group_1" {
   name = aws_autoscaling_group.autoscale_group_1.name
+
 }
 output "autoscalingname" {
-  value = [data.aws_autoscaling_group.autoscale_group_1.name, aws_alb_target_group.alb_target_group_1.arn, aws_autoscaling_group.autoscale_group_1.id]
+  value = [data.aws_autoscaling_group.autoscale_group_1.name, aws_alb_target_group.alb_target_group_1.arn]
 
 }
-//data "terraform_remote_state" "vpc" {
-//  backend = "local"
-//}
 
-  locals {
-  ASGname=aws_autoscaling_group.autoscale_group_1.name
-}
+
 
 /*
 resource "aws_autoscaling_policy" "web_policy_up" {
@@ -314,9 +305,9 @@ resource "aws_autoscaling_attachment" "alb_autoscale" {
   autoscaling_group_name = aws_autoscaling_group.autoscale_group_1.id
   lifecycle {create_before_destroy = true}
   provisioner "local-exec" {
-    command = "attchmnt_checkhealth.sh asg-autoscale_launcher-Craig-20190725064518336300000001 ${aws_alb_target_group.alb_target_group_1.arn}"
+    command = "attchmnt_checkhealth.sh asg-autoscale_launcher-Craig-20190730161556942200000001 ${aws_alb_target_group.alb_target_group_1.arn}"
   }
-
+//${file("C:/Users/Default.Default-PC/Dropbox/Pason/Terraform/ASGName.txt")}
 }
 
 resource "aws_alb" "alb" {

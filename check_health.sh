@@ -14,7 +14,8 @@ do
 
     echo "$(date -u) Waiting for new ASG to be created"
     sleep 180
-    #aws autoscaling update-auto-scaling-group --auto-scaling-group-name $2 --min-size 0 --max-size 0 --min-size 0 --desired-capacity 0
+
+
     #echo "$(date -u)finished setting old ASG to zero"
     #sleep 10
     #aws autoscaling detach-load-balancer-target-groups --auto-scaling-group-name $2 --target-group-arns $3
