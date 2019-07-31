@@ -1,19 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4b6f48d6-8763-4452-812f-ad7cc2a2f1e8" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/alb.tf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/autoscalinggroup.tf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/eip.tf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nat.tf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/routetable.tf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/securitygroup.tf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/subnets.tf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/variables.tf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vpc.tf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources.tf" beforeDir="false" />
-    </list>
+    <list default="true" id="4b6f48d6-8763-4452-812f-ad7cc2a2f1e8" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -173,7 +161,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
+  <component name="ProjectFrameBounds" fullScreen="true">
     <option name="x" value="31" />
     <option name="y" value="23" />
     <option name="width" value="1440" />
@@ -268,14 +256,20 @@
       <option name="project" value="LOCAL" />
       <updated>1564600835747</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="better formatted, dynamically partitions the things">
+      <created>1564604124342</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1564604124342</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="31" y="23" width="1440" height="788" extended-state="0" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4965278" visible="true" weight="0.14878398" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4965278" visible="true" weight="0.14878398" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -289,7 +283,7 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Terminal" order="7" visible="true" weight="0.41379312" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="7" visible="true" weight="0.41379312" />
       <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="9" weight="0.32843137" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
