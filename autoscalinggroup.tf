@@ -26,10 +26,9 @@ resource "aws_autoscaling_group" "autoscale_group_1" {
 
   tag {
     key                 = "Name"
-    value               = "auto_scale-Nikky"
+    value               = "auto_scale-Nikky${count.index}"
     propagate_at_launch = true
   }
-
   health_check_grace_period = 200
   health_check_type = "ELB"
   //load_balancers = [aws_alb.alb.name]
@@ -46,7 +45,6 @@ resource "aws_autoscaling_group" "autoscale_group_1" {
     command = "check_health.sh ${aws_alb.alb.dns_name} asg-autoscale_launcher-nikky-20190731200646732400000001 aws_alb_target_group.alb_target_group_1.arn"
   }
 }
-
 locals {
   ASGname=aws_autoscaling_group.autoscale_group_1.*.name
 }
