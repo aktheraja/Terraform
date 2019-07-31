@@ -1,0 +1,13 @@
+# pack-refs with: peeled fully-peeled sorted 
+63e7fe84ebfbf756f615dde913d7e8009af640f3 refs/heads/CodeDeployWorking
+4671472c3042eb9f1bd9dca857f4f3fc151c764a refs/heads/ECSExample
+2ab279c27729b361cae8d5c48cf6bf1c4bebb9a5 refs/heads/ECSWithEC2
+657dd769588116c74be50e9c74389091295299e8 refs/heads/Version-2
+6caee4891cb6567ee1c01c65995fca0131be1b9c refs/heads/WorkingBranch4
+c0eedf3c610a9b26c487b32aa9879d9cf753fd5a refs/heads/beautiful_Terraform
+ed543722e9c7cdd72ed0bee6943964a5c9a26c78 refs/heads/cloudformation
+b66ce62e8ebbed0a6cef3760dd13b16b6effa511 refs/heads/master
+3a0621e354a43aa5fcb7e30bb95aed0a965cd2ee refs/heads/version3
+43f89c1f356c1e291534ac7710e2c7953ede64f1 refs/heads/workingversion5
+3a0621e354a43aa5fcb7e30bb95aed0a965cd2ee refs/pull/1/head
+24ca87c6b93231067131679eaa27df8a068c0cf2 refs/pull/1/merge
