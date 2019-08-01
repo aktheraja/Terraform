@@ -1,5 +1,5 @@
 resource "aws_alb" "alb" {
-  name_prefix = "lbCrg-"
+  name_prefix = "lbNik-"
   subnets =aws_subnet.public_subnet.*.id
   security_groups = [
     aws_security_group.security.id]

@@ -15,24 +15,7 @@ resource "aws_route_table" "route-public" {
   }
 }
 
-resource "aws_main_route_table_association" "main_table_assoc" {
-  vpc_id         = aws_vpc.vpc_environment.id
-  route_table_id = aws_route_table.route-public.id
-}
-
-resource "aws_route_table_association" "subnet1_table_assoc" {
-  count = length(split(",",var.availability_zones))
-  subnet_id      = aws_subnet.public_subnet.*.id[count.index]
-  route_table_id = aws_route_table.route-public.id
-}
-
-resource "aws_route_table_association" "private" {
-  count          = length(split(",", var.availability_zones))
-  subnet_id      = aws_subnet.private_subnet.*.id[count.index]
-  route_table_id = aws_route_table.route-private1.*.id[count.index]
-}
-
-resource "aws_route_table" "route-private1" {
+resource "aws_route_table" "route-private" {
   count = length(split(",", var.availability_zones))
   vpc_id = aws_vpc.vpc_environment.id
   route {
@@ -41,6 +24,24 @@ resource "aws_route_table" "route-private1" {
   }
 
   tags = {
-    Name = "Private Subnet 1 Routing Table"
+    Name = "Private Subnet Routing Table"
   }
 }
+
+resource "aws_main_route_table_association" "main_table_assoc" {
+  vpc_id         = aws_vpc.vpc_environment.id
+  route_table_id = aws_route_table.route-public.id
+}
+
+resource "aws_route_table_association" "public" {
+  count = length(split(",",var.availability_zones))
+  subnet_id      = aws_subnet.public_subnet.*.id[count.index]
+  route_table_id = aws_route_table.route-public.id
+}
+
+resource "aws_route_table_association" "private" {
+  count          = length(split(",", var.availability_zones))
+  subnet_id      = aws_subnet.private_subnet.*.id[count.index]
+  route_table_id = aws_route_table.route-private.*.id[count.index]
+}
+
