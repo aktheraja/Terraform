@@ -1,6 +1,7 @@
 
 variable "availability_zones" {
   description = "A comma-delimited list of availability zones for the VPC."
+  default = "us-west-2a,us-west-2b"
 }
 variable "ami_key_pair_name" {
   default = "MyKP"

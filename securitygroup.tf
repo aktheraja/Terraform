@@ -1,20 +1,19 @@
 resource "aws_security_group" "private_subnesecurity" {
   vpc_id = aws_vpc.vpc_environment.id
-  count = length(split(",",var.availability_zones))
   ingress {
-    cidr_blocks = [aws_subnet.private_subnet[count.index].cidr_block]
+    cidr_blocks = ["0.0.0.0/0"]
     from_port   = 80
     protocol    = "tcp"
     to_port     = 80
   }
   ingress {
-    cidr_blocks = [aws_subnet.private_subnet[count.index].cidr_block]
+    cidr_blocks = ["0.0.0.0/0"]
     from_port   = 22
     protocol    = "tcp"
     to_port     = 22
   }
   ingress {
-    cidr_blocks = [aws_subnet.private_subnet[count.index].cidr_block]
+    cidr_blocks = ["0.0.0.0/0"]
     from_port   = -1
     protocol    = "icmp"
     to_port     = -1

@@ -2,8 +2,9 @@ resource "aws_launch_configuration" "autoscale_launch_config" {
   name_prefix          = "autoscale_launcher-nikky-"
   image_id        = var.ami
   instance_type   = "t2.nano"
+//  count = length(split(",",var.availability_zones))
   //  key_name        = var.ami_key_pair_name
-  security_groups = [aws_security_group.security.id]
+  security_groups = [aws_security_group.private_subnesecurity.id]
   enable_monitoring = true
   user_data = file(
   "/Users/yujiacui/Desktop/install_apache_server.sh"
@@ -14,6 +15,7 @@ resource "aws_launch_configuration" "autoscale_launch_config" {
 
 resource "aws_autoscaling_group" "autoscale_group_1" {
   name_prefix="asg-${aws_launch_configuration.autoscale_launch_config.name}"
+//  count = length(split(",",var.availability_zones))
   launch_configuration = aws_launch_configuration.autoscale_launch_config.id
 //  vpc_zone_identifier  =[aws_subnet.public_subnet.*.id[count.index],aws_subnet.private_subnet.*.id[count.index]]
   vpc_zone_identifier  =aws_subnet.private_subnet.*.id
