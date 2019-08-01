@@ -13,11 +13,10 @@ resource "aws_launch_configuration" "autoscale_launch_config" {
 }
 
 resource "aws_autoscaling_group" "autoscale_group_1" {
-  count = length(split(",",var.availability_zones))
   name_prefix="asg-${aws_launch_configuration.autoscale_launch_config.name}"
   launch_configuration = aws_launch_configuration.autoscale_launch_config.id
 //  vpc_zone_identifier  =[aws_subnet.public_subnet.*.id[count.index],aws_subnet.private_subnet.*.id[count.index]]
-  vpc_zone_identifier  =[aws_subnet.private_subnet.*.id[count.index]]
+  vpc_zone_identifier  =aws_subnet.private_subnet.*.id
   min_size = var.min_asg
   max_size = var.max_asg
   desired_capacity = var.des_asg
@@ -25,7 +24,7 @@ resource "aws_autoscaling_group" "autoscale_group_1" {
 
   tag {
     key                 = "Name"
-    value               = "auto_scale-Nikky${count.index}"
+    value               = "auto_scale-Nikky"
     propagate_at_launch = true
   }
   health_check_grace_period = 200
@@ -51,7 +50,7 @@ locals {
 resource "aws_autoscaling_attachment" "alb_autoscale" {
   count = length(split(",",var.availability_zones))
   alb_target_group_arn   = aws_alb_target_group.alb_target_group_1.arn
-  autoscaling_group_name = aws_autoscaling_group.autoscale_group_1.*.id[count.index]
+  autoscaling_group_name = aws_autoscaling_group.autoscale_group_1.id
   lifecycle {create_before_destroy = true}
 
 //  provisioner "local-exec" {

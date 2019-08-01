@@ -22,3 +22,4 @@ resource "aws_subnet" "private_subnet" {
     Name    = "private subnet${count.index}"
   }
 }
+
