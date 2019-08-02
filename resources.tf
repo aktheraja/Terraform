@@ -225,11 +225,22 @@ resource "aws_autoscaling_group" "autoscale_group_1" {
   ]
   //depends_on = [data.aws_autoscaling_group.autoscale_group_1]
   metrics_granularity="1Minute"
-provisioner "local-exec" {
-  command = "check_health.sh ${aws_alb.alb.dns_name} ${self.name}"
-}
+/*provisioner "local-exec" {
+  command = "check_health.sh ${aws_alb.alb.dns_name}"
+}*/
 }
 
+resource "null_resource" "writeASGtoFile" {
+  triggers = {
+    the_trigger= join(",",[aws_autoscaling_group.autoscale_group_1.id, "0"])
+  }
+  depends_on = [aws_autoscaling_attachment.alb_autoscale]
+  lifecycle {create_before_destroy = true}
+  /*provisioner "local-exec" {
+    command = "echo ${data.aws_autoscaling_group.autoscale_group_1.name}>ASGName.txt"
+  }*/
+
+}
 
 data "aws_autoscaling_group" "autoscale_group_1" {
   name = aws_autoscaling_group.autoscale_group_1.name
@@ -304,9 +315,9 @@ resource "aws_autoscaling_attachment" "alb_autoscale" {
   alb_target_group_arn   = aws_alb_target_group.alb_target_group_1.arn
   autoscaling_group_name = aws_autoscaling_group.autoscale_group_1.id
   lifecycle {create_before_destroy = true}
-  provisioner "local-exec" {
-    command = "attchmnt_checkhealth.sh asg-autoscale_launcher-Craig-20190730161556942200000001 ${aws_alb_target_group.alb_target_group_1.arn}"
-  }
+  /*provisioner "local-exec" {
+    command = "attchmnt_checkhealth.sh ${chomp(file("C:/Users/Default.Default-PC/Dropbox/Pason/Terraform/ASGName.txt"))} ${aws_alb_target_group.alb_target_group_1.arn}"
+  }*/
 //${file("C:/Users/Default.Default-PC/Dropbox/Pason/Terraform/ASGName.txt")}
 }
 

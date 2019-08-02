@@ -6,7 +6,7 @@ fail_count=1
 while true
 do
   response=$(curl --write-out %{http_code} --silent --output /dev/null $1)
-  curr_grp=$()
+
 
   if [ $response -eq 200 ] ; then
     echo "$(date -u) Server available"
@@ -14,8 +14,6 @@ do
 
     echo "$(date -u) Waiting for new ASG to be created"
     sleep 180
-
-
     #echo "$(date -u)finished setting old ASG to zero"
     #sleep 10
     #aws autoscaling detach-load-balancer-target-groups --auto-scaling-group-name $2 --target-group-arns $3
