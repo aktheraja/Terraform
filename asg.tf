@@ -29,7 +29,7 @@ resource "aws_launch_configuration" "autoscale_launch_config2" {
 }
 
 resource "aws_autoscaling_group" "autoscale_group_1" {
-  name_prefix="asg-${aws_launch_configuration.autoscale_launch_config.name}"
+  name_prefix="asg2nikky"
 //  count = length(split(",",var.availability_zones))
   launch_configuration = aws_launch_configuration.autoscale_launch_config.id
 //  vpc_zone_identifier  =[aws_subnet.public_subnet.*.id[count.index],aws_subnet.private_subnet.*.id[count.index]]
@@ -65,7 +65,7 @@ resource "aws_autoscaling_group" "autoscale_group_1" {
 //}
 
 resource "aws_autoscaling_group" "autoscale_group_2" {
-  name_prefix="asg-${aws_launch_configuration.autoscale_launch_config.name}"
+  name="asg1nikky"
   //  count = length(split(",",var.availability_zones))
   launch_configuration = aws_launch_configuration.autoscale_launch_config.id
   //  vpc_zone_identifier  =[aws_subnet.public_subnet.*.id[count.index],aws_subnet.private_subnet.*.id[count.index]]
