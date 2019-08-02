@@ -23,3 +23,46 @@ resource "aws_subnet" "private_subnet" {
   }
 }
 
+//
+resource "aws_cloudwatch_dashboard" "main" {
+  dashboard_name = "my-dashboard"
+
+  dashboard_body = <<EOF
+ {
+   "widgets": [
+       {
+          "type":"metric",
+          "x":0,
+          "y":0,
+          "width":12,
+          "height":6,
+          "properties":{
+             "metrics":[
+                [
+                   "AWS/AutoScaling",
+                   "GroupInServiceInstances",
+                   "AutoScalingGroupName",
+                   "asg-autoscale_launcher-nikky-2019080216113616390000000520190802161136902800000006"
+                ]
+             ],
+             "period":300,
+             "stat":"Average",
+             "region":"us-west-2",
+             "title":"Instances In Service"
+          }
+       },
+       {
+          "type":"text",
+          "x":0,
+          "y":7,
+          "width":3,
+          "height":3,
+          "properties":{
+             "markdown":"Hello world"
+          }
+       }
+   ]
+ }
+ EOF
+}
+

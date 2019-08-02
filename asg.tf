@@ -13,6 +13,21 @@ resource "aws_launch_configuration" "autoscale_launch_config" {
   lifecycle {create_before_destroy = true}
 }
 
+resource "aws_launch_configuration" "autoscale_launch_config2" {
+  name_prefix          = "autoscale_launcher-nikky-2"
+  image_id        = var.ami
+  instance_type   = "t2.nano"
+  //  count = length(split(",",var.availability_zones))
+  //  key_name        = var.ami_key_pair_name
+  security_groups = [aws_security_group.private_subnesecurity.id]
+  enable_monitoring = true
+  user_data = file(
+  "/Users/yujiacui/Desktop/install_apache_server.sh"
+
+  )
+  lifecycle {create_before_destroy = true}
+}
+
 resource "aws_autoscaling_group" "autoscale_group_1" {
   name_prefix="asg-${aws_launch_configuration.autoscale_launch_config.name}"
 //  count = length(split(",",var.availability_zones))
@@ -45,12 +60,48 @@ resource "aws_autoscaling_group" "autoscale_group_1" {
 //    command = "check_health.sh ${aws_alb.alb.dns_name} asg-autoscale_launcher-nikky-20190731200646732400000001 aws_alb_target_group.alb_target_group_1.arn"
 //  }
 }
-locals {
-  ASGname=aws_autoscaling_group.autoscale_group_1.*.name
+//locals {
+//  ASGname=aws_autoscaling_group.autoscale_group_1.name
+//}
+
+resource "aws_autoscaling_group" "autoscale_group_2" {
+  name_prefix="asg-${aws_launch_configuration.autoscale_launch_config.name}"
+  //  count = length(split(",",var.availability_zones))
+  launch_configuration = aws_launch_configuration.autoscale_launch_config.id
+  //  vpc_zone_identifier  =[aws_subnet.public_subnet.*.id[count.index],aws_subnet.private_subnet.*.id[count.index]]
+  vpc_zone_identifier  =aws_subnet.private_subnet.*.id
+  min_size = 1
+  max_size = 3
+  desired_capacity = 2
+  wait_for_elb_capacity = 2
+
+  tag {
+    key                 = "Name"
+    value               = "auto_scale-Nikky2"
+    propagate_at_launch = true
+  }
+  health_check_grace_period = 200
+  health_check_type = "ELB"
+  //load_balancers = [aws_alb.alb.name]
+  lifecycle {create_before_destroy = true}
+  enabled_metrics = [
+
+    "GroupInServiceInstances",
+    "GroupTotalInstances"
+
+  ]
+  //depends_on = [data.aws_autoscaling_group.autoscale_group_1]
+  metrics_granularity="1Minute"
+  //  provisioner "local-exec" {
+  //    command = "check_health.sh ${aws_alb.alb.dns_name} asg-autoscale_launcher-nikky-20190731200646732400000001 aws_alb_target_group.alb_target_group_1.arn"
+  //  }
 }
+//locals {
+//  ASGname=aws_autoscaling_group.autoscale_group_2.name
+//}
 
 resource "aws_autoscaling_attachment" "alb_autoscale" {
-  count = length(split(",",var.availability_zones))
+//  count = length(split(",",var.availability_zones))
   alb_target_group_arn   = aws_alb_target_group.alb_target_group_1.arn
   autoscaling_group_name = aws_autoscaling_group.autoscale_group_1.id
   lifecycle {create_before_destroy = true}
@@ -58,5 +109,16 @@ resource "aws_autoscaling_attachment" "alb_autoscale" {
 //  provisioner "local-exec" {
 //    command = "attchmnt_checkhealth.sh asg-autoscale_launcher-nikky-20190725064518336300000001 ${aws_alb_target_group.alb_target_group_1.arn}"
 //  }
+
+}
+resource "aws_autoscaling_attachment" "alb_autoscale2" {
+  //  count = length(split(",",var.availability_zones))
+  alb_target_group_arn   = aws_alb_target_group.alb_target_group_1.arn
+  autoscaling_group_name = aws_autoscaling_group.autoscale_group_2.id
+  lifecycle {create_before_destroy = true}
+
+  //  provisioner "local-exec" {
+  //    command = "attchmnt_checkhealth.sh asg-autoscale_launcher-nikky-20190725064518336300000001 ${aws_alb_target_group.alb_target_group_1.arn}"
+  //  }
 
 }
