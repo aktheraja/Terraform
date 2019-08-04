@@ -4,9 +4,8 @@
     <list default="true" id="4b6f48d6-8763-4452-812f-ad7cc2a2f1e8" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ASGName.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ASGName.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/attchmnt_checkhealth.sh" beforeDir="false" afterPath="$PROJECT_DIR$/attchmnt_checkhealth.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/check_health.sh" beforeDir="false" afterPath="$PROJECT_DIR$/check_health.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources.tf" beforeDir="false" afterPath="$PROJECT_DIR$/resources.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.sh" beforeDir="false" afterPath="$PROJECT_DIR$/test.sh" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -93,7 +92,14 @@
       <option name="project" value="LOCAL" />
       <updated>1564512234904</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="AWS CLI Instance running state check working">
+      <created>1564896502475</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1564896502475</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -115,7 +121,8 @@
     <MESSAGE value="Almost works...added createBeforeDestroy to everything" />
     <MESSAGE value="Null provisioning...still trying...didn't really work" />
     <MESSAGE value="still some error with AWS CLI command" />
-    <option name="LAST_COMMIT_MESSAGE" value="still some error with AWS CLI command" />
+    <MESSAGE value="AWS CLI Instance running state check working" />
+    <option name="LAST_COMMIT_MESSAGE" value="AWS CLI Instance running state check working" />
   </component>
   <component name="masterDetails">
     <states>

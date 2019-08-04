@@ -6,15 +6,17 @@ fail_count=1
 while true
 do
   sleep 5
-  echo "$(date -u) Checking instance statuses on Autoscaling Group: $2 ..."
+  echo "$(date -u) Checking instance statuses on Autoscaling Group: $2"
+  echo "$1 instances required..."
+  sleep 1
   response="$(aws autoscaling describe-auto-scaling-groups --auto-scaling-group-name $2 --output json)"
-  #echo"${response}"
   echo "${response}" > "test.json"
+  echo "${response}"
   sleep 2
   currInst="$(grep -Po '"LifecycleState": "InService",' test.json | wc -l)"
   #echo "${currInst}"
   if [ "${currInst}" -ge "$1" ] ; then
-    echo "$(date -u) All $2 instances ready...Done!"
+    echo "$(date -u) All ${currInst} instances ready...Done!"
     sleep 2
     exit 0
   else

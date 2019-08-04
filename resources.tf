@@ -166,7 +166,7 @@ resource "aws_launch_configuration" "autoscale_launch_config" {
   security_groups = [aws_security_group.security.id]
   enable_monitoring = true
   user_data = file(
-    "C:/Users/Default.Default-PC/Downloads/install_apache_server2.sh"
+    "C:/Users/Default.Default-PC/Downloads/install_apache_server.sh"
   )
   lifecycle {create_before_destroy = true}
 }
@@ -204,7 +204,7 @@ resource "aws_autoscaling_group" "autoscale_group_1" {
 
   min_size = var.min_asg
   max_size = var.max_asg
-  desired_capacity = var.des_asg
+  desired_capacity = var.max_asg
   wait_for_elb_capacity = 3
 
   tag {
@@ -225,9 +225,9 @@ resource "aws_autoscaling_group" "autoscale_group_1" {
   ]
   //depends_on = [data.aws_autoscaling_group.autoscale_group_1]
   metrics_granularity="1Minute"
-/*provisioner "local-exec" {
-  command = "check_health.sh ${aws_alb.alb.dns_name}"
-}*/
+provisioner "local-exec" {
+  command = "test.sh ${var.max_asg} ${self.name}"
+}
 }
 
 resource "null_resource" "writeASGtoFile" {
@@ -236,9 +236,9 @@ resource "null_resource" "writeASGtoFile" {
   }
   depends_on = [aws_autoscaling_attachment.alb_autoscale]
   lifecycle {create_before_destroy = true}
-  /*provisioner "local-exec" {
+  provisioner "local-exec" {
     command = "echo ${data.aws_autoscaling_group.autoscale_group_1.name}>ASGName.txt"
-  }*/
+  }
 
 }
 
@@ -315,9 +315,9 @@ resource "aws_autoscaling_attachment" "alb_autoscale" {
   alb_target_group_arn   = aws_alb_target_group.alb_target_group_1.arn
   autoscaling_group_name = aws_autoscaling_group.autoscale_group_1.id
   lifecycle {create_before_destroy = true}
-  /*provisioner "local-exec" {
+  provisioner "local-exec" {
     command = "attchmnt_checkhealth.sh ${chomp(file("C:/Users/Default.Default-PC/Dropbox/Pason/Terraform/ASGName.txt"))} ${aws_alb_target_group.alb_target_group_1.arn}"
-  }*/
+  }
 //${file("C:/Users/Default.Default-PC/Dropbox/Pason/Terraform/ASGName.txt")}
 }
 
