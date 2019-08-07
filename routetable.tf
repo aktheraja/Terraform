@@ -4,7 +4,10 @@ resource "aws_internet_gateway" "default_gat" {
 }
 resource "aws_route_table" "route-public" {
   vpc_id = aws_vpc.vpc_environment.id
-  //depends_on = [aws_vpc.vpc_environment]
+//  route {
+//    //cidr_block = vpc cidr
+//    //gateway_id = vpc
+//  }
   route {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.default_gat.id

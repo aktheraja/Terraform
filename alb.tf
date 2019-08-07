@@ -1,8 +1,7 @@
 resource "aws_alb" "alb" {
   name_prefix = "lbNik-"
   subnets =aws_subnet.public_subnet.*.id
-  security_groups = [
-    aws_security_group.security.id]
+  security_groups = [aws_security_group.ALB_security.id]
   internal = false
   idle_timeout = 2
   tags = {
@@ -40,8 +39,8 @@ resource "aws_alb_target_group" "alb_target_group_1" {
   health_check {
     healthy_threshold   = 3
     unhealthy_threshold = 3
-    timeout             = 2
-    interval            = 15
+    timeout             = 5
+    interval            = 30
     path                = "/"
     port                = 80
   }

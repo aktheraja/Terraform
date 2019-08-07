@@ -26,11 +26,11 @@ resource "aws_security_group" "private_subnesecurity" {
     cidr_blocks = ["0.0.0.0/0"]
   }
   tags ={
-    name = "sg-security-nat-nikky"
+    name = "sec-group_priv_instances"
   }
 }
 
-resource "aws_security_group" "security" {
+resource "aws_security_group" "ALB_security" {
   vpc_id = aws_vpc.vpc_environment.id
 
   ingress {
@@ -53,12 +53,7 @@ resource "aws_security_group" "security" {
     to_port     = -1
   }
 
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+
   tags ={
     name = "sg-security-nikky"
   }
