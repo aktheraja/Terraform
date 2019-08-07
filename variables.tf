@@ -60,10 +60,24 @@ locals {
 
 }
 
-output "status" {
+output "OIA_status" {
   value = local.ASG1_is_active
-  value_OIA = local.ASG1_is_active
-  value_NS = local.new_switch
-  value_DS = var.autoswitch
 }
-
+output "ASG1Max" {
+  value = local.ASG1_max
+}
+output "ASG1Min" {
+  value = local.ASG1_min
+}
+output "ASG2Max" {
+  value = local.ASG2_max
+}
+output "ASG2Min" {
+  value = local.ASG2_min
+}
+output "NS_status" {
+  value = local.new_switch
+}
+output "DS_status" {
+  value = var.autoswitch
+}

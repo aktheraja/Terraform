@@ -18,7 +18,7 @@ resource "aws_autoscaling_group" "autoscale_group_1" {
   lifecycle {create_before_destroy = true}
   enabled_metrics = var.ASG_enabled_metrics
   provisioner "local-exec" {
-    command = "echo ${self.max_size}>ASG1MaxSize.txt"
+    command = "echo${chomp(self.max_size)}>ASG1MaxSize.txt"
   }
 //  provisioner "local-exec" {
 //    command = "check_health.sh ${aws_alb.alb.dns_name} asg-autoscale_launcher-nikky-20190731200646732400000001 aws_alb_target_group.alb_target_group_1.arn"
@@ -48,9 +48,17 @@ resource "aws_autoscaling_group" "autoscale_group_2" {
   //  }
 }
 
-resource "aws_autoscaling_attachment" "alb_autoscale" {
+resource "aws_autoscaling_attachment" "alb_autoscale1" {
   alb_target_group_arn   = aws_alb_target_group.alb_target_group_1.arn
-  autoscaling_group_name =local.ASG1_is_active==true?aws_autoscaling_group.autoscale_group_1.id:aws_autoscaling_group.autoscale_group_2.id
+  autoscaling_group_name =aws_autoscaling_group.autoscale_group_1.id
+  lifecycle {create_before_destroy = true}
+//  provisioner "local-exec" {
+//    command = "attchmnt_checkhealth.sh asg-autoscale_launcher-nikky-20190725064518336300000001 ${aws_alb_target_group.alb_target_group_1.arn}"
+//  }
+}
+resource "aws_autoscaling_attachment" "alb_autoscale2" {
+  alb_target_group_arn   = aws_alb_target_group.alb_target_group_1.arn
+  autoscaling_group_name =aws_autoscaling_group.autoscale_group_2.id
   lifecycle {create_before_destroy = true}
 //  provisioner "local-exec" {
 //    command = "attchmnt_checkhealth.sh asg-autoscale_launcher-nikky-20190725064518336300000001 ${aws_alb_target_group.alb_target_group_1.arn}"

@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4b6f48d6-8763-4452-812f-ad7cc2a2f1e8" name="Default Changelist" comment="AWS CLI Instance running state check working">
-      <change afterPath="$PROJECT_DIR$/ASG1MaxSize.txt" afterDir="false" />
+    <list default="true" id="4b6f48d6-8763-4452-812f-ad7cc2a2f1e8" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/alb.tf" beforeDir="false" afterPath="$PROJECT_DIR$/alb.tf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/asg.tf" beforeDir="false" afterPath="$PROJECT_DIR$/asg.tf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routetable.tf" beforeDir="false" afterPath="$PROJECT_DIR$/routetable.tf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/securitygroup.tf" beforeDir="false" afterPath="$PROJECT_DIR$/securitygroup.tf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/subnets.tf" beforeDir="false" afterPath="$PROJECT_DIR$/subnets.tf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/variables.tf" beforeDir="false" afterPath="$PROJECT_DIR$/variables.tf" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -170,7 +166,14 @@
       <option name="project" value="LOCAL" />
       <updated>1564772105528</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Initial commit: many problems with infrastructure. TG not connected to ALB">
+      <created>1565152548826</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1565152548826</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -192,7 +195,8 @@
     <MESSAGE value="Almost works...added createBeforeDestroy to everything" />
     <MESSAGE value="better formatted, dynamically partitions the things" />
     <MESSAGE value="changed it to 2 asgs" />
-    <option name="LAST_COMMIT_MESSAGE" value="changed it to 2 asgs" />
+    <MESSAGE value="Initial commit: many problems with infrastructure. TG not connected to ALB" />
+    <option name="LAST_COMMIT_MESSAGE" value="Initial commit: many problems with infrastructure. TG not connected to ALB" />
   </component>
   <component name="masterDetails">
     <states>
