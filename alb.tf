@@ -39,6 +39,10 @@ resource "aws_alb_target_group" "alb_target_group_1" {
   slow_start = 0
   deregistration_delay = 30
   health_check {
+    healthy_threshold   = 3
+    unhealthy_threshold = 3
+    timeout             = 2
+    interval            = 15
     path                = "/"
     port                = 80
   }

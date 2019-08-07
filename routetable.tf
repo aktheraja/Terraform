@@ -21,7 +21,7 @@ resource "aws_route_table" "route-private" {
   vpc_id = aws_vpc.vpc_environment.id
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_nat_gateway.nat_gate.*.id[count.index]
+    nat_gateway_id = aws_nat_gateway.nat_gate.*.id[count.index]
   }
   tags = {
     Name = "Private Subnet Routing Table"

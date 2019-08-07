@@ -15,7 +15,7 @@ variable "deployment_name"{
 }
 
 variable "user_data_file_string"{
-  default = "C:/Users/Default.Default-PC/Downloads/install_apache_server.sh"
+  default = "C:/Users/Default.Default-PC/Downloads/install_apache_server2.sh"
 }
 
 variable "autoswitch" {
@@ -51,7 +51,7 @@ variable "instance_type" {
 //}
 
 locals {
-  ASG1_is_active = chomp(file("ASG1MaxSize.txt"))==0?true:false
+  ASG1_is_active = chomp(file("ASG1MAXSIZE.txt"))==0?true:false
   new_switch = (aws_launch_configuration.autoscale_launch_config.user_data==file(var.user_data_file_string)) && (aws_launch_configuration.autoscale_launch_config.image_id==var.ami)?true:false
   ASG1_max = (var.autoswitch==true && local.ASG1_is_active==local.new_switch)||(var.autoswitch==false && local.ASG1_is_active==1)?var.max_asg:0
   ASG1_min = (var.autoswitch==true && local.ASG1_is_active==local.new_switch)||(var.autoswitch==false && local.ASG1_is_active==1)?var.min_asg:0
