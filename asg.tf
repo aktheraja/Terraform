@@ -5,7 +5,7 @@ resource "aws_autoscaling_group" "autoscale_group_1" {
   min_size = 2//local.ASG1_min
   max_size = 5//local.ASG1_max
   desired_capacity = 5//local.ASG1_max
-  min_elb_capacity = 2//local.ASG1_min
+  wait_for_elb_capacity = 2//local.ASG1_min
 
   tag {
     key                 = "Name"

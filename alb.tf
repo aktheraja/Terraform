@@ -1,9 +1,9 @@
 resource "aws_alb" "alb" {
-  name_prefix = "lbNik-"
+  name_prefix = var.deployment_name
   subnets =aws_subnet.public_subnet.*.id
   security_groups = [aws_security_group.ALB_security.id]
   internal = false
-  idle_timeout = 10
+  idle_timeout = 2
   tags = {
     Name = "alb2"
   }

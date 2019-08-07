@@ -31,7 +31,7 @@ variable "max_asg" {
 }
 
 variable "ASG_health_check_grace"{
-  default=30
+  default=200
 }
 
 variable "ASG_health_check_type"{

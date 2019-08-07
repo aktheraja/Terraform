@@ -2,13 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4b6f48d6-8763-4452-812f-ad7cc2a2f1e8" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/ASG1MAXSIZE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/crash.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASG1MaxSize.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/alb.tf" beforeDir="false" afterPath="$PROJECT_DIR$/alb.tf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/asg.tf" beforeDir="false" afterPath="$PROJECT_DIR$/asg.tf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routetable.tf" beforeDir="false" afterPath="$PROJECT_DIR$/routetable.tf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/variables.tf" beforeDir="false" afterPath="$PROJECT_DIR$/variables.tf" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -189,7 +185,14 @@
       <option name="project" value="LOCAL" />
       <updated>1565155007039</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="problems with health check">
+      <created>1565206401777</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1565206401777</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -214,7 +217,8 @@
     <MESSAGE value="changed it to 2 asgs" />
     <MESSAGE value="Initial commit: many problems with infrastructure. TG not connected to ALB" />
     <MESSAGE value="still many problems with infrastructure: TG health checks and echo to file all failing...fixed outputs" />
-    <option name="LAST_COMMIT_MESSAGE" value="still many problems with infrastructure: TG health checks and echo to file all failing...fixed outputs" />
+    <MESSAGE value="problems with health check" />
+    <option name="LAST_COMMIT_MESSAGE" value="problems with health check" />
   </component>
   <component name="masterDetails">
     <states>
