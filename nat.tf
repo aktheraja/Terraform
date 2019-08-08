@@ -1,5 +1,4 @@
 resource "aws_nat_gateway" "nat_gate" {
-
   count  = length(split(",", var.availability_zones))
 
   allocation_id = aws_eip.nat_eip.*.id[count.index]
@@ -8,3 +7,4 @@ resource "aws_nat_gateway" "nat_gate" {
     create_before_destroy = true
   }
 }
+//

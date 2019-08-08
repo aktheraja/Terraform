@@ -5,7 +5,11 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/alb.tf" beforeDir="false" afterPath="$PROJECT_DIR$/alb.tf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/asg.tf" beforeDir="false" afterPath="$PROJECT_DIR$/asg.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nat.tf" beforeDir="false" afterPath="$PROJECT_DIR$/nat.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/securitygroup.tf" beforeDir="false" afterPath="$PROJECT_DIR$/securitygroup.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/subnets.tf" beforeDir="false" afterPath="$PROJECT_DIR$/subnets.tf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/variables.tf" beforeDir="false" afterPath="$PROJECT_DIR$/variables.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vpc.tf" beforeDir="false" afterPath="$PROJECT_DIR$/vpc.tf" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -22,7 +26,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="workingversion5" />
+        <entry key="$PROJECT_DIR$" value="Aug6thCraig" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
