@@ -2,10 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4b6f48d6-8763-4452-812f-ad7cc2a2f1e8" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/NAT_and_EIPs.tf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/alb.tf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/asg.tf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/route_tables.tf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/security_groups.tf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vpc.tf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ASGName.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ASGName.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources.tf" beforeDir="false" afterPath="$PROJECT_DIR$/resources.tf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.sh" beforeDir="false" afterPath="$PROJECT_DIR$/test.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.json" beforeDir="false" afterPath="$PROJECT_DIR$/test.json" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -20,15 +26,17 @@
     <favorites_list name="Terraform" />
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="bestbeautytf" />
+        <entry key="$PROJECT_DIR$" value="workingversion5" />
       </map>
     </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1Opyv3bvMTzeho6gagvYUOmqHr7" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="PropertiesComponent">
     <property name="Git.Branch.Popup.ShowAllRemotes" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />

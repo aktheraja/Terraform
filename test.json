@@ -1,9 +1,9 @@
 {
     "AutoScalingGroups": [
         {
-            "AutoScalingGroupName": "asg-autoscale_launcher-Craig-20190804051732288300000001",
-            "AutoScalingGroupARN": "arn:aws:autoscaling:us-west-2:632199730033:autoScalingGroup:ef8e79de-4d28-411d-863a-aa2d7eca2ccf:autoScalingGroupName/asg-autoscale_launcher-Craig-20190804051732288300000001",
-            "LaunchConfigurationName": "autoscale_launcher-Craig-20190804051732288300000001",
+            "AutoScalingGroupName": "asg-autoscale_launcher-Craig-20190808150416450700000005",
+            "AutoScalingGroupARN": "arn:aws:autoscaling:us-west-2:632199730033:autoScalingGroup:277c5c83-7b46-42cf-8389-619e3855b955:autoScalingGroupName/asg-autoscale_launcher-Craig-20190808150416450700000005",
+            "LaunchConfigurationName": "autoscale_launcher-Craig-20190808150416450700000005",
             "MinSize": 2,
             "MaxSize": 5,
             "DesiredCapacity": 5,
@@ -18,49 +18,49 @@
             "HealthCheckGracePeriod": 200,
             "Instances": [
                 {
-                    "InstanceId": "i-00cd1fea72b0867f1",
+                    "InstanceId": "i-00d2955c6dc4007d5",
                     "AvailabilityZone": "us-west-2c",
                     "LifecycleState": "InService",
                     "HealthStatus": "Healthy",
-                    "LaunchConfigurationName": "autoscale_launcher-Craig-20190804051732288300000001",
+                    "LaunchConfigurationName": "autoscale_launcher-Craig-20190808150416450700000005",
                     "ProtectedFromScaleIn": false
                 },
                 {
-                    "InstanceId": "i-01aa89627f3428623",
+                    "InstanceId": "i-06765b1f8d71339bb",
                     "AvailabilityZone": "us-west-2c",
                     "LifecycleState": "InService",
                     "HealthStatus": "Healthy",
-                    "LaunchConfigurationName": "autoscale_launcher-Craig-20190804051732288300000001",
+                    "LaunchConfigurationName": "autoscale_launcher-Craig-20190808150416450700000005",
                     "ProtectedFromScaleIn": false
                 },
                 {
-                    "InstanceId": "i-0d6031debbee4cf43",
+                    "InstanceId": "i-096d66d3f133aeeed",
                     "AvailabilityZone": "us-west-2b",
                     "LifecycleState": "InService",
                     "HealthStatus": "Healthy",
-                    "LaunchConfigurationName": "autoscale_launcher-Craig-20190804051732288300000001",
+                    "LaunchConfigurationName": "autoscale_launcher-Craig-20190808150416450700000005",
                     "ProtectedFromScaleIn": false
                 },
                 {
-                    "InstanceId": "i-0f5a4db94ac7bd799",
+                    "InstanceId": "i-0d571a5c1920e68b3",
                     "AvailabilityZone": "us-west-2b",
                     "LifecycleState": "InService",
                     "HealthStatus": "Healthy",
-                    "LaunchConfigurationName": "autoscale_launcher-Craig-20190804051732288300000001",
+                    "LaunchConfigurationName": "autoscale_launcher-Craig-20190808150416450700000005",
                     "ProtectedFromScaleIn": false
                 },
                 {
-                    "InstanceId": "i-0fc6afa94e513033d",
-                    "AvailabilityZone": "us-west-2c",
+                    "InstanceId": "i-0dd40d582591b88b4",
+                    "AvailabilityZone": "us-west-2b",
                     "LifecycleState": "InService",
                     "HealthStatus": "Healthy",
-                    "LaunchConfigurationName": "autoscale_launcher-Craig-20190804051732288300000001",
+                    "LaunchConfigurationName": "autoscale_launcher-Craig-20190808150416450700000005",
                     "ProtectedFromScaleIn": false
                 }
             ],
-            "CreatedTime": "2019-08-04T05:17:31.028Z",
+            "CreatedTime": "2019-08-08T15:04:16.029Z",
             "SuspendedProcesses": [],
-            "VPCZoneIdentifier": "subnet-03e1fabb2d940403d,subnet-0d39ea9863aa6f0a9",
+            "VPCZoneIdentifier": "subnet-056788434f3526035,subnet-0c1a257c1ed4d1aee",
             "EnabledMetrics": [
                 {
                     "Metric": "GroupTotalInstances",
@@ -73,7 +73,7 @@
             ],
             "Tags": [
                 {
-                    "ResourceId": "asg-autoscale_launcher-Craig-20190804051732288300000001",
+                    "ResourceId": "asg-autoscale_launcher-Craig-20190808150416450700000005",
                     "ResourceType": "auto-scaling-group",
                     "Key": "Name",
                     "Value": "auto_scale-Craig",
