@@ -1,52 +1,51 @@
 resource "aws_launch_configuration" "autoscale_launch_config1" {
-  name_prefix          = "autoscale_launcher1-Craig-"
+  name_prefix          = "autoscale_launcher-${var.deployment_name}"
   image_id        = var.ami
   instance_type   = "t2.nano"
   //  key_name        = var.ami_key_pair_name
   security_groups = [aws_security_group.security.id]
   enable_monitoring = true
-  user_data = file(
-  "C:/Users/Default.Default-PC/Downloads/install_apache_server.sh"
-  )
-  lifecycle {create_before_destroy = true}
+  user_data = file(var.user_data_file_string)
+  lifecycle {
+    create_before_destroy = true
+  }
 }
-resource "aws_launch_configuration" "autoscale_launch_config2" {
-  name_prefix          = "autoscale_launcher2-Craig-"
-  image_id        = var.ami
-  instance_type   = "t2.nano"
-  //  key_name        = var.ami_key_pair_name
-  security_groups = [aws_security_group.security.id]
-  enable_monitoring = true
-  user_data = file(
-  "C:/Users/Default.Default-PC/Downloads/install_apache_server.sh"
-  )
-  lifecycle {create_before_destroy = true}
-}
-resource "aws_autoscaling_group" "autoscale_group_1" {
-  name="asg1"
-  launch_configuration = aws_launch_configuration.autoscale_launch_config1.id
-  vpc_zone_identifier  = [aws_subnet.private_subnet2.id, aws_subnet.private_subnet1.id]
 
-//  depends_on = [aws_autoscaling_group.autoscale_group_2, aws_autoscaling_attachment.alb_autoscale_2]
-//    min_size = 0
-//    max_size = 0
-//    desired_capacity = 0
-//    wait_for_elb_capacity = 0
+resource "aws_autoscaling_group" "autoscale_group_1" {
+  name = "asg1-${var.deployment_name}"
+  launch_configuration = aws_launch_configuration.autoscale_launch_config1.id
+  vpc_zone_identifier = [
+    aws_subnet.private_subnet2.id,
+    aws_subnet.private_subnet1.id]
+  depends_on = [null_resource.change_detected]
+
+  //  depends_on = [aws_autoscaling_group.autoscale_group_2, aws_autoscaling_attachment.alb_autoscale_2]
+  //    min_size = 0
+  //    max_size = 0
+  //    desired_capacity = 0
+  //    wait_for_elb_capacity = 0
   min_size = var.min_asg
   max_size = var.max_asg
   desired_capacity = var.max_asg
+  //desired_capacity = local.new_switch==true?var.max_asg:""
   wait_for_elb_capacity = var.max_asg
 
   tag {
-    key                 = "Name"
-    value               = "auto_scale1-Craig"
+    key = "Status"
+    value = "active"
     propagate_at_launch = true
+
+
   }
 
   health_check_grace_period = 200
   health_check_type = "ELB"
   //load_balancers = [aws_alb.alb.name]
-  lifecycle {create_before_destroy = true}
+  lifecycle {
+    create_before_destroy = true
+  }
+
+
   enabled_metrics = [
 
     "GroupInServiceInstances",
@@ -54,10 +53,23 @@ resource "aws_autoscaling_group" "autoscale_group_1" {
 
   ]
 
-  //metrics_granularity="1Minute"
-//  provisioner "local-exec" {
-//    command = "test.sh ${var.max_asg} ${self.name}"
-//  }
+  metrics_granularity="1Minute"
+  provisioner "local-exec" {
+    command = "echo ${local.ASG1_max}>ASG1_Size.txt"
+}
+}
+//
+resource "aws_autoscaling_policy" "policy1" {
+  name = "asgpolicy1"
+  adjustment_type = "ChangeInCapacity"
+  autoscaling_group_name = aws_autoscaling_group.autoscale_group_1.name
+  policy_type = "TargetTrackingScaling"
+  target_tracking_configuration {
+    predefined_metric_specification {
+      predefined_metric_type = "ASGAverageCPUUtilization"
+    }
+    target_value = 20.0
+  }
 }
 
 resource "aws_autoscaling_attachment" "alb_autoscale" {
@@ -69,9 +81,12 @@ resource "aws_autoscaling_attachment" "alb_autoscale" {
 //  }
   //${file("C:/Users/Default.Default-PC/Dropbox/Pason/Terraform/ASGName.txt")}
 }
+
+
+
 resource "aws_autoscaling_group" "autoscale_group_2" {
-  name="asg2"
-  launch_configuration = aws_launch_configuration.autoscale_launch_config2.id
+  name="asg2-${var.deployment_name}"
+  launch_configuration = aws_launch_configuration.autoscale_launch_config1.id
   vpc_zone_identifier  = [aws_subnet.private_subnet2.id, aws_subnet.private_subnet1.id]
 depends_on = [aws_autoscaling_attachment.alb_autoscale, aws_autoscaling_group.autoscale_group_1]
   min_size = 0
@@ -79,21 +94,26 @@ depends_on = [aws_autoscaling_attachment.alb_autoscale, aws_autoscaling_group.au
   desired_capacity = 0
   wait_for_elb_capacity = 0
 
+
 //  min_size = var.min_asg
 //  max_size = var.max_asg
 //  desired_capacity = var.max_asg
 //  wait_for_elb_capacity = var.max_asg
 
   tag {
-    key                 = "Name"
-    value               = "auto_scale2-Craig"
+    key                 = "Status"
+    value               = "inactive"
     propagate_at_launch = true
+
+
   }
 
   health_check_grace_period = 200
   health_check_type = "ELB"
   //load_balancers = [aws_alb.alb.name]
   lifecycle {create_before_destroy = true}
+ //   ignore_changes = local.new_switch?[desired_capacity]:""
+
   enabled_metrics = [
 
     "GroupInServiceInstances",
@@ -103,7 +123,7 @@ depends_on = [aws_autoscaling_attachment.alb_autoscale, aws_autoscaling_group.au
   //depends_on = [data.aws_autoscaling_group.autoscale_group_1]
   //metrics_granularity="1Minute"
 //  provisioner "local-exec" {
-//    command = "test.sh ${var.max_asg} ${self.name}"
+//    command = "echo one>activeASG.txt"
 //  }
 }
 
@@ -116,20 +136,43 @@ resource "aws_autoscaling_attachment" "alb_autoscale_2" {
 //  }
   //${file("C:/Users/Default.Default-PC/Dropbox/Pason/Terraform/ASGName.txt")}
 }
+
+
 //
-//resource "null_resource" "writeASGtoFile" {
+//resource "null_resource" "change_detected" {
+//
 //  triggers = {
-//    the_trigger= join(",",[aws_autoscaling_group.autoscale_group_1.id, "0"])
+//    the_trigger= join(",",[aws_launch_configuration.autoscale_launch_config1.id, "0"])
 //  }
-//  depends_on = [aws_autoscaling_attachment.alb_autoscale]
+//  depends_on = [aws_launch_configuration.autoscale_launch_config1]
 //  lifecycle {create_before_destroy = true}
-//  provisioner "local-exec" {
-//    command = "echo ${data.aws_autoscaling_group.autoscale_group_1.name}>ASGName.txt"
-//  }
-//
+//provisioner "local-exec" {
+//  command = "echo true>switchstatus.txt"
 //}
 
+resource "null_resource" "change_detected" {
+ //count=
+  triggers = {
+    the_trigger= join(",",[aws_launch_configuration.autoscale_launch_config1.id, "0"])
+  }
+  depends_on = [aws_launch_configuration.autoscale_launch_config1]
+  lifecycle {create_before_destroy = true}
+provisioner "local-exec" {
+  command = "echo true>switchstatus.txt"
+}
 
+}
+resource "null_resource" "set_switch_to_false" {
+  triggers = {
+    the_trigger= join(",",[aws_autoscaling_group.autoscale_group_1.id,aws_autoscaling_group.autoscale_group_2.id ])
+  }
+  depends_on = [aws_autoscaling_group.autoscale_group_1, aws_autoscaling_group.autoscale_group_2]
+  lifecycle {create_before_destroy = true}
+  provisioner "local-exec" {
+    command = "echo false>switchstatus.txt \n echo false>switchstatus.txt "
+  }
+
+}
 /*
 resource "aws_autoscaling_policy" "web_policy_up" {
   name = "web_policy_up"

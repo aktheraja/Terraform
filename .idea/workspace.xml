@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4b6f48d6-8763-4452-812f-ad7cc2a2f1e8" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/NAT_and_EIPs.tf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/alb.tf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/asg.tf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/route_tables.tf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/security_groups.tf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vpc.tf" afterDir="false" />
+    <list default="true" id="4b6f48d6-8763-4452-812f-ad7cc2a2f1e8" name="Default Changelist" comment="bluegreen with 2 ASGs working with manual changes to ASG sizes">
+      <change afterPath="$PROJECT_DIR$/variables.tf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASGName.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ASGName.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources.tf" beforeDir="false" afterPath="$PROJECT_DIR$/resources.tf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.json" beforeDir="false" afterPath="$PROJECT_DIR$/test.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ASGName.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alb.tf" beforeDir="false" afterPath="$PROJECT_DIR$/alb.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/asg.tf" beforeDir="false" afterPath="$PROJECT_DIR$/asg.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources.tf" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -28,7 +24,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="workingversion5" />
+        <entry key="$PROJECT_DIR$" value="workingversion5.1" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -42,9 +38,12 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="TF_FMT" value="false" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="JSON" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../dump/vpc.tf" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Default.Default-PC\Dropbox\Pason\Terraform" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Default.Default-PC\Dropbox\Pason\Terraform" />
     </key>
