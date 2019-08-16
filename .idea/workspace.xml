@@ -2,14 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4b6f48d6-8763-4452-812f-ad7cc2a2f1e8" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.AMI.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.ASG1Active.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.UserData.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/checktoProceed.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/null_resources.tf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/switchstatus.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/asg.tf" beforeDir="false" afterPath="$PROJECT_DIR$/asg.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/null_resources.tf" beforeDir="false" afterPath="$PROJECT_DIR$/null_resources.tf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/variables.tf" beforeDir="false" afterPath="$PROJECT_DIR$/variables.tf" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -118,7 +112,14 @@
       <option name="project" value="LOCAL" />
       <updated>1565501573896</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Automated switching working great...still have to test certain scenarios...using three .txt files">
+      <created>1565940109579</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1565940109580</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -143,7 +144,8 @@
     <MESSAGE value="still some error with AWS CLI command" />
     <MESSAGE value="AWS CLI Instance running state check working" />
     <MESSAGE value="bluegreen with 2 ASGs working with manual changes to ASG sizes" />
-    <option name="LAST_COMMIT_MESSAGE" value="bluegreen with 2 ASGs working with manual changes to ASG sizes" />
+    <MESSAGE value="Automated switching working great...still have to test certain scenarios...using three .txt files" />
+    <option name="LAST_COMMIT_MESSAGE" value="Automated switching working great...still have to test certain scenarios...using three .txt files" />
   </component>
   <component name="masterDetails">
     <states>
