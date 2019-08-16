@@ -13,7 +13,8 @@ resource "aws_launch_configuration" "autoscale_launch_config1" {
 resource "aws_autoscaling_group" "autoscale_group_1" {
   name = "asg1-${var.deployment_name}"
   launch_configuration = aws_launch_configuration.autoscale_launch_config1.id
-  vpc_zone_identifier = [aws_subnet.private_subnet2.id, aws_subnet.private_subnet1.id]
+//  vpc_zone_identifier = [aws_subnet.private_subnet2.id, aws_subnet.private_subnet1.id]
+  vpc_zone_identifier  =aws_subnet.private_subnet.*.id
   depends_on = [null_resource.change_detected_ASG1]
   min_size = local.ASG1_min
   max_size = local.ASG1_max
@@ -42,7 +43,8 @@ resource "aws_autoscaling_attachment" "alb_autoscale_1" {
 resource "aws_autoscaling_group" "autoscale_group_2" {
   name="asg2-${var.deployment_name}"
   launch_configuration = aws_launch_configuration.autoscale_launch_config1.id
-  vpc_zone_identifier  = [aws_subnet.private_subnet2.id, aws_subnet.private_subnet1.id]
+//  vpc_zone_identifier  = [aws_subnet.private_subnet2.id, aws_subnet.private_subnet1.id]
+  vpc_zone_identifier  =aws_subnet.private_subnet.*.id
   min_size = local.ASG2_min
   max_size = local.ASG2_max
   desired_capacity = local.new_LC||var.always_switch?local.ASG2_max:null

@@ -29,9 +29,10 @@ resource "aws_alb_target_group" "alb_target_group_1" {
 
 resource "aws_alb" "alb" {
   name_prefix = "lbCrg-"
-  subnets = [
-    aws_subnet.public_subnet1.id,
-    aws_subnet.public_subnet2.id]
+//  subnets = [
+//    aws_subnet.public_subnet1.id,
+//    aws_subnet.public_subnet2.id]
+  subnets =aws_subnet.public_subnet.*.id
   security_groups = [
     aws_security_group.security.id]
   internal = false
