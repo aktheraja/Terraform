@@ -3,7 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="4b6f48d6-8763-4452-812f-ad7cc2a2f1e8" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.ASG1Active.txt" beforeDir="false" afterPath="$PROJECT_DIR$/.ASG1Active.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.UserData.txt" beforeDir="false" afterPath="$PROJECT_DIR$/.UserData.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/asg.tf" beforeDir="false" afterPath="$PROJECT_DIR$/asg.tf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/attchmnt_checkhealth.sh" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/check_health.sh" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/null_resources.tf" beforeDir="false" afterPath="$PROJECT_DIR$/null_resources.tf" afterDir="false" />
@@ -42,6 +44,9 @@
     <property name="TF_FMT" value="false" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="JSON" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
@@ -159,21 +164,5 @@
     <MESSAGE value="Automated switching working great...still have to test certain scenarios...using three .txt files" />
     <MESSAGE value="Added variable to control first-time apply after a destroy" />
     <option name="LAST_COMMIT_MESSAGE" value="Added variable to control first-time apply after a destroy" />
-  </component>
-  <component name="masterDetails">
-    <states>
-      <state key="ProjectJDKs.UI">
-        <settings>
-          <last-edited>10</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-    </states>
   </component>
 </project>

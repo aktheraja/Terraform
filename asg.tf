@@ -17,7 +17,7 @@ resource "aws_autoscaling_group" "autoscale_group_1" {
   depends_on = [null_resource.change_detected_ASG1]
   min_size = local.ASG1_min
   max_size = local.ASG1_max
-  desired_capacity = local.new_LC||var.always_switch?local.ASG1_max:null
+  desired_capacity = local.new_LC||var.always_switch||var.first_time_create?local.ASG1_max:null
   wait_for_elb_capacity = local.ASG1_max
   tag {
     key = "Name"
@@ -45,7 +45,7 @@ resource "aws_autoscaling_group" "autoscale_group_2" {
   vpc_zone_identifier  = [aws_subnet.private_subnet2.id, aws_subnet.private_subnet1.id]
   min_size = local.ASG2_min
   max_size = local.ASG2_max
-  desired_capacity = local.new_LC||var.always_switch?local.ASG2_max:null
+  desired_capacity = local.new_LC||var.always_switch||var.first_time_create?local.ASG2_max:null
   wait_for_elb_capacity = local.ASG2_max
   depends_on = [null_resource.change_detected_ASG2]
   tag {
