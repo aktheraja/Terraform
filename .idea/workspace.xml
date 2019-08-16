@@ -2,9 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4b6f48d6-8763-4452-812f-ad7cc2a2f1e8" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.ASG1Active.txt" beforeDir="false" afterPath="$PROJECT_DIR$/.ASG1Active.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/null_resources.tf" beforeDir="false" afterPath="$PROJECT_DIR$/null_resources.tf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/variables.tf" beforeDir="false" afterPath="$PROJECT_DIR$/variables.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/attchmnt_checkhealth.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/check_health.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.sh" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -119,7 +122,14 @@
       <option name="project" value="LOCAL" />
       <updated>1565940109580</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Added variable to control first-time apply after a destroy">
+      <created>1565976212452</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1565976212453</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -145,7 +155,8 @@
     <MESSAGE value="AWS CLI Instance running state check working" />
     <MESSAGE value="bluegreen with 2 ASGs working with manual changes to ASG sizes" />
     <MESSAGE value="Automated switching working great...still have to test certain scenarios...using three .txt files" />
-    <option name="LAST_COMMIT_MESSAGE" value="Automated switching working great...still have to test certain scenarios...using three .txt files" />
+    <MESSAGE value="Added variable to control first-time apply after a destroy" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added variable to control first-time apply after a destroy" />
   </component>
   <component name="masterDetails">
     <states>
