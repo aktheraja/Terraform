@@ -1,5 +1,10 @@
-resource "null_resource" "change_detected_ASG1" {
 
+//change_detected_ASG1 and change_detected_ASG2 are triggered whenever a new launch config occurs or when always switch is true
+//they perform the provisioner check on which ASG should proceed first. The check is based on the status in the .ASG1Active.txt file
+//They allow the inactive ASG to proceed and hold up the other till the state of .ASG1Active changes
+//bash file check is performed only when a new Launch Config is present or always_switch is true AND it is not not a first_time deployment
+//-------------------------------------------------------------------------------------------------------------------------------------
+resource "null_resource" "change_detected_ASG1" {
   triggers = {
     the_trigger= var.always_switch?timestamp():aws_launch_configuration.autoscale_launch_config1.id
   }
@@ -8,7 +13,6 @@ resource "null_resource" "change_detected_ASG1" {
   provisioner "local-exec" {
     command = (local.new_LC||var.always_switch)&&var.first_time_create==false?"checktoProceed.sh ASG1":"echo blank step"
   }
-
 }
 
 resource "null_resource" "change_detected_ASG2" {
@@ -22,8 +26,8 @@ resource "null_resource" "change_detected_ASG2" {
   provisioner "local-exec" {
     command = (local.new_LC||var.always_switch)&&var.first_time_create==false?"checktoProceed.sh ASG2":"echo blank step"
   }
-
 }
+//-------------------------------------------------------------------------------------------------------------------------------------
 
 resource "null_resource" "set_ASG1_post_status" {
   triggers = {

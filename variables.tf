@@ -13,7 +13,7 @@ variable "deployment_name"{
 }
 
 variable "user_data_file_string"{
-  default = "C:/Users/Default.Default-PC/Downloads/install_apache_server2.sh"
+  default = "C:/Users/Default.Default-PC/Downloads/install_apache_server.sh"
 }
 
 variable "min_asg" {
@@ -45,7 +45,7 @@ variable "always_switch" {
 }
 
 variable "first_time_create" {
-  default = true
+  default = false
 }
 
 locals {
