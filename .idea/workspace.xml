@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4b6f48d6-8763-4452-812f-ad7cc2a2f1e8" name="Default Changelist" comment="">
+    <list default="true" id="5a73262d-554c-498d-ab96-c871882a848d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -10,43 +10,13 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="DefaultGradleProjectSettings">
-    <option name="isMigrated" value="true" />
-  </component>
-  <component name="FavoritesManager">
-    <favorites_list name="Terraform" />
-  </component>
   <component name="Git.Settings">
-    <option name="RECENT_BRANCH_BY_REPOSITORY">
-      <map>
-        <entry key="$PROJECT_DIR$" value="workingversion5.2" />
-      </map>
-    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectId" id="1Opyv3bvMTzeho6gagvYUOmqHr7" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
-    <ConfirmationsSetting value="2" id="Add" />
-  </component>
+  <component name="ProjectId" id="1PZVnw3a8GMH5Oo9c2ONquy2owz" />
   <component name="PropertiesComponent">
-    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="Git.Branch.Popup.ShowAllRemotes" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="TF_FMT" value="false" />
-    <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="JSON" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="project.structure.last.edited" value="Modules" />
-    <property name="project.structure.proportion" value="0.0" />
-    <property name="project.structure.side.proportion" value="0.0" />
-    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
-  </component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\Default.Default-PC\Dropbox\Pason\Terraform" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\Default.Default-PC\Dropbox\Pason\Terraform" />
-    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -65,76 +35,12 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="4b6f48d6-8763-4452-812f-ad7cc2a2f1e8" name="Default Changelist" comment="" />
-      <created>1562080268613</created>
+      <changelist id="5a73262d-554c-498d-ab96-c871882a848d" name="Default Changelist" comment="" />
+      <created>1566081776077</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1562080268613</updated>
+      <updated>1566081776077</updated>
     </task>
-    <task id="LOCAL-00001" summary="Add the name prefix to aws launch config">
-      <created>1562105858897</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1562105858897</updated>
-    </task>
-    <task id="LOCAL-00002" summary="Added starting of an (untested) initial lifecycle hook to ASG">
-      <created>1562272660916</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1562272660916</updated>
-    </task>
-    <task id="LOCAL-00003" summary="Almost works...added createBeforeDestroy to everything">
-      <created>1563576274630</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1563576274630</updated>
-    </task>
-    <task id="LOCAL-00004" summary="still some error with AWS CLI command">
-      <created>1564512234904</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1564512234904</updated>
-    </task>
-    <task id="LOCAL-00005" summary="AWS CLI Instance running state check working">
-      <created>1564896502475</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1564896502475</updated>
-    </task>
-    <task id="LOCAL-00006" summary="bluegreen with 2 ASGs working with manual changes to ASG sizes">
-      <created>1565501573896</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1565501573896</updated>
-    </task>
-    <task id="LOCAL-00007" summary="Automated switching working great...still have to test certain scenarios...using three .txt files">
-      <created>1565940109579</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1565940109580</updated>
-    </task>
-    <task id="LOCAL-00008" summary="Added variable to control first-time apply after a destroy">
-      <created>1565976212452</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1565976212453</updated>
-    </task>
-    <task id="LOCAL-00009" summary="Fix to add var.first_create to design_capacity in ASGs">
-      <created>1565995540600</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1565995540600</updated>
-    </task>
-    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -142,26 +48,10 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State>
-              <option name="COLUMN_ORDER" />
-            </State>
+            <State />
           </value>
         </entry>
       </map>
     </option>
-  </component>
-  <component name="VcsManagerConfiguration">
-    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Add the name prefix to aws launch config" />
-    <MESSAGE value="Added starting of an (untested) initial lifecycle hook to ASG" />
-    <MESSAGE value="Almost works...added createBeforeDestroy to everything" />
-    <MESSAGE value="Null provisioning...still trying...didn't really work" />
-    <MESSAGE value="still some error with AWS CLI command" />
-    <MESSAGE value="AWS CLI Instance running state check working" />
-    <MESSAGE value="bluegreen with 2 ASGs working with manual changes to ASG sizes" />
-    <MESSAGE value="Automated switching working great...still have to test certain scenarios...using three .txt files" />
-    <MESSAGE value="Added variable to control first-time apply after a destroy" />
-    <MESSAGE value="Fix to add var.first_create to design_capacity in ASGs" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix to add var.first_create to design_capacity in ASGs" />
   </component>
 </project>
