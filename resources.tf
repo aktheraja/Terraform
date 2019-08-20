@@ -154,10 +154,13 @@ resource "aws_route_table_association" "subnet2_table_assoc" {
   subnet_id      = aws_subnet.private_subnet2.id
   route_table_id = aws_route_table.route-private2.id
 }
+variable "ami" {
 
+  default = "ami-07669fc90e6e6cc47"
+}
 resource "aws_launch_configuration" "autoscale_launch_config" {
   name_prefix          = "autoscale_launcher-Craig-"
-  image_id        = "ami-07669fc90e6e6cc47"
+  image_id        = var.ami
   instance_type   = "t2.nano"
 //  key_name        = var.ami_key_pair_name
   security_groups = [aws_security_group.security.id]
@@ -168,43 +171,89 @@ resource "aws_launch_configuration" "autoscale_launch_config" {
   lifecycle {create_before_destroy = true}
 }
 
+
+variable "min_asg" {
+  default = 2
+}
+
+variable "des_asg" {
+  default = 3
+}
+
+variable "max_asg" {
+  default = 5
+}
+
+
+variable "min_asg2" {
+  default = 0
+}
+
+variable "des_asg2" {
+  default = 0
+}
+
+variable "max_asg2" {
+  default = 0
+}
+
 resource "aws_autoscaling_group" "autoscale_group_1" {
   name="asg-${aws_launch_configuration.autoscale_launch_config.name}"
   launch_configuration = aws_launch_configuration.autoscale_launch_config.id
   vpc_zone_identifier  = [aws_subnet.private_subnet2.id, aws_subnet.private_subnet1.id]
 
-  initial_lifecycle_hook {
-    lifecycle_transition = "autoscaling:EC2_INSTANCE_LAUNCHING"
-    heartbeat_timeout = 7200
-
-    name = "delay"
-  }
-  min_size = 2
-  max_size = 5
-  desired_capacity = 3
+  min_size = var.min_asg
+  max_size = var.max_asg
+  desired_capacity = var.max_asg
   wait_for_elb_capacity = 3
 
   tag {
     key                 = "Name"
-    value               = "auto_scale"
+    value               = "auto_scale-Craig"
     propagate_at_launch = true
   }
+
   health_check_grace_period = 200
   health_check_type = "ELB"
   //load_balancers = [aws_alb.alb.name]
   lifecycle {create_before_destroy = true}
   enabled_metrics = [
-    "GroupMinSize",
-    "GroupMaxSize",
-    "GroupDesiredCapacity",
+
     "GroupInServiceInstances",
     "GroupTotalInstances"
+
   ]
+  //depends_on = [data.aws_autoscaling_group.autoscale_group_1]
   metrics_granularity="1Minute"
+provisioner "local-exec" {
+  command = "test.sh ${var.max_asg} ${self.name}"
+}
+}
+
+resource "null_resource" "writeASGtoFile" {
+  triggers = {
+    the_trigger= join(",",[aws_autoscaling_group.autoscale_group_1.id, "0"])
+  }
+  depends_on = [aws_autoscaling_attachment.alb_autoscale]
+  lifecycle {create_before_destroy = true}
+  provisioner "local-exec" {
+    command = "echo ${data.aws_autoscaling_group.autoscale_group_1.name}>ASGName.txt"
+  }
+
+}
+
+data "aws_autoscaling_group" "autoscale_group_1" {
+  name = aws_autoscaling_group.autoscale_group_1.name
+
+}
+output "autoscalingname" {
+  value = [data.aws_autoscaling_group.autoscale_group_1.name, aws_alb_target_group.alb_target_group_1.arn]
 
 }
 
 
+
+/*
 resource "aws_autoscaling_policy" "web_policy_up" {
   name = "web_policy_up"
   scaling_adjustment = 1
@@ -212,8 +261,8 @@ resource "aws_autoscaling_policy" "web_policy_up" {
   cooldown = 300
   autoscaling_group_name = "${aws_autoscaling_group.autoscale_group_1.name}"
 //  autoscaling_group_name = "${aws_autoscaling_group.web.name}"
+  lifecycle {create_before_destroy = true}
 }
-
 resource "aws_cloudwatch_metric_alarm" "web_cpu_alarm_up" {
   alarm_name = "web_cpu_alarm_up"
   comparison_operator = "GreaterThanOrEqualToThreshold"
@@ -223,21 +272,22 @@ resource "aws_cloudwatch_metric_alarm" "web_cpu_alarm_up" {
   period = "120"
   statistic = "Average"
   threshold = "60"
-
+  lifecycle {create_before_destroy = true}
   dimensions = {
     AutoScalingGroupName = "${aws_autoscaling_group.autoscale_group_1.name}"
 //    "${aws_autoscaling_group.web.name}"
   }
 
   alarm_description = "This metric monitor EC2 instance CPU utilization"
-  alarm_actions = ["${aws_autoscaling_policy.web_policy_up.arn}"]
+ // alarm_actions = ["${aws_autoscaling_policy.web_policy_up.arn}"]
 }
-
+*/
 resource "aws_alb_target_group" "alb_target_group_1" {
-  name     = "alb-target-group2"
+  name_prefix    = "targp-"
   port     = "80"
   protocol = "HTTP"
   vpc_id   = aws_vpc.vpc_environment.id
+
 
   tags = {
     name = "alb_target_group2"
@@ -247,36 +297,44 @@ resource "aws_alb_target_group" "alb_target_group_1" {
     cookie_duration = 1800
     enabled         = true
   }
-  //slow_start = 120
-  deregistration_delay = 120
+  slow_start = 0
+  deregistration_delay = 30
   health_check {
     healthy_threshold   = 3
     unhealthy_threshold = 3
     timeout             = 2
-    interval            = 5
+    interval            = 15
     path                = "/"
     port                = 80
   }
+  lifecycle {create_before_destroy = true}
 
 }
 
 resource "aws_autoscaling_attachment" "alb_autoscale" {
   alb_target_group_arn   = aws_alb_target_group.alb_target_group_1.arn
   autoscaling_group_name = aws_autoscaling_group.autoscale_group_1.id
+  lifecycle {create_before_destroy = true}
+  provisioner "local-exec" {
+    command = "attchmnt_checkhealth.sh ${chomp(file("C:/Users/Default.Default-PC/Dropbox/Pason/Terraform/ASGName.txt"))} ${aws_alb_target_group.alb_target_group_1.arn}"
+  }
+//${file("C:/Users/Default.Default-PC/Dropbox/Pason/Terraform/ASGName.txt")}
 }
 
 resource "aws_alb" "alb" {
-  name = "alb-Craig"
+  name_prefix = "lbCrg-"
   subnets = [
     aws_subnet.public_subnet1.id,
     aws_subnet.public_subnet2.id]
   security_groups = [
     aws_security_group.security.id]
   internal = false
-  idle_timeout = 60
+
+  idle_timeout = 2
   tags = {
     Name = "alb2"
   }
+  lifecycle {create_before_destroy = true}
 }
 
 resource "aws_alb_listener" "alb_listener" {
@@ -287,6 +345,7 @@ resource "aws_alb_listener" "alb_listener" {
     target_group_arn = aws_alb_target_group.alb_target_group_1.arn
     type             = "forward"
   }
+  lifecycle {create_before_destroy = true}
 }
 
 
