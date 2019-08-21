@@ -2,17 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5a73262d-554c-498d-ab96-c871882a848d" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.ASG1Active.txt" beforeDir="false" afterPath="$PROJECT_DIR$/.ASG1Active.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.UserData.txt" beforeDir="false" afterPath="$PROJECT_DIR$/.UserData.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NAT_and_EIPs.tf" beforeDir="false" afterPath="$PROJECT_DIR$/NAT_and_EIPs.tf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/alb.tf" beforeDir="false" afterPath="$PROJECT_DIR$/alb.tf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/asg.tf" beforeDir="false" afterPath="$PROJECT_DIR$/asg.tf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/checktoProceed.sh" beforeDir="false" afterPath="$PROJECT_DIR$/checktoProceed.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/null_resources.tf" beforeDir="false" afterPath="$PROJECT_DIR$/null_resources.tf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/route_tables.tf" beforeDir="false" afterPath="$PROJECT_DIR$/route_tables.tf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/variables.tf" beforeDir="false" afterPath="$PROJECT_DIR$/variables.tf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vpc.tf" beforeDir="false" afterPath="$PROJECT_DIR$/vpc.tf" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -25,8 +15,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/variables.tf">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="29">
-              <caret line="21" lean-forward="true" selection-start-line="21" selection-end-line="21" />
+            <state relative-caret-position="585">
+              <caret line="39" column="21" lean-forward="true" selection-start-line="39" selection-start-column="21" selection-end-line="39" selection-end-column="21" />
             </state>
           </provider>
         </entry>
@@ -151,6 +141,7 @@
   <component name="PropertiesComponent">
     <property name="Git.Branch.Popup.ShowAllRemotes" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="TF_FMT" value="false" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -175,6 +166,14 @@
       <option name="presentableId" value="Default" />
       <updated>1566081776077</updated>
     </task>
+    <task id="LOCAL-00001" summary="make generic code">
+      <created>1566413161542</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1566413161542</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -194,7 +193,7 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="7" visible="true" weight="0.3488372" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="7" visible="true" weight="0.43023255" />
       <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="9" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -239,6 +238,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="make generic code" />
+    <option name="LAST_COMMIT_MESSAGE" value="make generic code" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/terraform.tfstate.backup">
@@ -329,8 +332,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/variables.tf">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="29">
-          <caret line="21" lean-forward="true" selection-start-line="21" selection-end-line="21" />
+        <state relative-caret-position="585">
+          <caret line="39" column="21" lean-forward="true" selection-start-line="39" selection-start-column="21" selection-end-line="39" selection-end-column="21" />
         </state>
       </provider>
     </entry>
