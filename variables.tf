@@ -9,7 +9,7 @@ variable "ami" {
 }
 
 variable "deployment_name"{
-  default="Terraform-0downtime-BlueGreen"
+  default="CRAIG-Terraform-0downtime-BlueGreen"
 }
 
 variable "user_data_file_string"{
@@ -48,8 +48,25 @@ variable "first_time_create" {
   default = false
 }
 
+//data "aws_launch_configuration" "LC_user_data" {
+//  name = aws_launch_configuration.autoscale_launch_config1.user_data
+//}
+data "aws_autoscaling_group" "test_spec" {
+  name = "asg1-${var.deployment_name}"
+}
+data "aws_launch_configuration" "test" {
+  name = "autoscale_launcher2-${var.deployment_name}"
+}
+
+//output "awsASG2" {
+//  value = data.aws_autoscaling_group.test_spec
+//}
+//output "awsASG" {
+//  value = data.aws_autoscaling_group.test
+//}
+
 locals {
- ASG1_is_active = tobool(chomp(file(".ASG1Active.txt")))
+ ASG1_is_active = data.aws_autoscaling_group.test_spec.max_size==5?true:false//tobool(chomp(file(".ASG1Active.txt")))
  old_user_data =  chomp(file(".UserData.txt"))
  old_ami =  chomp(file(".AMI.txt"))
  new_LC=local.old_user_data!=var.user_data_file_string||local.old_ami!=var.ami?true:false
@@ -61,11 +78,11 @@ locals {
 }
 
 output "old_raw_user_data" {
-  value = local.old_user_data
+  value = data.aws_launch_configuration.test
 }
 
 output "new_raw_user_data" {
-  value = var.user_data_file_string
+  value = aws_launch_configuration.autoscale_launch_config1
 }
 output "ASG1Max" {
   value = local.ASG1_max

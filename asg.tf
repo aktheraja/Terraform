@@ -1,14 +1,12 @@
 //Launch config must have create_before_destroy=true
 resource "aws_launch_configuration" "autoscale_launch_config1" {
-  name_prefix          = "autoscale_launcher-${var.deployment_name}"
+  name        = "autoscale_launcher2-${var.deployment_name}"
   image_id        = var.ami
   instance_type   = var.instance_type
   security_groups = [aws_security_group.security.id]
   enable_monitoring = true
   user_data = file(var.user_data_file_string)
-  lifecycle {
-    create_before_destroy = true
-  }
+lifecycle {create_before_destroy = false}
 }
 
 

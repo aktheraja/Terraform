@@ -2,9 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5a73262d-554c-498d-ab96-c871882a848d" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.AM1.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.AM1_1.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.ASG1Active.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.UserData.txt" beforeDir="false" afterPath="$PROJECT_DIR$/.UserData.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/asg.tf" beforeDir="false" afterPath="$PROJECT_DIR$/asg.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/checktoProceed.sh" beforeDir="false" afterPath="$PROJECT_DIR$/checktoProceed.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/null_resources.tf" beforeDir="false" afterPath="$PROJECT_DIR$/null_resources.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/switchstatus.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/variables.tf" beforeDir="false" afterPath="$PROJECT_DIR$/variables.tf" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -14,12 +20,22 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="workingversion5.3" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1PZVnw3a8GMH5Oo9c2ONquy2owz" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="Git.Branch.Popup.ShowAllRemotes" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="TF_FMT" value="false" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -44,7 +60,25 @@
       <option name="presentableId" value="Default" />
       <updated>1566081776077</updated>
     </task>
+    <task id="LOCAL-00001" summary="Comments added to asg.tf">
+      <created>1566243647504</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1566243647504</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ORDER">
+      <list>
+        <option value="0" />
+        <option value="2" />
+        <option value="3" />
+        <option value="1" />
+      </list>
+    </option>
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -58,5 +92,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="Comments added to asg.tf" />
+    <option name="LAST_COMMIT_MESSAGE" value="Comments added to asg.tf" />
   </component>
 </project>
