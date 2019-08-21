@@ -11,7 +11,7 @@ resource "null_resource" "change_detected_ASG1" {
   depends_on = [aws_launch_configuration.autoscale_launch_config1]
   lifecycle {create_before_destroy = true}
   provisioner "local-exec" {
-    command = (local.new_LC||var.always_switch)&&var.first_time_create==false?"checktoProceed.sh ASG1":"echo blank step"
+    command = (local.new_LC||var.always_switch)&&var.first_time_create==false?"./checktoProceed.sh ASG1":"echo blank step"
   }
 }
 
@@ -24,7 +24,7 @@ resource "null_resource" "change_detected_ASG2" {
     create_before_destroy = true
   }
   provisioner "local-exec" {
-    command = (local.new_LC||var.always_switch)&&var.first_time_create==false?"checktoProceed.sh ASG2":"echo blank step"
+    command = (local.new_LC||var.always_switch)&&var.first_time_create==false?"./checktoProceed.sh ASG2":"echo blank step"
   }
 }
 //-------------------------------------------------------------------------------------------------------------------------------------

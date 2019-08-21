@@ -13,7 +13,7 @@ variable "deployment_name"{
 }
 
 variable "user_data_file_string"{
-  default = "C:/Users/Default.Default-PC/Downloads/install_apache_server.sh"
+  default = "/Users/yujiacui/Desktop/install_apache_server.sh"
 }
 
 variable "min_asg" {
@@ -93,4 +93,7 @@ output "change_to_ASG2" {
 }
 output "first_time_create" {
   value = var.first_time_create
+}
+output "albid" {
+  value = aws_alb.alb.id
 }
