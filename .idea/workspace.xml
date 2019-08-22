@@ -2,17 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5a73262d-554c-498d-ab96-c871882a848d" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.AM1.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.AM1_1.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.UserData.txt" beforeDir="false" afterPath="$PROJECT_DIR$/.UserData.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.AMI.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.UserData.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NAT_and_EIPs.tf" beforeDir="false" afterPath="$PROJECT_DIR$/NAT_and_EIPs.tf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/alb.tf" beforeDir="false" afterPath="$PROJECT_DIR$/alb.tf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/asg.tf" beforeDir="false" afterPath="$PROJECT_DIR$/asg.tf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/checktoProceed.sh" beforeDir="false" afterPath="$PROJECT_DIR$/checktoProceed.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/null_resources.tf" beforeDir="false" afterPath="$PROJECT_DIR$/null_resources.tf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/variables.tf" beforeDir="false" afterPath="$PROJECT_DIR$/variables.tf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vpc.tf" beforeDir="false" afterPath="$PROJECT_DIR$/vpc.tf" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -23,7 +18,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="workingversion5.3" />
+        <entry key="$PROJECT_DIR$" value="workingversion5.4" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -75,7 +70,14 @@
       <option name="project" value="LOCAL" />
       <updated>1566420121405</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Made infrastructure code 'generic' from a merge from workingversion5.3Craig. Added and modified null resources so that code will work without presence of .ASG1Active.txt, provided data resource DO succeed in query.">
+      <created>1566435539247</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1566435539249</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -105,6 +107,7 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="Comments added to asg.tf" />
     <MESSAGE value="added data resource to determine ASGActive status" />
-    <option name="LAST_COMMIT_MESSAGE" value="added data resource to determine ASGActive status" />
+    <MESSAGE value="Made infrastructure code 'generic' from a merge from workingversion5.3Craig. Added and modified null resources so that code will work without presence of .ASG1Active.txt, provided data resource DO succeed in query." />
+    <option name="LAST_COMMIT_MESSAGE" value="Made infrastructure code 'generic' from a merge from workingversion5.3Craig. Added and modified null resources so that code will work without presence of .ASG1Active.txt, provided data resource DO succeed in query." />
   </component>
 </project>
