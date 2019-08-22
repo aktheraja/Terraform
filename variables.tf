@@ -13,7 +13,7 @@ variable "deployment_name"{
 }
 
 variable "user_data_file_string"{
-  default = "/Users/yujiacui/Desktop/install_apache_server.sh"
+  default = "C:/Users/Default.Default-PC/Downloads/install_apache_server.sh"
 }
 
 variable "min_asg" {
@@ -45,6 +45,7 @@ variable "always_switch" {
 }
 
 variable "first_time_create" {
+  description = "By setting to true, disables checktoProceed.sh. Will thus not be a zero downtime while true. Only make true for initial creation."
   default = false
 }
 
@@ -52,11 +53,11 @@ variable "first_time_create" {
 //  name = aws_launch_configuration.autoscale_launch_config1.user_data
 //}
 data "aws_autoscaling_group" "test_spec" {
-  name = "asg1-${var.deployment_name}"
+  name = local.ASG1Name
 }
-data "aws_launch_configuration" "test" {
-  name = "autoscale_launcher2-${var.deployment_name}"
-}
+//data "aws_launch_configuration" "test" {
+//  name = "autoscale_launcher2-${var.deployment_name}"
+//}
 
 //output "awsASG2" {
 //  value = data.aws_autoscaling_group.test_spec
@@ -66,8 +67,10 @@ data "aws_launch_configuration" "test" {
 //}
 
 locals {
+  ASG1Name = "asg1-${var.deployment_name}"
  ASG1_is_active = data.aws_autoscaling_group.test_spec.max_size==5?true:false//tobool(chomp(file(".ASG1Active.txt")))
- old_user_data =  chomp(file(".UserData.txt"))
+
+  old_user_data =  chomp(file(".UserData.txt"))
  old_ami =  chomp(file(".AMI.txt"))
  new_LC=local.old_user_data!=var.user_data_file_string||local.old_ami!=var.ami?true:false
  change_to_ASG_2=(var.always_switch==false&&local.ASG1_is_active==local.new_LC)||(var.always_switch&&local.ASG1_is_active)?true:false
@@ -77,12 +80,12 @@ locals {
  ASG2_min = local.change_to_ASG_2?var.min_asg:0
 }
 
-output "old_raw_user_data" {
-  value = data.aws_launch_configuration.test
-}
+//output "old_raw_user_data" {
+//  value = data.aws_launch_configuration.test
+//}
 
 output "new_raw_user_data" {
-  value = aws_launch_configuration.autoscale_launch_config1
+  value = aws_launch_configuration.autoscale_launch_config1.user_data
 }
 output "ASG1Max" {
   value = local.ASG1_max
@@ -102,15 +105,12 @@ output "always_switch" {
 output "switch_due_to_data" {
   value = local.new_LC
 }
-output "ASG1_is_active" {
-  value = local.ASG1_is_active
-}
+//output "ASG1_is_active" {
+//  value = local.ASG1_is_active
+//}
 output "change_to_ASG2" {
   value = local.change_to_ASG_2
 }
 output "first_time_create" {
   value = var.first_time_create
-}
-output "albid" {
-  value = aws_alb.alb.id
 }

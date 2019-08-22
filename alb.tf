@@ -28,7 +28,7 @@ resource "aws_alb_target_group" "alb_target_group_1" {
 }
 
 resource "aws_alb" "alb" {
-  name_prefix = "lbnik-"
+  name_prefix = "alb-"
 //  subnets = [
 //    aws_subnet.public_subnet1.id,
 //    aws_subnet.public_subnet2.id]
@@ -39,7 +39,7 @@ resource "aws_alb" "alb" {
 
   idle_timeout = 2
   tags = {
-    Name = "alb2"
+    Name = "alb"
   }
   lifecycle {create_before_destroy = true}
 }

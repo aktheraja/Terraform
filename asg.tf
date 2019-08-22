@@ -1,19 +1,19 @@
 //Launch config must have create_before_destroy=true
 resource "aws_launch_configuration" "autoscale_launch_config1" {
-  name_prefix          = "autoscale_launcher_nik-${var.deployment_name}"
+  name_prefix          = "autoscale_launcher-${var.deployment_name}"
   image_id        = var.ami
   instance_type   = var.instance_type
   security_groups = [aws_security_group.security.id]
   enable_monitoring = true
   user_data = file(var.user_data_file_string)
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
   }
 }
 
 
 resource "aws_autoscaling_group" "autoscale_group_1" {
-  name = "asg1-${var.deployment_name}"
+  name = local.ASG1Name
   launch_configuration = aws_launch_configuration.autoscale_launch_config1.id
 //  vpc_zone_identifier = [aws_subnet.private_subnet2.id, aws_subnet.private_subnet1.id]
   vpc_zone_identifier  =aws_subnet.private_subnet.*.id
@@ -25,11 +25,12 @@ resource "aws_autoscaling_group" "autoscale_group_1" {
   wait_for_elb_capacity = local.ASG1_max
   tag {
     key = "Name"
-    value = "ASG1nik-${var.deployment_name}"
+    value = "ASG1-${var.deployment_name}"
     propagate_at_launch = true
   }
   health_check_grace_period = 200
   health_check_type = "ELB"
+  default_cooldown = 60
   //must have create_before_destroy=true
   lifecycle {
     create_before_destroy = true
@@ -58,11 +59,12 @@ resource "aws_autoscaling_group" "autoscale_group_2" {
   depends_on = [null_resource.change_detected_ASG2]
   tag {
     key = "Name"
-    value = "ASG2nik-${var.deployment_name}"
+    value = "ASG2-${var.deployment_name}"
     propagate_at_launch = true
   }
   health_check_grace_period = 200
   health_check_type = "ELB"
+  default_cooldown = 60
   lifecycle {create_before_destroy = true}
   enabled_metrics = var.ASG_enabled_metrics
 }

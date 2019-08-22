@@ -3,7 +3,7 @@ resource "aws_vpc" "vpc_environment" {
   enable_dns_hostnames = true
   enable_dns_support   = true
   tags ={
-    name = "NikVPC"
+    name = "VPC-${var.deployment_name}"
 
   }
 }
@@ -31,7 +31,7 @@ resource "aws_subnet" "public_subnet" {
   availability_zone       = split(",",var.availability_zones)[count.index]
   map_public_ip_on_launch = true
   tags = {
-    Name    = "public subnet-nik${count.index}"
+    Name    = "public subnet-${count.index}"
   }
 }
 
@@ -53,6 +53,6 @@ resource "aws_subnet" "private_subnet" {
   cidr_block        = cidrsubnet(signum(length(aws_vpc.vpc_environment.cidr_block)) == 1 ? aws_vpc.vpc_environment.cidr_block: aws_vpc.vpc_environment.cidr_block, ceil(log(length(var.availability_zones) * 2, 2)), count.index)
   availability_zone = split(",",var.availability_zones)[count.index]
   tags = {
-    Name    = "private subnet-nik${count.index}"
+    Name    = "private subnet-${count.index}"
   }
 }

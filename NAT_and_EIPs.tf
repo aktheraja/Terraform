@@ -46,6 +46,6 @@ resource "aws_eip" "nat_eip" {
     create_before_destroy = true
   }
   tags = {
-    name = "eip-nikky"
+    name = "eip-${var.deployment_name}"
   }
 }
