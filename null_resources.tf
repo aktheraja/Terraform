@@ -11,6 +11,7 @@ resource "null_resource" "pre-update_ASG1_status" {
     command = local.ASG1_is_active?"echo true>.ASG1Active.txt":"echo false>.ASG1Active.txt"
     //(local.new_LC||var.always_switch)&&var.first_time_create==false?"checktoProceed.sh ASG1":"echo blank step"
   }
+
 }
 //change_detected_ASG1 and change_detected_ASG2 are triggered whenever a new launch config occurs or when always switch is true
 //they perform the provisioner check on which ASG should proceed first. The check is based on the status in the .ASG1Active.txt file

@@ -34,7 +34,7 @@ resource "aws_alb" "alb" {
 //    aws_subnet.public_subnet2.id]
   subnets =aws_subnet.public_subnet.*.id
   security_groups = [
-    aws_security_group.security.id]
+    aws_security_group.alb_security.id]
   internal = false
 
   idle_timeout = 2

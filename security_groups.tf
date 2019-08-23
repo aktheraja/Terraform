@@ -5,6 +5,7 @@ resource "aws_security_group" "private_subnesecurity" {
     from_port   = 80
     protocol    = "tcp"
     to_port     = 80
+    security_groups = []
   }
   ingress {
     cidr_blocks = ["0.0.0.0/0"]
@@ -27,12 +28,12 @@ resource "aws_security_group" "private_subnesecurity" {
   }
 }
 
-resource "aws_security_group" "security" {
+resource "aws_security_group" "alb_security" {
   vpc_id = aws_vpc.vpc_environment.id
 
   ingress {
-    cidr_blocks = ["0.0.0.0/0"]
     from_port   = 80
+    cidr_blocks = ["0.0.0.0/0"]
     protocol    = "tcp"
     to_port     = 80
   }

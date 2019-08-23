@@ -13,7 +13,7 @@ variable "deployment_name"{
 }
 
 variable "user_data_file_string"{
-  default = "C:/Users/Default.Default-PC/Downloads/install_apache_server2.sh"
+  default = "C:/Users/Default.Default-PC/Downloads/install_apache_server.sh"
 }
 
 variable "min_asg" {
@@ -49,51 +49,42 @@ variable "first_time_create" {
   default = false
 }
 
-//data "aws_launch_configuration" "LC_user_data" {
-//  name = aws_launch_configuration.autoscale_launch_config1.user_data
-//}
-data "aws_autoscaling_group" "test_spec" {
-  //count=var.first_time_create?0:1
-  name = local.ASG1Name
-}
-data "aws_launch_configuration" "test" {
-  //count=var.first_time_create?0:1
-  name = data.aws_autoscaling_group.test_spec.launch_configuration
+variable "set_to_max" {
+  default = false
 }
 
-//output "awsASG2" {
-//  value = data.aws_autoscaling_group.test_spec
-//}
-//output "awsASG" {
-//  value = data.aws_autoscaling_group.test
-//}
+data "aws_autoscaling_group" "data-ASG1" {
+  count=var.first_time_create?0:1
+  name = local.ASG1Name
+}
+data "aws_autoscaling_group" "data-ASG2" {
+  count=var.first_time_create?0:1
+  name = local.ASG2Name
+}
+
 
 locals {
  ASG1Name = "asg1-${var.deployment_name}"
- ASG1_is_active = data.aws_autoscaling_group.test_spec.max_size==5?true:false//tobool(chomp(file(".ASG1Active.txt")))
- new_LC = data.aws_autoscaling_group.test_spec.launch_configuration==aws_launch_configuration.autoscale_launch_config1.id?false:true
-current_capacity=data.aws_autoscaling_group.test_spec.desired_capacity
-  // old_user_data =  chomp(file(".UserData.txt"))
-// old_ami =  chomp(file(".AMI.txt"))
- //new_LC=local.old_user_data!=var.user_data_file_string||local.old_ami!=var.ami?true:false
- change_to_ASG_2=(var.always_switch==false&&local.ASG1_is_active==local.new_LC)||(var.always_switch&&local.ASG1_is_active)?true:false
+ ASG2Name = "asg2-${var.deployment_name}"
+  ASG_data_present1=lookup(data.aws_autoscaling_group.data-ASG1[0],"desired_capacity","nothing")
+  ASG_data_present2=lookup(data.aws_autoscaling_group.data-ASG2[0],"desired_capacity","nothing")
+  reset_needed = local.ASG_data_present1=="nothing"||local.ASG_data_present1=="nothing"?true:false
+ ASG1_is_active = data.aws_autoscaling_group.data-ASG1[0].desired_capacity!=0?true:false//tobool(chomp(file(".ASG1Active.txt")))
+ new_LC = data.aws_autoscaling_group.data-ASG1[0].launch_configuration==aws_launch_configuration.autoscale_launch_config1.id?false:true
+  //current_capacity=var.set_to_max==true?var.max_asg:data.aws_autoscaling_group.test_spec.desired_capacity
+ change_to_ASG_2=(var.always_switch==false&&local.ASG1_is_active==local.new_LC)||((var.always_switch)&&local.ASG1_is_active)?true:false
   ASG1_min = local.change_to_ASG_2?0:var.min_asg
   ASG1_max = local.change_to_ASG_2?0:var.max_asg
   ASG2_min = local.change_to_ASG_2?var.min_asg:0
   ASG2_max = local.change_to_ASG_2?var.max_asg:0
 }
 
-output "new_LC_present" {
-  value = local.new_LC
+output "old_LC" {
+  value = data.aws_autoscaling_group.data-ASG1[0].launch_configuration
 }
-output "current_LC_full" {
-  value = data.aws_launch_configuration.test.id
-}
-
-output "new_raw_user_data" {
+output "current_LC" {
   value = aws_launch_configuration.autoscale_launch_config1.id
 }
-
 output "ASG1Max" {
   value = local.ASG1_max
 }
@@ -117,4 +108,13 @@ output "change_to_ASG2" {
 }
 output "first_time_create" {
   value = var.first_time_create
+}
+output "reset_needed" {
+  value = local.reset_needed
+}
+output "ASG1_present" {
+  value = local.ASG_data_present1
+}
+output "ASG2_present" {
+  value = local.ASG_data_present2
 }
