@@ -3,7 +3,7 @@
 
 resource "null_resource" "pre-update_ASG1_status" {
   triggers = {
-    the_trigger= var.always_switch?timestamp():aws_launch_configuration.autoscale_launch_config1.id
+    the_trigger= local.force_switch?timestamp():aws_launch_configuration.autoscale_launch_config1.id
   }
  // depends_on = [aws_launch_configuration.autoscale_launch_config1]
   lifecycle {create_before_destroy = true}
@@ -21,25 +21,25 @@ resource "null_resource" "pre-update_ASG1_status" {
 //-------------------------------------------------------------------------------------------------------------------------------------
 resource "null_resource" "change_detected_ASG1" {
   triggers = {
-    the_trigger= var.always_switch?timestamp():aws_launch_configuration.autoscale_launch_config1.id
+    the_trigger= local.force_switch?timestamp():aws_launch_configuration.autoscale_launch_config1.id
   }
   depends_on = [aws_launch_configuration.autoscale_launch_config1, null_resource.pre-update_ASG1_status]
   lifecycle {create_before_destroy = true}
   provisioner "local-exec" {
-    command = (local.new_LC||var.always_switch)&&var.first_time_create==false?"checktoProceed.sh ASG1":"echo blank step"
+    command = (local.new_LC||var.always_switch)&&!local.reset_needed?"checktoProceed.sh ASG1":"echo blank step"
   }
 }
 
 resource "null_resource" "change_detected_ASG2" {
   triggers = {
-    the_trigger= var.always_switch?timestamp():aws_launch_configuration.autoscale_launch_config1.id
+    the_trigger= local.force_switch?timestamp():aws_launch_configuration.autoscale_launch_config1.id
   }
   depends_on = [aws_launch_configuration.autoscale_launch_config1, null_resource.pre-update_ASG1_status]
   lifecycle {
     create_before_destroy = true
   }
   provisioner "local-exec" {
-    command = (local.new_LC||var.always_switch)&&var.first_time_create==false?"checktoProceed.sh ASG2":"echo blank step"
+    command = (local.new_LC||var.always_switch)&&!local.reset_needed?"checktoProceed.sh ASG2":"echo blank step"
   }
 }
 //-------------------------------------------------------------------------------------------------------------------------------------
@@ -62,7 +62,7 @@ resource "null_resource" "change_detected_ASG2" {
 
 resource "null_resource" "set_ASG1_post_status" {
   triggers = {
-    the_trigger= join(",",[aws_autoscaling_group.autoscale_group_1.max_size, "0"])
+    the_trigger= join(",",[aws_autoscaling_group.autoscale_group_1.wait_for_elb_capacity, "0"])
   }
 
   depends_on = [aws_autoscaling_group.autoscale_group_1]

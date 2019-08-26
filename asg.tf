@@ -7,7 +7,7 @@ resource "aws_launch_configuration" "autoscale_launch_config1" {
   enable_monitoring = false
   user_data = file(var.user_data_file_string)
   lifecycle {
-    create_before_destroy = false
+    create_before_destroy = true
   }
   //depends_on = [data.aws_launch_configuration.test]
 }
@@ -27,13 +27,13 @@ resource "aws_launch_configuration" "autoscale_launch_config1" {
 resource "aws_autoscaling_group" "autoscale_group_1" {
   name = local.ASG1Name
   launch_configuration = aws_launch_configuration.autoscale_launch_config1.id
-//  vpc_zone_identifier = [aws_subnet.private_subnet2.id, aws_subnet.private_subnet1.id]
   vpc_zone_identifier  =aws_subnet.private_subnet.*.id
   depends_on = [null_resource.change_detected_ASG1] //always waits for change_detected_ASG1 to perform checktoProceed check
   min_size = local.ASG1_min
   max_size = local.ASG1_max
   //desired_capcity is ignored when there is no new launch config, not creating for first time, or always_switch is false
-  desired_capacity = local.new_LC||var.always_switch||var.first_time_create||local.reset_needed?local.ASG1_max:null
+  desired_capacity = local.new_LC||local.force_switch?local.ASG1_max:null
+  //||local.reset_needed
   wait_for_elb_capacity = local.ASG1_max
   //wait_for_elb_capacity = local.new_LC||var.always_switch||var.first_time_create?local.ASG1_max:null
   tag {
@@ -66,7 +66,8 @@ resource "aws_autoscaling_group" "autoscale_group_2" {
   min_size = local.ASG2_min
   max_size = local.ASG2_max
   //desired_capcity is ignored when there is no new launch config, not creating for first time, or always_switch is false
-  desired_capacity = local.new_LC||var.always_switch||var.first_time_create||local.reset_needed?local.ASG2_max:null
+  desired_capacity = local.new_LC||local.force_switch?local.ASG2_max:null
+  //||local.reset_needed
   //wait_for_elb_capacity = local.new_LC||var.always_switch||var.first_time_create?local.ASG2_max:null
   wait_for_elb_capacity = local.ASG2_max
   //always waits for change_detected_ASG1 to perform checktoProceed check
@@ -92,8 +93,8 @@ resource "aws_autoscaling_attachment" "alb_autoscale_2" {
 
 
 resource "aws_autoscaling_policy" "policy1" {
-
-  name = "asgpolicy1-${null_resource.change_detected_ASG1.id}"
+depends_on = [aws_autoscaling_group.autoscale_group_1]
+  name = "asgpolicy1-${null_resource.set_ASG1_post_status.id}"
   adjustment_type = "ChangeInCapacity"
   autoscaling_group_name = aws_autoscaling_group.autoscale_group_1.name
   policy_type = "TargetTrackingScaling"
@@ -110,7 +111,8 @@ resource "aws_autoscaling_policy" "policy1" {
   }
 }
 resource "aws_autoscaling_policy" "policy2" {
-  name = "asgpolicy2-${null_resource.change_detected_ASG2.id}"
+  depends_on = [aws_autoscaling_group.autoscale_group_2]
+  name = "asgpolicy2-${null_resource.set_ASG2_post_status.id}"
   adjustment_type = "ChangeInCapacity"
   autoscaling_group_name = aws_autoscaling_group.autoscale_group_2.name
   policy_type = "TargetTrackingScaling"

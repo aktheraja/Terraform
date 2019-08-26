@@ -44,40 +44,56 @@ variable "always_switch" {
   default = false
 }
 
-variable "first_time_create" {
-  description = "By setting to true, disables checktoProceed.sh. Will thus not be a zero downtime while true. Only make true for initial creation."
-  default = false
-}
+//variable "first_time_create" {
+//  description = "By setting to true, disables checktoProceed.sh. Will thus not be a zero downtime while true. Only make true for initial creation."
+//default = false
+//}
 
-variable "set_to_max" {
-  default = false
-}
 
 data "aws_autoscaling_group" "data-ASG1" {
-  count=var.first_time_create?0:1
+  count=local.ASG1_present?1:0
   name = local.ASG1Name
 }
 data "aws_autoscaling_group" "data-ASG2" {
-  count=var.first_time_create?0:1
+  count=local.ASG2_present?1:0
   name = local.ASG2Name
 }
+data "aws_autoscaling_groups" "test" {
+  filter {
+    name = "auto-scaling-group"
+    values = [local.ASG2Name, local.ASG1Name]
+  }
 
+}
 
 locals {
- ASG1Name = "asg1-${var.deployment_name}"
- ASG2Name = "asg2-${var.deployment_name}"
-  ASG_data_present1=lookup(data.aws_autoscaling_group.data-ASG1[0],"desired_capacity","nothing")
-  ASG_data_present2=lookup(data.aws_autoscaling_group.data-ASG2[0],"desired_capacity","nothing")
-  reset_needed = local.ASG_data_present1=="nothing"||local.ASG_data_present1=="nothing"?true:false
- ASG1_is_active = data.aws_autoscaling_group.data-ASG1[0].desired_capacity!=0?true:false//tobool(chomp(file(".ASG1Active.txt")))
- new_LC = data.aws_autoscaling_group.data-ASG1[0].launch_configuration==aws_launch_configuration.autoscale_launch_config1.id?false:true
+  ASG1Name = "asg1-${var.deployment_name}"
+  ASG2Name = "asg2-${var.deployment_name}"
+  ASG1_present = contains(data.aws_autoscaling_groups.test.names, local.ASG1Name)
+  ASG2_present = contains(data.aws_autoscaling_groups.test.names, local.ASG2Name)
+  ASG1_capacity = local.ASG1_present?data.aws_autoscaling_group.data-ASG1[0].desired_capacity:-1
+  ASG2_capacity = local.ASG2_present?data.aws_autoscaling_group.data-ASG2[0].desired_capacity:-1
+
+//  ASG1_max_capacity = lookup(data.aws_autoscaling_group.data-ASG1[0],"min_size")==0||lookup(data.aws_autoscaling_group.data-ASG1[0],"min_size")==var.min_asg?data.aws_autoscaling_group.data-ASG1[0].max_size:-1
+//  ASG2_max_capacity = lookup(data.aws_autoscaling_group.data-ASG2[0],"min_size")==0||lookup(data.aws_autoscaling_group.data-ASG2[0],"min_size")==var.min_asg?data.aws_autoscaling_group.data-ASG2[0].max_size:-1
+  //ASG2_current_capacity = lookup(data.aws_autoscaling_group.data-ASG2[0],"desired_capacity",false)?false:true
+  ASGs_present = local.ASG1_present&&local.ASG2_present?true:false
+  bad_setup = (local.ASG1_capacity==0&&local.ASG2_capacity==0)||(local.ASG1_capacity!=0&&local.ASG2_capacity!=0)?true:false
+  reset_needed = !local.ASGs_present||local.bad_setup?true:false
+  force_switch = local.reset_needed||var.always_switch?true:false
+  //reset_needed = (local.ASG1_max_capacity==0&&local.ASG1_max_capacity==0)||local.ASG1_max_capacity==-1||local.ASG2_max_capacity==-1?true:false
+  new_LC=local.ASGs_present?data.aws_autoscaling_group.data-ASG1[0].launch_configuration==aws_launch_configuration.autoscale_launch_config1:false
+//||local.ASG_data_present1=="nothing"||local.ASG_data_present2=="nothing"
+  ASG1_is_active = local.ASG1_capacity!=0&&local.ASG1_capacity!=-1?true:false
+  //new_LC = false//data.aws_autoscaling_group.data-ASG1[0].launch_configuration==aws_launch_configuration.autoscale_launch_config1.id?false:true
   //current_capacity=var.set_to_max==true?var.max_asg:data.aws_autoscaling_group.test_spec.desired_capacity
- change_to_ASG_2=(var.always_switch==false&&local.ASG1_is_active==local.new_LC)||((var.always_switch)&&local.ASG1_is_active)?true:false
+  change_to_ASG_2=(var.always_switch==false&&local.ASG1_is_active==local.new_LC)||((var.always_switch)&&local.ASG1_is_active)?true:false
   ASG1_min = local.change_to_ASG_2?0:var.min_asg
   ASG1_max = local.change_to_ASG_2?0:var.max_asg
   ASG2_min = local.change_to_ASG_2?var.min_asg:0
   ASG2_max = local.change_to_ASG_2?var.max_asg:0
 }
+
 
 output "old_LC" {
   value = data.aws_autoscaling_group.data-ASG1[0].launch_configuration
@@ -106,15 +122,34 @@ output "switch_due_to_data" {
 output "change_to_ASG2" {
   value = local.change_to_ASG_2
 }
-output "first_time_create" {
-  value = var.first_time_create
-}
+//output "first_time_create" {
+//  value = var.first_time_create
+//}
 output "reset_needed" {
   value = local.reset_needed
 }
 output "ASG1_present" {
-  value = local.ASG_data_present1
+  value = local.ASG1_present
 }
 output "ASG2_present" {
-  value = local.ASG_data_present2
+  value = local.ASG2_present
+}
+output "ASG1_capacity" {
+  value = local.ASG1_capacity
+}
+
+output "ASG2_capacity" {
+  value = local.ASG2_capacity
+}
+
+output "ASGsData" {
+  value = data.aws_autoscaling_groups.test
+}
+
+output "filtered_ASGs" {
+  value = data.aws_autoscaling_groups.test.names
+}
+
+output "new_LC" {
+  value = local.new_LC
 }
