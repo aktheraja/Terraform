@@ -82,7 +82,8 @@ locals {
   reset_needed = !local.ASGs_present||local.bad_setup?true:false
   force_switch = local.reset_needed||var.always_switch?true:false
   //reset_needed = (local.ASG1_max_capacity==0&&local.ASG1_max_capacity==0)||local.ASG1_max_capacity==-1||local.ASG2_max_capacity==-1?true:false
-  new_LC=local.ASGs_present?data.aws_autoscaling_group.data-ASG1[0].launch_configuration==aws_launch_configuration.autoscale_launch_config1:false
+  //check_LC = data.aws_autoscaling_group.data-ASG1[0].launch_configuration==aws_launch_configuration.autoscale_launch_config1.id
+  new_LC=local.ASGs_present?data.aws_autoscaling_group.data-ASG1[0].launch_configuration!=aws_launch_configuration.autoscale_launch_config1.id:false
 //||local.ASG_data_present1=="nothing"||local.ASG_data_present2=="nothing"
   ASG1_is_active = local.ASG1_capacity!=0&&local.ASG1_capacity!=-1?true:false
   //new_LC = false//data.aws_autoscaling_group.data-ASG1[0].launch_configuration==aws_launch_configuration.autoscale_launch_config1.id?false:true
@@ -94,7 +95,14 @@ locals {
   ASG2_max = local.change_to_ASG_2?var.max_asg:0
 }
 
+output "ASGsPresent" {
+  value = local.ASGs_present
+}
 
+//output "LC_check" {
+//  value = local.check_LC
+//  //
+//}
 output "old_LC" {
   value = data.aws_autoscaling_group.data-ASG1[0].launch_configuration
 }
