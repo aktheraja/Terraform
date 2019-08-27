@@ -21,12 +21,12 @@ resource "null_resource" "pre-update_ASG1_status" {
 //-------------------------------------------------------------------------------------------------------------------------------------
 resource "null_resource" "change_detected_ASG1" {
   triggers = {
-    the_trigger= local.force_switch?timestamp():aws_launch_configuration.autoscale_launch_config1.id
+    the_trigger = local.force_switch?timestamp():aws_launch_configuration.autoscale_launch_config1.id
   }
   depends_on = [aws_launch_configuration.autoscale_launch_config1, null_resource.pre-update_ASG1_status]
   lifecycle {create_before_destroy = true}
   provisioner "local-exec" {
-    command = (local.new_LC||var.always_switch)&&!local.reset_needed?"checktoProceed.sh ASG1":"echo blank step"
+    command = local.ignore_prov?"echo blank step":"checktoProceed.sh ASG1"
   }
 }
 
@@ -39,7 +39,7 @@ resource "null_resource" "change_detected_ASG2" {
     create_before_destroy = true
   }
   provisioner "local-exec" {
-    command = (local.new_LC||var.always_switch)&&!local.reset_needed?"checktoProceed.sh ASG2":"echo blank step"
+    command = local.ignore_prov?"echo blank step":"checktoProceed.sh ASG2"
   }
 }
 //-------------------------------------------------------------------------------------------------------------------------------------

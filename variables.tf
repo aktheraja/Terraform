@@ -13,7 +13,7 @@ variable "deployment_name"{
 }
 
 variable "user_data_file_string"{
-  default = "C:/Users/Default.Default-PC/Downloads/install_apache_server.sh"
+  default = "C:/Users/Default.Default-PC/Downloads/install_apache_server2.sh"
 }
 
 variable "min_asg" {
@@ -44,11 +44,6 @@ variable "always_switch" {
   default = false
 }
 
-//variable "first_time_create" {
-//  description = "By setting to true, disables checktoProceed.sh. Will thus not be a zero downtime while true. Only make true for initial creation."
-//default = false
-//}
-
 
 data "aws_autoscaling_group" "data-ASG1" {
   count=local.ASG1_present?1:0
@@ -77,18 +72,23 @@ locals {
 //  ASG1_max_capacity = lookup(data.aws_autoscaling_group.data-ASG1[0],"min_size")==0||lookup(data.aws_autoscaling_group.data-ASG1[0],"min_size")==var.min_asg?data.aws_autoscaling_group.data-ASG1[0].max_size:-1
 //  ASG2_max_capacity = lookup(data.aws_autoscaling_group.data-ASG2[0],"min_size")==0||lookup(data.aws_autoscaling_group.data-ASG2[0],"min_size")==var.min_asg?data.aws_autoscaling_group.data-ASG2[0].max_size:-1
   //ASG2_current_capacity = lookup(data.aws_autoscaling_group.data-ASG2[0],"desired_capacity",false)?false:true
-  ASGs_present = local.ASG1_present&&local.ASG2_present?true:false
-  bad_setup = (local.ASG1_capacity==0&&local.ASG2_capacity==0)||(local.ASG1_capacity!=0&&local.ASG2_capacity!=0)?true:false
-  reset_needed = !local.ASGs_present||local.bad_setup?true:false
-  force_switch = local.reset_needed||var.always_switch?true:false
+  ASGs_present = local.ASG1_present&&local.ASG2_present
+  bad_setup = (local.ASG1_capacity==0&&local.ASG2_capacity==0)||(local.ASG1_capacity!=0&&local.ASG2_capacity!=0)
+  reset_needed = !local.ASGs_present||local.bad_setup
+  force_switch = local.reset_needed||var.always_switch
   //reset_needed = (local.ASG1_max_capacity==0&&local.ASG1_max_capacity==0)||local.ASG1_max_capacity==-1||local.ASG2_max_capacity==-1?true:false
   //check_LC = data.aws_autoscaling_group.data-ASG1[0].launch_configuration==aws_launch_configuration.autoscale_launch_config1.id
   new_LC=local.ASGs_present?data.aws_autoscaling_group.data-ASG1[0].launch_configuration!=aws_launch_configuration.autoscale_launch_config1.id:false
 //||local.ASG_data_present1=="nothing"||local.ASG_data_present2=="nothing"
-  ASG1_is_active = local.ASG1_capacity!=0&&local.ASG1_capacity!=-1?true:false
+  ASG1_is_active = local.ASG1_capacity!=0&&local.ASG1_capacity!=-1
+  ASG2_is_active = local.ASG2_capacity!=0&&local.ASG2_capacity!=-1
+  ignore_prov1 = ((!local.ASG1_present||local.ASG1_capacity==0) && (!local.ASG2_present||local.ASG2_capacity==0))
+  ignore_prov2 = ((local.ASG1_max>0&&local.ASG1_is_active) && (local.ASG2_max==0&&!local.ASG2_is_active))||((local.ASG1_max==0&&!local.ASG1_is_active) && (local.ASG2_max>0&&local.ASG2_is_active))
+  ignore_prov = local.ignore_prov1||local.ignore_prov2
   //new_LC = false//data.aws_autoscaling_group.data-ASG1[0].launch_configuration==aws_launch_configuration.autoscale_launch_config1.id?false:true
   //current_capacity=var.set_to_max==true?var.max_asg:data.aws_autoscaling_group.test_spec.desired_capacity
-  change_to_ASG_2=(var.always_switch==false&&local.ASG1_is_active==local.new_LC)||((var.always_switch)&&local.ASG1_is_active)?true:false
+  //change_when_dead = (!local.ASG2_present&&local.ASG1_is_active)
+  change_to_ASG_2=(var.always_switch==false&&local.ASG1_is_active==local.new_LC)||((var.always_switch)&&local.ASG1_is_active)
   ASG1_min = local.change_to_ASG_2?0:var.min_asg
   ASG1_max = local.change_to_ASG_2?0:var.max_asg
   ASG2_min = local.change_to_ASG_2?var.min_asg:0
@@ -160,4 +160,8 @@ output "filtered_ASGs" {
 
 output "new_LC" {
   value = local.new_LC
+}
+
+output "ignore_prov" {
+  value = local.ignore_prov
 }
