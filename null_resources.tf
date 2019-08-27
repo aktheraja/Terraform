@@ -9,7 +9,6 @@ resource "null_resource" "pre-update_ASG1_status" {
   lifecycle {create_before_destroy = true}
   provisioner "local-exec" {
     command = local.ASG1_is_active?"echo true>.ASG1Active.txt":"echo false>.ASG1Active.txt"
-    //(local.new_LC||var.always_switch)&&var.first_time_create==false?"checktoProceed.sh ASG1":"echo blank step"
   }
 
 }
@@ -45,19 +44,6 @@ resource "null_resource" "change_detected_ASG2" {
 //-------------------------------------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------------------------------------
 
-//resource "local_file" "UD_record" {
-//  depends_on = [aws_autoscaling_group.autoscale_group_2, aws_autoscaling_group.autoscale_group_1]
-//  lifecycle {create_before_destroy = false}
-//  content     = data.aws_launch_configuration.LC_user_data
-//  filename = ".UserData_from_datasource.txt"
-//}
-
-//resource "local_file" "AMI_record" {
-//  depends_on = [aws_autoscaling_group.autoscale_group_2, aws_autoscaling_group.autoscale_group_1]
-//  lifecycle {create_before_destroy = false}
-//  content     = data.aws_launch_configuration.LC_AMI
-//  filename = ".AMI_from_data_source.txt"
-//}
 
 
 resource "null_resource" "set_ASG1_post_status" {
@@ -82,25 +68,3 @@ resource "null_resource" "set_ASG2_post_status" {
     command = aws_autoscaling_group.autoscale_group_2.max_size==5?"echo false>.ASG1Active.txt":"echo true>.ASG1Active.txt"
   }
 }
-//resource "null_resource" "update_user_data_and_AMI" {
-//  triggers = {
-//    the_trigger= join(",",[null_resource.change_detected_ASG1.id, null_resource.change_detected_ASG2.id , "0"])
-//  }
-//  depends_on = [aws_autoscaling_group.autoscale_group_2, aws_autoscaling_group.autoscale_group_1]
-//  lifecycle {create_before_destroy = true}
-//  provisioner "local-exec" {
-//    command = "echo ${var.user_data_file_string}>.UserData.txt"
-//  }
-//  provisioner "local-exec" {
-//    command = "echo ${var.ami}>.AMI.txt"
-//  }
-//}
-
-//resource "null_resource" "update_ami" {
-//  triggers = {
-//    the_trigger= join(",",[null_resource.change_detected_ASG1.id, null_resource.change_detected_ASG2.id , "0"])
-//  }
-//  depends_on = [aws_autoscaling_group.autoscale_group_2, aws_autoscaling_group.autoscale_group_1]
-//  lifecycle {create_before_destroy = true}
-//
-//}

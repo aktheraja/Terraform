@@ -9,19 +9,7 @@ resource "aws_launch_configuration" "autoscale_launch_config1" {
   lifecycle {
     create_before_destroy = true
   }
-  //depends_on = [data.aws_launch_configuration.test]
 }
-//resource "aws_launch_configuration" "autoscale_launch_config2" {
-//  name_prefix          = "autoscale_launcher-${var.deployment_name}"
-//  image_id        = var.ami
-//  instance_type   = var.instance_type
-//  security_groups = [aws_security_group.security.id]
-//  enable_monitoring = false
-//  user_data = file(var.user_data_file_string)
-//  lifecycle {
-//    create_before_destroy = true
-//  }
-//}
 
 
 resource "aws_autoscaling_group" "autoscale_group_1" {
@@ -61,13 +49,11 @@ resource "aws_autoscaling_attachment" "alb_autoscale_1" {
 resource "aws_autoscaling_group" "autoscale_group_2" {
   name=local.ASG2Name
   launch_configuration = aws_launch_configuration.autoscale_launch_config1.id
-  //  vpc_zone_identifier  = [aws_subnet.private_subnet2.id, aws_subnet.private_subnet1.id]
   vpc_zone_identifier  =aws_subnet.private_subnet.*.id
   min_size = local.ASG2_min
   max_size = local.ASG2_max
   //desired_capcity is ignored when there is no new launch config, not creating for first time, or always_switch is false
   desired_capacity = local.new_LC||local.force_switch?local.ASG2_max:null
-  //||local.reset_needed
   //wait_for_elb_capacity = local.new_LC||var.always_switch||var.first_time_create?local.ASG2_max:null
   wait_for_elb_capacity = local.ASG2_max
   //always waits for change_detected_ASG1 to perform checktoProceed check
