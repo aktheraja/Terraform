@@ -16,8 +16,8 @@ resource "aws_alb_target_group" "alb_target_group_1" {
   slow_start = 0
   deregistration_delay = 30
   health_check {
-    healthy_threshold   = 3
-    unhealthy_threshold = 3
+    healthy_threshold   = 2
+    unhealthy_threshold = 10
     timeout             = 2
     interval            = 5
     path                = "/"
@@ -34,7 +34,7 @@ resource "aws_alb" "alb" {
 //    aws_subnet.public_subnet2.id]
   subnets =aws_subnet.public_subnet.*.id
   security_groups = [
-    aws_security_group.alb_security.id]
+    aws_security_group.alb_subnetsecurity.id]
   internal = false
 
   idle_timeout = 2

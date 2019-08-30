@@ -3,25 +3,14 @@ resource "aws_launch_configuration" "autoscale_launch_config1" {
   name_prefix          = "autoscale_launcher-${var.deployment_name}"
   image_id        = var.ami
   instance_type   = var.instance_type
-  security_groups = [aws_security_group.alb_security.id]
+  security_groups = [aws_security_group.private_subnetsecurity.id]
   enable_monitoring = false
-  user_data = file(var.user_data_file_string)
+  user_data = !local.reset_needed_switch_cancelled?file(var.user_data_file_string):null
   lifecycle {
     create_before_destroy = true
   }
-  //depends_on = [data.aws_launch_configuration.test]
+  depends_on = [data.aws_autoscaling_groups.test]
 }
-//resource "aws_launch_configuration" "autoscale_launch_config2" {
-//  name_prefix          = "autoscale_launcher-${var.deployment_name}"
-//  image_id        = var.ami
-//  instance_type   = var.instance_type
-//  security_groups = [aws_security_group.security.id]
-//  enable_monitoring = false
-//  user_data = file(var.user_data_file_string)
-//  lifecycle {
-//    create_before_destroy = true
-//  }
-//}
 
 
 resource "aws_autoscaling_group" "autoscale_group_1" {
@@ -31,8 +20,8 @@ resource "aws_autoscaling_group" "autoscale_group_1" {
   depends_on = [null_resource.change_detected_ASG1] //always waits for change_detected_ASG1 to perform checktoProceed check
   min_size = local.ASG1_min
   max_size = local.ASG1_max
-  //desired_capcity is ignored when there is no new launch config, not creating for first time, or always_switch is false
-  desired_capacity = local.new_LC||local.force_switch?local.ASG1_max:null
+  //desired_capcity is ignored when there is no new launch config, no bad setup, no change in max and min, or always_switch is false
+  desired_capacity = local.new_LC||local.force_switch||local.reset_needed_switch_cancelled||local.both_null_or_zero?local.ASG1_max:null
   //||local.reset_needed
   wait_for_elb_capacity = local.ASG1_max
   //wait_for_elb_capacity = local.new_LC||var.always_switch||var.first_time_create?local.ASG1_max:null
@@ -41,9 +30,9 @@ resource "aws_autoscaling_group" "autoscale_group_1" {
     value = "ASG1-${var.deployment_name}"
     propagate_at_launch = true
   }
-  health_check_grace_period = 200
+  health_check_grace_period = 400
   health_check_type = "ELB"
-  default_cooldown = 120
+  default_cooldown = 60
   //must have create_before_destroy=true
   lifecycle {
     create_before_destroy = true
@@ -65,10 +54,8 @@ resource "aws_autoscaling_group" "autoscale_group_2" {
   vpc_zone_identifier  =aws_subnet.private_subnet.*.id
   min_size = local.ASG2_min
   max_size = local.ASG2_max
-  //desired_capcity is ignored when there is no new launch config, not creating for first time, or always_switch is false
-  desired_capacity = local.new_LC||local.force_switch?local.ASG2_max:null
-  //||local.reset_needed
-  //wait_for_elb_capacity = local.new_LC||var.always_switch||var.first_time_create?local.ASG2_max:null
+  //desired_capcity is ignored when there is no new launch config, no bad setup, no change in max and min, or always_switch is false
+  desired_capacity = local.new_LC||local.force_switch||local.reset_needed_switch_cancelled||local.both_null_or_zero?local.ASG2_max:null
   wait_for_elb_capacity = local.ASG2_max
   //always waits for change_detected_ASG1 to perform checktoProceed check
   depends_on = [null_resource.change_detected_ASG2]
@@ -77,9 +64,9 @@ resource "aws_autoscaling_group" "autoscale_group_2" {
     value = "ASG2-${var.deployment_name}"
     propagate_at_launch = true
   }
-  health_check_grace_period = 200
+  health_check_grace_period = 400
   health_check_type = "ELB"
-  default_cooldown = 120
+  default_cooldown = 60
   lifecycle {create_before_destroy = true}
   enabled_metrics = var.ASG_enabled_metrics
 }
@@ -94,6 +81,7 @@ resource "aws_autoscaling_attachment" "alb_autoscale_2" {
 
 resource "aws_autoscaling_policy" "policy1" {
 depends_on = [aws_autoscaling_group.autoscale_group_1]
+  //the name dependency on null_resource.set_ASG2_post_status.id ensure it gets recreated everytime that null resource is triggered
   name = "asgpolicy1-${null_resource.set_ASG1_post_status.id}"
   adjustment_type = "ChangeInCapacity"
   autoscaling_group_name = aws_autoscaling_group.autoscale_group_1.name
@@ -112,6 +100,7 @@ depends_on = [aws_autoscaling_group.autoscale_group_1]
 }
 resource "aws_autoscaling_policy" "policy2" {
   depends_on = [aws_autoscaling_group.autoscale_group_2]
+  //the name dependency on null_resource.set_ASG2_post_status.id ensure it gets recreated everytime that null resource is triggered
   name = "asgpolicy2-${null_resource.set_ASG2_post_status.id}"
   adjustment_type = "ChangeInCapacity"
   autoscaling_group_name = aws_autoscaling_group.autoscale_group_2.name
