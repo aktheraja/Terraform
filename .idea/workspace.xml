@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5a73262d-554c-498d-ab96-c871882a848d" name="Default Changelist" comment="Latest changes to special cases...cancel apply when only one asg that is active to is detected...among other things...">
-      <change beforePath="$PROJECT_DIR$/.ASG1Active.txt" beforeDir="false" afterPath="$PROJECT_DIR$/.ASG1Active.txt" afterDir="false" />
+    <list default="true" id="5a73262d-554c-498d-ab96-c871882a848d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/asg.tf" beforeDir="false" afterPath="$PROJECT_DIR$/asg.tf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/checktoProceed.sh" beforeDir="false" afterPath="$PROJECT_DIR$/checktoProceed.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/null_resources.tf" beforeDir="false" afterPath="$PROJECT_DIR$/null_resources.tf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/security_groups.tf" beforeDir="false" afterPath="$PROJECT_DIR$/security_groups.tf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/variables.tf" beforeDir="false" afterPath="$PROJECT_DIR$/variables.tf" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -113,7 +108,14 @@
       <option name="project" value="LOCAL" />
       <updated>1567179230429</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="modified switch_cancelled conditions to only include one active and two active ASGs. Ignore provisioners now for ANY abnormal setup (added more cases). Better detection of change_capacity_lim to handle when data resource is null.">
+      <created>1567713974433</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1567713974434</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -149,6 +151,7 @@
     <MESSAGE value="Everything seems to be working. Data resources check and automatically detect presence and statuses of ASGs" />
     <MESSAGE value="Critical fixes to bugs in locals due to reversed logic and typos. Still testing all cases but seems working so far..." />
     <MESSAGE value="Latest changes to special cases...cancel apply when only one asg that is active to is detected...among other things..." />
-    <option name="LAST_COMMIT_MESSAGE" value="Latest changes to special cases...cancel apply when only one asg that is active to is detected...among other things..." />
+    <MESSAGE value="modified switch_cancelled conditions to only include one active and two active ASGs. Ignore provisioners now for ANY abnormal setup (added more cases). Better detection of change_capacity_lim to handle when data resource is null." />
+    <option name="LAST_COMMIT_MESSAGE" value="modified switch_cancelled conditions to only include one active and two active ASGs. Ignore provisioners now for ANY abnormal setup (added more cases). Better detection of change_capacity_lim to handle when data resource is null." />
   </component>
 </project>

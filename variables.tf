@@ -116,7 +116,7 @@ locals {
   //also if BOTH ASGs are null or zero, also ignore provisioners
   //since the text file will not be set to true at beginning to allow one ASG to proceed
   //finally, if any ASGs are missing, ignore provisioners
-  ignore_prov = local.ASGs_present?((local.ASG1_max>0&&local.ASG1_is_active) && (local.ASG2_max==0&&!local.ASG2_is_active))||((local.ASG1_max==0&&!local.ASG1_is_active) && (local.ASG2_max>0&&local.ASG2_is_active)) ||local.both_null_or_zero||local.both_non-zero||local.switch_cancelled:false
+  ignore_prov = ((local.ASG1_max>0&&local.ASG1_is_active) && (local.ASG2_max==0&&!local.ASG2_is_active))||((local.ASG1_max==0&&!local.ASG1_is_active) && (local.ASG2_max>0&&local.ASG2_is_active))||local.both_null_or_zero||local.switch_cancelled
   //========================================================================================
   //IMPORTANT LINE: Determines values for each ASG based on a forced_witch, which one is active, and whether there is a new launch config
   change_to_ASG_2=(local.force_switch==false&&local.ASG1_is_active==local.new_LC)||(local.force_switch&&local.ASG1_is_active)
