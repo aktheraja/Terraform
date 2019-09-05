@@ -13,7 +13,7 @@ variable "deployment_name"{
 }
 
 variable "user_data_file_string"{
-  default = "C:/Users/Default.Default-PC/Downloads/install_apache_server.sh"
+  default = "C:/Users/Default.Default-PC/Downloads/install_apache_server2.sh"
 }
 
 variable "min_asg" {
@@ -21,7 +21,7 @@ variable "min_asg" {
 }
 
 variable "max_asg" {
-  default = 4
+  default = 3
 }
 
 
@@ -195,5 +195,5 @@ output "reset_needed_switch_cancelled" {
   value = local.switch_cancelled
 }
 output "WARNING" {
-  value = local.switch_cancelled&&(local.new_LC||var.always_switch)?": DEPLOYMENT/SWITCH CANCELLED DUE TO MISSING ASG ON CLOUD. PLEASE RUN 'terraform apply -vars always_switch-true' TO COMPLETE DEPLOYMENT":null
+  value = local.switch_cancelled&&(local.new_LC_ASG2||local.new_LC_ASG1||var.always_switch)?": DEPLOYMENT/SWITCH CANCELLED DUE TO MISSING ASG ON CLOUD. PLEASE RUN 'terraform apply -vars always_switch-true' TO COMPLETE DEPLOYMENT":null
 }

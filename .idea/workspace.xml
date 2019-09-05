@@ -115,7 +115,14 @@
       <option name="project" value="LOCAL" />
       <updated>1567713974434</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="fixed new bug in ignore provisioners, was not being ignored durign a first-time create">
+      <created>1567716850167</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1567716850167</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -152,6 +159,7 @@
     <MESSAGE value="Critical fixes to bugs in locals due to reversed logic and typos. Still testing all cases but seems working so far..." />
     <MESSAGE value="Latest changes to special cases...cancel apply when only one asg that is active to is detected...among other things..." />
     <MESSAGE value="modified switch_cancelled conditions to only include one active and two active ASGs. Ignore provisioners now for ANY abnormal setup (added more cases). Better detection of change_capacity_lim to handle when data resource is null." />
-    <option name="LAST_COMMIT_MESSAGE" value="modified switch_cancelled conditions to only include one active and two active ASGs. Ignore provisioners now for ANY abnormal setup (added more cases). Better detection of change_capacity_lim to handle when data resource is null." />
+    <MESSAGE value="fixed new bug in ignore provisioners, was not being ignored durign a first-time create" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed new bug in ignore provisioners, was not being ignored durign a first-time create" />
   </component>
 </project>
