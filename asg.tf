@@ -5,32 +5,31 @@ resource "aws_launch_configuration" "autoscale_launch_config1" {
   instance_type   = var.instance_type
   security_groups = [aws_security_group.private_subnetsecurity.id]
   enable_monitoring = false
-  user_data = !local.reset_needed_switch_cancelled?file(var.user_data_file_string):null
+  user_data = file(var.user_data_file_string)
   lifecycle {
     create_before_destroy = true
   }
   depends_on = [data.aws_autoscaling_groups.test]
+
 }
 
 
 resource "aws_autoscaling_group" "autoscale_group_1" {
   name = local.ASG1Name
   launch_configuration = aws_launch_configuration.autoscale_launch_config1.id
-  vpc_zone_identifier  =aws_subnet.private_subnet.*.id
+  vpc_zone_identifier  = aws_subnet.private_subnet.*.id
   depends_on = [null_resource.change_detected_ASG1] //always waits for change_detected_ASG1 to perform checktoProceed check
   min_size = local.ASG1_min
   max_size = local.ASG1_max
-  //desired_capcity is ignored when there is no new launch config, no bad setup, no change in max and min, or always_switch is false
-  desired_capacity = local.new_LC||local.force_switch||local.reset_needed_switch_cancelled||local.both_null_or_zero?local.ASG1_max:null
-  //||local.reset_needed
+  //desired_capcity is set to max value when there is a new launch config, bad setup (switch cancelled), change in max and min, or always_switch is false
+  desired_capacity = local.new_LC||local.force_switch||local.change_capacity_lim||local.both_null_or_zero?local.ASG1_max:null
   wait_for_elb_capacity = local.ASG1_max
-  //wait_for_elb_capacity = local.new_LC||var.always_switch||var.first_time_create?local.ASG1_max:null
   tag {
     key = "Name"
     value = "ASG1-${var.deployment_name}"
     propagate_at_launch = true
   }
-  health_check_grace_period = 400
+  //health_check_grace_period = 400
   health_check_type = "ELB"
   default_cooldown = 60
   //must have create_before_destroy=true
@@ -54,8 +53,8 @@ resource "aws_autoscaling_group" "autoscale_group_2" {
   vpc_zone_identifier  =aws_subnet.private_subnet.*.id
   min_size = local.ASG2_min
   max_size = local.ASG2_max
-  //desired_capcity is ignored when there is no new launch config, no bad setup, no change in max and min, or always_switch is false
-  desired_capacity = local.new_LC||local.force_switch||local.reset_needed_switch_cancelled||local.both_null_or_zero?local.ASG2_max:null
+  //desired_capcity is set to max value when there is a new launch config, bad setup (switch cancelled), change in max and min, or always_switch is false
+  desired_capacity = local.new_LC||local.force_switch||local.change_capacity_lim||local.both_null_or_zero?local.ASG2_max:null
   wait_for_elb_capacity = local.ASG2_max
   //always waits for change_detected_ASG1 to perform checktoProceed check
   depends_on = [null_resource.change_detected_ASG2]
@@ -64,7 +63,7 @@ resource "aws_autoscaling_group" "autoscale_group_2" {
     value = "ASG2-${var.deployment_name}"
     propagate_at_launch = true
   }
-  health_check_grace_period = 400
+  //health_check_grace_period = 400
   health_check_type = "ELB"
   default_cooldown = 60
   lifecycle {create_before_destroy = true}

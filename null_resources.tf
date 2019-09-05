@@ -45,6 +45,28 @@ resource "null_resource" "change_detected_ASG2" {
 }
 //-------------------------------------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------------------------------------
+//
+//resource "null_resource" "ASG1_depends_on" {
+//  count=0
+//  //count = local.ASG1_min==0&&local.ASGs_present?1:0
+//  triggers = {
+//    the_trigger= join(",",[aws_autoscaling_group.autoscale_group_2.desired_capacity, "0"])
+//  }
+//  depends_on = [aws_autoscaling_group.autoscale_group_2]
+//  lifecycle {create_before_destroy = true}
+//}
+//
+//resource "null_resource" "ASG2_depends_on" {
+//  count = 0
+////  count = local.ASG2_min==0&&local.ASGs_present?1:0
+//  triggers = {
+//    the_trigger= join(",",[aws_autoscaling_group.autoscale_group_1.desired_capacity, "0"])
+//  }
+//  depends_on = [aws_autoscaling_group.autoscale_group_1]
+//  lifecycle {create_before_destroy = true}
+//}
+
+
 
 resource "null_resource" "set_ASG1_post_status" {
   triggers = {

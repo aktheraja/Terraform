@@ -21,7 +21,7 @@ variable "min_asg" {
 }
 
 variable "max_asg" {
-  default = 3
+  default = 4
 }
 
 
@@ -63,45 +63,72 @@ data "aws_autoscaling_groups" "test" {
 }
 
 locals {
+  //ASG names
   ASG1Name = "asg1-${var.deployment_name}"
   ASG2Name = "asg2-${var.deployment_name}"
 
+  //retrieve information about each ASG
   ASG1_present = contains(data.aws_autoscaling_groups.test.names, local.ASG1Name)
   ASG2_present = contains(data.aws_autoscaling_groups.test.names, local.ASG2Name)
   ASG1_capacity = local.ASG1_present?data.aws_autoscaling_group.data-ASG1[0].desired_capacity:-1
   ASG2_capacity = local.ASG2_present?data.aws_autoscaling_group.data-ASG2[0].desired_capacity:-1
   ASGs_present = local.ASG1_present&&local.ASG2_present
-
-  both_non-zero = local.ASG1_capacity>0&&local.ASG2_capacity>0
-  both_null_or_zero = ((!local.ASG1_present||local.ASG1_capacity==0) && (!local.ASG2_present||local.ASG2_capacity==0))
-  change_capacity_lim = local.ASGs_present?((data.aws_autoscaling_group.data-ASG1[0].max_size!=var.max_asg||data.aws_autoscaling_group.data-ASG1[0].min_size!=var.min_asg)&&local.ASG1_is_active)||((data.aws_autoscaling_group.data-ASG2[0].max_size!=var.max_asg||data.aws_autoscaling_group.data-ASG2[0].min_size!=var.min_asg)&&local.ASG2_is_active):false
-  only_one_inactive_missing_ASG = ((!local.ASG2_present&&local.ASG1_is_active)||(!local.ASG1_present&&local.ASG2_is_active))
-  reset_needed_switch_cancelled = local.only_one_inactive_missing_ASG||local.both_non-zero
-  force_switch = (var.always_switch||local.change_capacity_lim)&&!local.reset_needed_switch_cancelled
-
-  new_LC_ASG1=local.ASG1_present?data.aws_autoscaling_group.data-ASG1[0].launch_configuration!=aws_launch_configuration.autoscale_launch_config1.id:false
-  new_LC_ASG2=local.ASG2_present?data.aws_autoscaling_group.data-ASG2[0].launch_configuration!=aws_launch_configuration.autoscale_launch_config1.id:false
-  new_LC = (local.new_LC_ASG1||local.new_LC_ASG2)&&!local.reset_needed_switch_cancelled
-
   ASG1_is_active = local.ASG1_capacity!=0&&local.ASG1_capacity!=-1
   ASG2_is_active = local.ASG2_capacity!=0&&local.ASG2_capacity!=-1
 
-  //if BOTH ASGs are null or zero, ignore provisioners since the text file will not be set to true at beginning to allow one ASG to proceed
+  //========================================================================================
+  //test for different abnormal cases
+  //========================================================================================
+  //Checks if ASGs are both missing, both zero or one zero and one missing. This condition is used to ignore provisioners
+  both_null_or_zero = (!local.ASG1_present||local.ASG1_capacity==0) && (!local.ASG2_present||local.ASG2_capacity==0)
+
+  //Checks if there is a change in max and min bounds. Forces a switch if this is detected
+  change_capacity_lim_ASG1 = local.ASG1_present?((data.aws_autoscaling_group.data-ASG1[0].max_size!=var.max_asg||data.aws_autoscaling_group.data-ASG1[0].min_size!=var.min_asg)&&local.ASG1_is_active):false
+  change_capacity_lim_ASG2 = local.ASG2_present?((data.aws_autoscaling_group.data-ASG2[0].max_size!=var.max_asg||data.aws_autoscaling_group.data-ASG2[0].min_size!=var.min_asg)&&local.ASG2_is_active):false
+  change_capacity_lim = local.change_capacity_lim_ASG1||local.change_capacity_lim_ASG2
+
+  //Checks if both ASGs are non-zero. Used to ignore any pending switches so that Terraform can correct the infrastructure first
+  both_non-zero = local.ASG1_capacity>0&&local.ASG2_capacity>0
+
+  //Checks if the ASG that is meant to be zero is missing. Used to ignore any pending switches so that Terraform can correct the infrastructure first
+  only_one_inactive_missing_ASG = ((!local.ASG2_present&&local.ASG1_is_active)||(!local.ASG1_present&&local.ASG2_is_active))
+  //========================================================================================
+
+  //If the inactive ASG is missing or both are non-zero, cancel the switch and allow Terraform to correct the infrastructure first.
+  //The infrastructure must be reset a state with one active and one inactive before switching otherwise the switch could result in downtime
+  switch_cancelled = local.only_one_inactive_missing_ASG||local.both_non-zero
+
+  //If always_switch is set to true or there is a change in capacity,
+  //a switch should be forced regardless of whether a new Launch Config is detected
+  //UNLESS the switch is cancelled based on both non-zero or one zero ASG missing
+  force_switch = (var.always_switch)&&!local.switch_cancelled
+
+  //checks if there is a new Launch config based on whichever is active.
+  //New Launch config is set to false when the switch is cancelled based on both non-zero or one zero ASG missing
+  new_LC_ASG1 = local.ASG1_present?data.aws_autoscaling_group.data-ASG1[0].launch_configuration!=aws_launch_configuration.autoscale_launch_config1.id:false
+  new_LC_ASG2 = local.ASG2_present?data.aws_autoscaling_group.data-ASG2[0].launch_configuration!=aws_launch_configuration.autoscale_launch_config1.id:false
+  new_LC = (local.new_LC_ASG1||local.new_LC_ASG2)&&!local.switch_cancelled
+
+  //========================================================================================
+  //Conditions to ignore provisioners
+  //========================================================================================
   //if non-active ASG and active ASG are not changing, ignore provisioners
-  ignore_prov2 = ((local.ASG1_max>0&&local.ASG1_is_active) && (local.ASG2_max==0&&!local.ASG2_is_active))||((local.ASG1_max==0&&!local.ASG1_is_active) && (local.ASG2_max>0&&local.ASG2_is_active))
-  ignore_prov = local.both_null_or_zero||local.ignore_prov2||local.both_non-zero
+  //also if BOTH ASGs are null or zero, also ignore provisioners
+  //since the text file will not be set to true at beginning to allow one ASG to proceed
+  //finally, if any ASGs are missing, ignore provisioners
+  ignore_prov = local.ASGs_present?((local.ASG1_max>0&&local.ASG1_is_active) && (local.ASG2_max==0&&!local.ASG2_is_active))||((local.ASG1_max==0&&!local.ASG1_is_active) && (local.ASG2_max>0&&local.ASG2_is_active)) ||local.both_null_or_zero||local.both_non-zero||local.switch_cancelled:false
+  //========================================================================================
+  //IMPORTANT LINE: Determines values for each ASG based on a forced_witch, which one is active, and whether there is a new launch config
+  change_to_ASG_2=(local.force_switch==false&&local.ASG1_is_active==local.new_LC)||(local.force_switch&&local.ASG1_is_active)
 
-  change_to_ASG_2=(var.always_switch==false&&local.ASG1_is_active==local.new_LC)||((var.always_switch)&&local.ASG1_is_active&&!local.reset_needed_switch_cancelled)
-
+  //set values of ASGs for that switch
   ASG1_min = local.change_to_ASG_2?0:var.min_asg
   ASG1_max = local.change_to_ASG_2?0:var.max_asg
   ASG2_min = local.change_to_ASG_2?var.min_asg:0
   ASG2_max = local.change_to_ASG_2?var.max_asg:0
+
 }
 
-output "ASGsPresent" {
-  value = local.ASGs_present
-}
 
 output "change_capacity_limits" {
   value = local.change_capacity_lim
@@ -138,9 +165,7 @@ output "change_to_ASG2" {
 output "both_non-zero_ASGs_was_detected" {
   value = local.both_non-zero
 }
-output "ignoreprov2_changes_on_vals" {
-  value = local.ignore_prov2
-}
+
 output "both_null_or_zero" {
   value = local.both_null_or_zero
 }
@@ -166,10 +191,9 @@ output "ignore_prov_total" {
   value = local.ignore_prov
 }
 
-output "MESSAGE" {
-  value = local.reset_needed_switch_cancelled&&(local.new_LC_ASG1||local.new_LC_ASG2||var.always_switch)?"DEPLOYMENT/SWITCH CANCELLED DUE TO MISSING ASG ON CLOUD. PLEASE RUN 'terraform apply' AGAIN TO PERFORM DEPLOYMENT/SWITCH":null
-}
-
 output "reset_needed_switch_cancelled" {
-  value = local.reset_needed_switch_cancelled
+  value = local.switch_cancelled
+}
+output "WARNING" {
+  value = local.switch_cancelled&&(local.new_LC||var.always_switch)?": DEPLOYMENT/SWITCH CANCELLED DUE TO MISSING ASG ON CLOUD. PLEASE RUN 'terraform apply -vars always_switch-true' TO COMPLETE DEPLOYMENT":null
 }
