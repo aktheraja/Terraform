@@ -83,8 +83,8 @@ locals {
   both_null_or_zero = (!local.ASG1_present||local.ASG1_capacity==0) && (!local.ASG2_present||local.ASG2_capacity==0)
 
   //Checks if there is a change in max and min bounds. Forces a switch if this is detected
-  change_capacity_lim_ASG1 = local.ASG1_present?((data.aws_autoscaling_group.data-ASG1[0].max_size!=var.max_asg||data.aws_autoscaling_group.data-ASG1[0].min_size!=var.min_asg)&&local.ASG1_is_active):false
-  change_capacity_lim_ASG2 = local.ASG2_present?((data.aws_autoscaling_group.data-ASG2[0].max_size!=var.max_asg||data.aws_autoscaling_group.data-ASG2[0].min_size!=var.min_asg)&&local.ASG2_is_active):false
+  change_capacity_lim_ASG1 = local.ASG1_present?(local.ASG1_capacity<var.min_asg||local.ASG1_capacity>var.max_asg)&&local.ASG1_is_active:false
+  change_capacity_lim_ASG2 = local.ASG2_present?(local.ASG2_capacity<var.min_asg||local.ASG2_capacity>var.max_asg)&&local.ASG2_is_active:false
   change_capacity_lim = local.change_capacity_lim_ASG1||local.change_capacity_lim_ASG2
 
   //Checks if both ASGs are non-zero. Used to ignore any pending switches so that Terraform can correct the infrastructure first
@@ -118,7 +118,7 @@ locals {
   //finally, if any ASGs are missing, ignore provisioners
   ignore_prov = ((local.ASG1_max>0&&local.ASG1_is_active) && (local.ASG2_max==0&&!local.ASG2_is_active))||((local.ASG1_max==0&&!local.ASG1_is_active) && (local.ASG2_max>0&&local.ASG2_is_active))||local.both_null_or_zero||local.switch_cancelled
   //========================================================================================
-  //IMPORTANT LINE: Determines values for each ASG based on a forced_witch, which one is active, and whether there is a new launch config
+  //IMPORTANT LINE: Determines values for each ASG based on a forced_switch, which one is active, and whether there is a new launch config
   change_to_ASG_2=(local.force_switch==false&&local.ASG1_is_active==local.new_LC)||(local.force_switch&&local.ASG1_is_active)
 
   //set values of ASGs for that switch
@@ -195,5 +195,5 @@ output "reset_needed_switch_cancelled" {
   value = local.switch_cancelled
 }
 output "WARNING" {
-  value = local.switch_cancelled&&(local.new_LC_ASG2||local.new_LC_ASG1||var.always_switch)?": DEPLOYMENT/SWITCH CANCELLED DUE TO MISSING ASG ON CLOUD. PLEASE RUN 'terraform apply -var always_switch=true' TO COMPLETE DEPLOYMENT":null
+  value = local.switch_cancelled&&(local.new_LC_ASG2||local.new_LC_ASG1||var.always_switch)?": DEPLOYMENT/SWITCH CANCELLED DUE TO MISSING OR DUPLICATE ASG ON CLOUD. PLEASE RUN 'terraform apply -var always_switch=true' TO COMPLETE DEPLOYMENT":null
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5a73262d-554c-498d-ab96-c871882a848d" name="Default Changelist" comment="">
+    <list default="true" id="5a73262d-554c-498d-ab96-c871882a848d" name="Default Changelist" comment="fixed content of error message again">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/variables.tf" beforeDir="false" afterPath="$PROJECT_DIR$/variables.tf" afterDir="false" />
     </list>
@@ -122,7 +122,28 @@
       <option name="project" value="LOCAL" />
       <updated>1567716850167</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="small change to fix error message showing up when switch cancelled and new LC">
+      <created>1567719100097</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1567719100097</updated>
+    </task>
+    <task id="LOCAL-00012" summary="fixed content of error message">
+      <created>1567719169266</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1567719169266</updated>
+    </task>
+    <task id="LOCAL-00013" summary="fixed content of error message again">
+      <created>1567719210682</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1567719210682</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -160,6 +181,9 @@
     <MESSAGE value="Latest changes to special cases...cancel apply when only one asg that is active to is detected...among other things..." />
     <MESSAGE value="modified switch_cancelled conditions to only include one active and two active ASGs. Ignore provisioners now for ANY abnormal setup (added more cases). Better detection of change_capacity_lim to handle when data resource is null." />
     <MESSAGE value="fixed new bug in ignore provisioners, was not being ignored durign a first-time create" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed new bug in ignore provisioners, was not being ignored durign a first-time create" />
+    <MESSAGE value="small change to fix error message showing up when switch cancelled and new LC" />
+    <MESSAGE value="fixed content of error message" />
+    <MESSAGE value="fixed content of error message again" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed content of error message again" />
   </component>
 </project>
