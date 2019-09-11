@@ -84,15 +84,18 @@ locals {
   //Checks if ASGs are both missing, both zero or one zero and one missing. This condition is used to ignore provisioners
   both_null_or_zero = (!local.ASG1_present||local.ASG1_capacity==0) && (!local.ASG2_present||local.ASG2_capacity==0)
 
-  //Checks if there is a change in max and min bounds. Forces a switch if this is detected
+  //Checks if there the new max is less than current capacity or the new min bound exceeds the current capacity.
+  //Will force a switch if this is detected
   change_capacity_lim_ASG1 = local.ASG1_present?(local.ASG1_capacity<var.min_asg||local.ASG1_capacity>var.max_asg)&&local.ASG1_is_active:false
   change_capacity_lim_ASG2 = local.ASG2_present?(local.ASG2_capacity<var.min_asg||local.ASG2_capacity>var.max_asg)&&local.ASG2_is_active:false
   change_capacity_lim = local.change_capacity_lim_ASG1||local.change_capacity_lim_ASG2
 
-  //Checks if both ASGs are non-zero. Used to ignore any pending switches so that Terraform can correct the infrastructure first
+  //Checks if both ASGs are non-zero.
+  //Used to ignore any pending switches so that Terraform can correct the infrastructure first
   both_non-zero = local.ASG1_capacity>0&&local.ASG2_capacity>0
 
-  //Checks if the ASG that is meant to be zero is missing. Used to ignore any pending switches so that Terraform can correct the infrastructure first
+  //Checks if the ASG that is meant to be zero is missing.
+  //Used to ignore any pending switches so that Terraform can correct the infrastructure first
   only_one_inactive_missing_ASG = ((!local.ASG2_present&&local.ASG1_is_active)||(!local.ASG1_present&&local.ASG2_is_active))
   //========================================================================================
 
