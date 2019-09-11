@@ -39,8 +39,6 @@ resource "aws_security_group_rule" "egress_for_instance" {
   lifecycle {create_before_destroy = true}
 }
 
-
-
 //===================================================================
 //ALB security group rules
 //===================================================================
@@ -82,4 +80,3 @@ resource "aws_security_group_rule" "ingress_for_alb_icmp" {
   cidr_blocks = ["0.0.0.0/0"]
   lifecycle {create_before_destroy = true}
 }
-

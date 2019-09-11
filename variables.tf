@@ -5,7 +5,7 @@ variable "availability_zones" {
 }
 
 variable "ami" {
-  default = "ami-07669fc90e6e6cc47"
+  default = "ami-08d489468314a58df"
 }
 
 variable "deployment_name"{
@@ -13,7 +13,7 @@ variable "deployment_name"{
 }
 
 variable "user_data_file_string"{
-  default = "C:/Users/Default.Default-PC/Downloads/install_apache_server2.sh"
+  default = "C:/Users/Default.Default-PC/Downloads/install_apache_server.sh"
 }
 
 variable "min_asg" {
@@ -23,10 +23,12 @@ variable "min_asg" {
 variable "max_asg" {
   default = 3
 }
+variable "ASG_default_cooldown" {
+  default = 30
+}
 
-
-variable "ASG_health_check_grace"{
-  default = 200
+variable "ASGAverageCPUUtilization_target_amount" {
+  default = 20.0
 }
 
 variable "ASG_health_check_type"{
@@ -128,72 +130,79 @@ locals {
   ASG2_max = local.change_to_ASG_2?var.max_asg:0
 
 }
+//==========================================================
+// DO NOT COMMENT OUT THE WARNING OUTPUT BELOW
+//==========================================================
 
-
-output "change_capacity_limits" {
-  value = local.change_capacity_lim
-}
-
-output "old_LC" {
-  value = local.ASG1_present?data.aws_autoscaling_group.data-ASG1[0].launch_configuration:data.aws_autoscaling_group.data-ASG2[0].launch_configuration
-}
-output "current_LC" {
-  value = aws_launch_configuration.autoscale_launch_config1.id
-}
-output "ASG1Max_current" {
-  value = local.ASG1_max
-}
-output "ASG1Min_current" {
-  value = local.ASG1_min
-}
-output "ASG2Max_current" {
-  value = local.ASG2_max
-}
-output "ASG2Min_current" {
-  value = local.ASG2_min
-}
-output "always_switch" {
-  value = var.always_switch
-}
-output "switch_due_to_data" {
-  value = local.new_LC
-}
-output "change_to_ASG2" {
-  value = local.change_to_ASG_2
-}
-
-output "both_non-zero_ASGs_was_detected" {
-  value = local.both_non-zero
-}
-
-output "both_null_or_zero" {
-  value = local.both_null_or_zero
-}
-output "ASG1_was_present" {
-  value = local.ASG1_present
-}
-output "ASG2_was_present" {
-  value = local.ASG2_present
-}
-output "ASG1_capacity_was" {
-  value = local.ASG1_capacity
-}
-
-output "ASG2_capacity_was" {
-  value = local.ASG2_capacity
-}
-
-output "filtered_ASGs" {
-  value = data.aws_autoscaling_groups.test.names
-}
-
-output "ignore_prov_total" {
-  value = local.ignore_prov
-}
-
-output "reset_needed_switch_cancelled" {
-  value = local.switch_cancelled
-}
 output "WARNING" {
   value = local.switch_cancelled&&(local.new_LC_ASG2||local.new_LC_ASG1||var.always_switch)?": DEPLOYMENT/SWITCH CANCELLED DUE TO MISSING OR DUPLICATE ASG ON CLOUD. PLEASE RUN 'terraform apply -var always_switch=true' TO COMPLETE DEPLOYMENT":null
 }
+//==========================================================
+//UNCOMMENT THE OUTPUTS BELOW TO DEBUG
+//==========================================================
+
+//output "change_capacity_limits" {
+//  value = local.change_capacity_lim
+//}
+//
+//output "old_LC" {
+//  value = local.ASG1_present?data.aws_autoscaling_group.data-ASG1[0].launch_configuration:data.aws_autoscaling_group.data-ASG2[0].launch_configuration
+//}
+//output "current_LC" {
+//  value = aws_launch_configuration.autoscale_launch_config1.id
+//}
+//output "ASG1Max_current" {
+//  value = local.ASG1_max
+//}
+//output "ASG1Min_current" {
+//  value = local.ASG1_min
+//}
+//output "ASG2Max_current" {
+//  value = local.ASG2_max
+//}
+//output "ASG2Min_current" {
+//  value = local.ASG2_min
+//}
+//output "always_switch" {
+//  value = var.always_switch
+//}
+//output "switch_due_to_data" {
+//  value = local.new_LC
+//}
+//output "change_to_ASG2" {
+//  value = local.change_to_ASG_2
+//}
+//
+//output "both_non-zero_ASGs_was_detected" {
+//  value = local.both_non-zero
+//}
+//
+//output "both_null_or_zero" {
+//  value = local.both_null_or_zero
+//}
+//output "ASG1_was_present" {
+//  value = local.ASG1_present
+//}
+//output "ASG2_was_present" {
+//  value = local.ASG2_present
+//}
+//output "ASG1_capacity_was" {
+//  value = local.ASG1_capacity
+//}
+//
+//output "ASG2_capacity_was" {
+//  value = local.ASG2_capacity
+//}
+//
+//output "filtered_ASGs" {
+//  value = data.aws_autoscaling_groups.test.names
+//}
+//
+//output "ignore_prov_total" {
+//  value = local.ignore_prov
+//}
+//
+//output "reset_needed_switch_cancelled" {
+//  value = local.switch_cancelled
+//}
+

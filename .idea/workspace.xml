@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5a73262d-554c-498d-ab96-c871882a848d" name="Default Changelist" comment="fixed content of error message again">
+    <list default="true" id="5a73262d-554c-498d-ab96-c871882a848d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/asg.tf" beforeDir="false" afterPath="$PROJECT_DIR$/asg.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/null_resources.tf" beforeDir="false" afterPath="$PROJECT_DIR$/null_resources.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/security_groups.tf" beforeDir="false" afterPath="$PROJECT_DIR$/security_groups.tf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/variables.tf" beforeDir="false" afterPath="$PROJECT_DIR$/variables.tf" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -14,7 +17,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="errorIn5.6" />
+        <entry key="$PROJECT_DIR$" value="workingversion5.6" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -28,6 +31,7 @@
     <property name="Git.Branch.Popup.ShowAllRemotes" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="TF_FMT" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../IdeaProjects/linkedsetexample" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -143,7 +147,14 @@
       <option name="project" value="LOCAL" />
       <updated>1567719210682</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="fixed edge cases for change in capacity limits, when 1.) the new max is smaller than the current 2.) the new min exceeds the current. In both these cases, instances are either created or destroyed so the esired value must be set ot the max to match the wait_for_elb_capacity, which is also at max value.">
+      <created>1567790385031</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1567790385031</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -184,6 +195,7 @@
     <MESSAGE value="small change to fix error message showing up when switch cancelled and new LC" />
     <MESSAGE value="fixed content of error message" />
     <MESSAGE value="fixed content of error message again" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed content of error message again" />
+    <MESSAGE value="fixed edge cases for change in capacity limits, when 1.) the new max is smaller than the current 2.) the new min exceeds the current. In both these cases, instances are either created or destroyed so the esired value must be set ot the max to match the wait_for_elb_capacity, which is also at max value." />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed edge cases for change in capacity limits, when 1.) the new max is smaller than the current 2.) the new min exceeds the current. In both these cases, instances are either created or destroyed so the esired value must be set ot the max to match the wait_for_elb_capacity, which is also at max value." />
   </component>
 </project>

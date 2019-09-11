@@ -70,7 +70,7 @@ resource "null_resource" "change_detected_ASG2" {
 
 resource "null_resource" "set_ASG1_post_status" {
   triggers = {
-    the_trigger= join(",",[aws_autoscaling_group.autoscale_group_1.desired_capacity, "0"])
+    the_trigger= join(",",[aws_autoscaling_group.autoscale_group_1.max_size, aws_autoscaling_group.autoscale_group_1.min_size])
   }
 
   depends_on = [aws_autoscaling_group.autoscale_group_1]
@@ -82,7 +82,7 @@ resource "null_resource" "set_ASG1_post_status" {
 }
 resource "null_resource" "set_ASG2_post_status" {
   triggers = {
-    the_trigger= join(",",[aws_autoscaling_group.autoscale_group_2.desired_capacity, "0"])
+    the_trigger= join(",",[aws_autoscaling_group.autoscale_group_2.max_size, aws_autoscaling_group.autoscale_group_2.min_size])
   }
   depends_on = [aws_autoscaling_group.autoscale_group_2]
   lifecycle {create_before_destroy = true}

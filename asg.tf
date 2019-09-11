@@ -1,4 +1,4 @@
-//Launch config must have create_before_destroy=true
+
 resource "aws_launch_configuration" "autoscale_launch_config1" {
   name_prefix          = "autoscale_launcher-${var.deployment_name}"
   image_id        = var.ami
@@ -29,9 +29,9 @@ resource "aws_autoscaling_group" "autoscale_group_1" {
     value = "ASG1-${var.deployment_name}"
     propagate_at_launch = true
   }
-  //health_check_grace_period = 400
+
   health_check_type = "ELB"
-  default_cooldown = 60
+  default_cooldown = var.ASG_default_cooldown
   //must have create_before_destroy=true
   lifecycle {
     create_before_destroy = true
@@ -63,9 +63,8 @@ resource "aws_autoscaling_group" "autoscale_group_2" {
     value = "ASG2-${var.deployment_name}"
     propagate_at_launch = true
   }
-  //health_check_grace_period = 400
   health_check_type = "ELB"
-  default_cooldown = 60
+  default_cooldown = var.ASG_default_cooldown
   lifecycle {create_before_destroy = true}
   enabled_metrics = var.ASG_enabled_metrics
 }
@@ -89,7 +88,7 @@ depends_on = [aws_autoscaling_group.autoscale_group_1]
     predefined_metric_specification {
       predefined_metric_type = "ASGAverageCPUUtilization"
     }
-    target_value = 20.0
+    target_value = var.ASGAverageCPUUtilization_target_amount
   }
   lifecycle {
     //must have create_before_destroy=false to ensure policy is destroyed first while depoyment is ongoing
@@ -108,7 +107,7 @@ resource "aws_autoscaling_policy" "policy2" {
     predefined_metric_specification {
       predefined_metric_type = "ASGAverageCPUUtilization"
     }
-    target_value = 20.0
+    target_value = var.ASGAverageCPUUtilization_target_amount
   }
   lifecycle {
     //must have create_before_destroy=false to ensure policy is destroyed first while depoyment is ongoing
