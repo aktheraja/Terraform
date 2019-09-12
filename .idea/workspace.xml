@@ -1,7 +1,215 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="width" value="923" />
-    <option name="height" value="728" />
+  <component name="ChangeListManager">
+    <list default="true" id="5a73262d-554c-498d-ab96-c871882a848d" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/null_resources.tf" beforeDir="false" afterPath="$PROJECT_DIR$/null_resources.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/variables.tf" beforeDir="false" afterPath="$PROJECT_DIR$/variables.tf" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="workingversion5.6" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1PZVnw3a8GMH5Oo9c2ONquy2owz" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="Git.Branch.Popup.ShowAllRemotes" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="TF_FMT" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../IdeaProjects/linkedsetexample" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="5a73262d-554c-498d-ab96-c871882a848d" name="Default Changelist" comment="" />
+      <created>1566081776077</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1566081776077</updated>
+    </task>
+    <task id="LOCAL-00001" summary="Comments added to asg.tf">
+      <created>1566243647504</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1566243647504</updated>
+    </task>
+    <task id="LOCAL-00002" summary="added data resource to determine ASGActive status">
+      <created>1566420121404</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1566420121405</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Made infrastructure code 'generic' from a merge from workingversion5.3Craig. Added and modified null resources so that code will work without presence of .ASG1Active.txt, provided data resource DO succeed in query.">
+      <created>1566435539247</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1566435539249</updated>
+    </task>
+    <task id="LOCAL-00004" summary="data resources replace all text files">
+      <created>1566511822629</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1566511822629</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Introduced failsafe for data resource...STILL NOT FULLY WORKING">
+      <created>1566601286454</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1566601286454</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Everything seems to be working. Data resources check and automatically detect presence and statuses of ASGs">
+      <created>1566857799385</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1566857799385</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Critical fixes to bugs in locals due to reversed logic and typos. Still testing all cases but seems working so far...">
+      <created>1566864611377</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1566864611377</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Latest changes to special cases...cancel apply when only one asg that is active to is detected...among other things...">
+      <created>1567179230427</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1567179230429</updated>
+    </task>
+    <task id="LOCAL-00009" summary="modified switch_cancelled conditions to only include one active and two active ASGs. Ignore provisioners now for ANY abnormal setup (added more cases). Better detection of change_capacity_lim to handle when data resource is null.">
+      <created>1567713974433</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1567713974434</updated>
+    </task>
+    <task id="LOCAL-00010" summary="fixed new bug in ignore provisioners, was not being ignored durign a first-time create">
+      <created>1567716850167</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1567716850167</updated>
+    </task>
+    <task id="LOCAL-00011" summary="small change to fix error message showing up when switch cancelled and new LC">
+      <created>1567719100097</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1567719100097</updated>
+    </task>
+    <task id="LOCAL-00012" summary="fixed content of error message">
+      <created>1567719169266</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1567719169266</updated>
+    </task>
+    <task id="LOCAL-00013" summary="fixed content of error message again">
+      <created>1567719210682</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1567719210682</updated>
+    </task>
+    <task id="LOCAL-00014" summary="fixed edge cases for change in capacity limits, when 1.) the new max is smaller than the current 2.) the new min exceeds the current. In both these cases, instances are either created or destroyed so the esired value must be set ot the max to match the wait_for_elb_capacity, which is also at max value.">
+      <created>1567790385031</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1567790385031</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Various comments and adjustments">
+      <created>1568178074462</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1568178074464</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Edits to comments">
+      <created>1568178326336</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1568178326336</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ORDER">
+      <list>
+        <option value="0" />
+        <option value="2" />
+        <option value="3" />
+        <option value="1" />
+      </list>
+    </option>
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="Comments added to asg.tf" />
+    <MESSAGE value="added data resource to determine ASGActive status" />
+    <MESSAGE value="Made infrastructure code 'generic' from a merge from workingversion5.3Craig. Added and modified null resources so that code will work without presence of .ASG1Active.txt, provided data resource DO succeed in query." />
+    <MESSAGE value="data resources replace all text files" />
+    <MESSAGE value="Introduced failsafe for data resource...STILL NOT FULLY WORKING" />
+    <MESSAGE value="Everything seems to be working. Data resources check and automatically detect presence and statuses of ASGs" />
+    <MESSAGE value="Critical fixes to bugs in locals due to reversed logic and typos. Still testing all cases but seems working so far..." />
+    <MESSAGE value="Latest changes to special cases...cancel apply when only one asg that is active to is detected...among other things..." />
+    <MESSAGE value="modified switch_cancelled conditions to only include one active and two active ASGs. Ignore provisioners now for ANY abnormal setup (added more cases). Better detection of change_capacity_lim to handle when data resource is null." />
+    <MESSAGE value="fixed new bug in ignore provisioners, was not being ignored durign a first-time create" />
+    <MESSAGE value="small change to fix error message showing up when switch cancelled and new LC" />
+    <MESSAGE value="fixed content of error message" />
+    <MESSAGE value="fixed content of error message again" />
+    <MESSAGE value="fixed edge cases for change in capacity limits, when 1.) the new max is smaller than the current 2.) the new min exceeds the current. In both these cases, instances are either created or destroyed so the esired value must be set ot the max to match the wait_for_elb_capacity, which is also at max value." />
+    <MESSAGE value="Various comments and adjustments" />
+    <MESSAGE value="Edits to comments" />
+    <option name="LAST_COMMIT_MESSAGE" value="Edits to comments" />
   </component>
 </project>
