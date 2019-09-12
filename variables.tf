@@ -118,8 +118,8 @@ locals {
   //Conditions to ignore provisioners
   //========================================================================================
   //if non-active ASG and active ASG are not changing, ignore provisioners
-  //also if BOTH ASGs are null or zero, also ignore provisioners
-  //since the text file will not be set to true at beginning to allow one ASG to proceed
+  //also if switch is cancelled, ignore provisioners
+  //also if BOTH ASGs are null or zero, also ignore provisioners since the text file will not be set to true at beginning to allow one ASG to proceed
   //finally, if any ASGs are missing, ignore provisioners
   ignore_prov = ((local.ASG1_max>0&&local.ASG1_is_active) && (local.ASG2_max==0&&!local.ASG2_is_active))||((local.ASG1_max==0&&!local.ASG1_is_active) && (local.ASG2_max>0&&local.ASG2_is_active))||local.both_null_or_zero||local.switch_cancelled
   //========================================================================================

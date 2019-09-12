@@ -15,7 +15,7 @@ resource "null_resource" "pre-update_ASG1_status" {
 //change_detected_ASG1 and change_detected_ASG2 are triggered whenever a new launch config occurs or when always switch is true
 //they perform the provisioner check on which ASG should proceed first. The check is based on the status in the .ASG1Active.txt file
 //They allow the inactive ASG to proceed and hold up the other till the state of .ASG1Active changes
-//bash file check is performed only when a new Launch Config is present or always_switch is true AND it is not not a first_time deployment
+//bash file check is performed only when the ignore_prov evealutes to false
 //-------------------------------------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------------------------------------
 resource "null_resource" "change_detected_ASG1" {
